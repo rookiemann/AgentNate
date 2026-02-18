@@ -127,10 +127,10 @@ AgentNate/
 │   ├── js/                  # 18 ES modules
 │   └── styles.css           # All styles
 │
-├── modules/                 # External engines (auto-managed)
-│   ├── comfyui/             # ComfyUI instances + models
-│   ├── tts/                 # TTS server (XTTS, Fish, Kokoro)
-│   └── music/               # Music server (Stable Audio, ACE-Step)
+├── modules/                 # External engines (auto-cloned on first use)
+│   ├── comfyui/             # → rookiemann/comfyui-portable-installer
+│   ├── tts/                 # → rookiemann/portable-tts-server
+│   └── music/               # → rookiemann/portable-music-server
 │
 ├── models/                  # Downloaded model files
 │   └── gguf/                # GGUF models (searched + downloaded from HuggingFace)
@@ -275,6 +275,22 @@ AgentNate achieves true portability by bundling self-contained runtimes that nev
 | **TTS / Music** | Managed in `modules/tts/` and `modules/music/` | Audio engines with their own Python environments |
 
 **Everything** lives inside the AgentNate folder. Copy it. Move it. Back it up. Put it on a different machine. It just works.
+
+---
+
+## External Modules
+
+AgentNate's creative and audio capabilities are powered by three companion projects that are **automatically cloned on first use**. When you enable ComfyUI, TTS, or Music from the UI, AgentNate pulls the corresponding repo into `modules/` and runs its installer — no manual setup required.
+
+| Module | Repository | What It Provides | Installed To |
+|--------|-----------|-----------------|-------------|
+| **ComfyUI** | [comfyui-portable-installer](https://github.com/rookiemann/comfyui-portable-installer) | Multi-GPU ComfyUI with 101 pre-built models, custom nodes, multi-instance management | `modules/comfyui/` |
+| **TTS** | [portable-tts-server](https://github.com/rookiemann/portable-tts-server) | XTTS v2, Fish Speech, Kokoro TTS engines with voice cloning and real-time streaming | `modules/tts/` |
+| **Music** | [portable-music-server](https://github.com/rookiemann/portable-music-server) | Stable Audio Open and ACE-Step music generation with CLAP scoring | `modules/music/` |
+
+Each module is fully self-contained with its own portable Python environment, dependencies, and models. They run as separate processes managed by AgentNate's backend — start, stop, health check, and proxy are all handled automatically.
+
+> **Already have these installed standalone?** AgentNate will detect an existing installation in `modules/` and use it directly. You can also point to a custom path in Settings.
 
 ---
 

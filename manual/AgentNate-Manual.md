@@ -2070,6 +2070,8 @@ This means changing which model a persona uses requires no workflow modification
 
 AgentNate includes a full ComfyUI integration for AI-powered **image generation, video creation, upscaling, inpainting, ControlNet-guided composition**, and more. ComfyUI is a node-based generative AI framework, and AgentNate wraps it with instance management, a 101-model registry with one-click downloads, smart multi-GPU routing, and agent tools so the AI can drive the entire pipeline from natural language.
 
+> **Auto-installed**: The ComfyUI module is automatically cloned from [rookiemann/comfyui-portable-installer](https://github.com/rookiemann/comfyui-portable-installer) into `modules/comfyui/` on first use. It includes its own portable Python environment, Git, and all dependencies — no manual setup required.
+
 The Overview panel shows the module status at a glance: **Downloaded**, **Bootstrapped**, **Installed**, **API Running**, and the number of active instances. Below the status indicators you'll find the feature list, installation steps, and Quick Action buttons for common operations.
 
 The ComfyUI tab has five sub-sections: **Overview**, **Instances**, **Models**, **Nodes**, and **Gallery**.
@@ -2246,6 +2248,8 @@ The TTS tab before any models are loaded. Once you start the server and load a m
 
 AgentNate integrates a full **Portable TTS Server** ([github.com/rookiemann/portable-tts-server](https://github.com/rookiemann/portable-tts-server)) with 10 voice synthesis models, a Gateway + Worker architecture, and a 7-stage audio processing pipeline. The TTS module runs as a subprocess on port **8100** and is managed entirely through AgentNate.
 
+> **Auto-installed**: The TTS module is automatically cloned from [rookiemann/portable-tts-server](https://github.com/rookiemann/portable-tts-server) into `modules/tts/` on first use. It includes its own portable Python environment and all dependencies.
+
 **Architecture:**
 - **Gateway server** — FastAPI on port 8100, routes requests to workers
 - **Workers** — One per loaded model, each in its own Python virtual environment
@@ -2367,6 +2371,8 @@ The Music tab before any models are loaded. After starting the music server and 
 ![Music Overview](screenshots/87-music-tab-overview.png)
 
 AgentNate integrates a full **Portable Music Server** ([github.com/rookiemann/portable-music-server](https://github.com/rookiemann/portable-music-server)) with 8 AI music generation models, a Gateway + Worker architecture, and an 8-stage audio mastering pipeline. The music module runs as a subprocess on port **9150**.
+
+> **Auto-installed**: The Music module is automatically cloned from [rookiemann/portable-music-server](https://github.com/rookiemann/portable-music-server) into `modules/music/` on first use. It includes its own portable Python environment and all dependencies.
 
 **Architecture:**
 - **Gateway server** — FastAPI on port 9150, routes to model workers
