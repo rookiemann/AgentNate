@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771209251280",
+  "name": "LM Studio Liquid Instuct",
+  "provider": "lm_studio",
+  "modelId": "liquid/lfm2.5-1.2b",
+  "modelName": "liquid/lfm2.5-1.2b",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771209251280
+}

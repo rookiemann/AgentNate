@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/rookiemann/AgentNate/discussions
+    about: Ask questions, share ideas, or show off what you've built
+  - name: User Manual (Wiki)
+    url: https://github.com/rookiemann/AgentNate/wiki
+    about: Full documentation with screenshots and tutorials

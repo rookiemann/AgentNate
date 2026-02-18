@@ -1,0 +1,28 @@
+{
+  "name": "File Writer (Queue Test)",
+  "active": true,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "cmd-1",
+      "name": "Write Timestamped File",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "parameters": {
+        "command": "powershell -Command \"$dir='E:/AgentNate/.n8n-instances/test-output'; if(!(Test-Path $dir)){New-Item -ItemType Directory -Path $dir -Force | Out-Null}; $ts=Get-Date -Format 'yyyyMMdd_HHmmss_fff'; $id=Get-Random -Maximum 99999; $file=Join-Path $dir ('{0}_{1}.txt' -f $ts,$id); Set-Content -Path $file -Value ('Completed at '+(Get-Date -Format o)); Write-Output ('Wrote: ' + $file)\""
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Write Timestamped File", "type": "main", "index": 0 }]] }
+  }
+}

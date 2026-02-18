@@ -1,0 +1,92 @@
+# AgentNate Dependencies
+# Core requirements for AgentNate backend
+
+# =============================================================================
+# Core Dependencies
+# =============================================================================
+
+# FastAPI and ASGI
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# HTTP client
+httpx>=0.25.0
+aiohttp>=3.9.0
+
+# Async utilities
+anyio>=4.0.0
+
+# Pydantic for data validation
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# =============================================================================
+# LLM Providers
+# =============================================================================
+
+# llama-cpp-python (for local GGUF models)
+# Note: Install with CUDA support for GPU acceleration:
+# CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python
+llama-cpp-python>=0.2.0
+
+# OpenRouter / OpenAI compatible
+openai>=1.0.0
+
+# =============================================================================
+# Super Tools Dependencies
+# =============================================================================
+
+# Web search (DuckDuckGo - free, no API key required)
+ddgs>=7.0
+
+# HTML parsing and text extraction
+beautifulsoup4>=4.12
+trafilatura>=1.6
+lxml>=5.0.0
+
+# Browser automation (Playwright)
+# After installing, run: playwright install chromium
+playwright>=1.40
+
+# Data formats
+pyyaml>=6.0
+
+# =============================================================================
+# Optional Dependencies (uncomment as needed)
+# =============================================================================
+
+# For timezone support in Python < 3.9
+# pytz>=2023.3
+
+# For additional email features
+# aiosmtplib>=3.0.0
+
+# For better async file operations
+# aiofiles>=23.0.0
+
+# =============================================================================
+# Development Dependencies
+# =============================================================================
+
+# Testing
+# pytest>=7.4.0
+# pytest-asyncio>=0.21.0
+# pytest-cov>=4.1.0
+
+# Linting
+# ruff>=0.1.0
+# mypy>=1.7.0
+
+# =============================================================================
+# Post-Installation Notes
+# =============================================================================
+#
+# 1. For Playwright browser automation:
+#    pip install playwright
+#    playwright install chromium
+#
+# 2. For llama-cpp-python with CUDA (GPU acceleration):
+#    CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --force-reinstall --no-cache-dir
+#
+# 3. For Windows, you may need Visual Studio Build Tools for some packages

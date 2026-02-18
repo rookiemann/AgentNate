@@ -1,0 +1,11 @@
+{
+  "id": "preset-1770938540619",
+  "name": "granite 3.3 LM Studio",
+  "provider": "lm_studio",
+  "modelId": "granite-3.3-8b-instruct",
+  "modelName": "granite-3.3-8b-instruct",
+  "contextLength": 25088,
+  "gpuLayers": -1,
+  "gpuIndex": 1,
+  "createdAt": 1770938540619
+}

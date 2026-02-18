@@ -1,0 +1,71 @@
+{
+  "name": "Test 04 - Data Transform Pipeline",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0004-0001-0001-000000000001",
+      "name": "Run Test",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Simulate a dataset of users\nconst users = [\n  { name: 'Alice', age: 30, score: 85, department: 'Engineering' },\n  { name: 'Bob', age: 25, score: 92, department: 'Engineering' },\n  { name: 'Carol', age: 35, score: 78, department: 'Marketing' },\n  { name: 'Dave', age: 28, score: 95, department: 'Engineering' },\n  { name: 'Eve', age: 32, score: 88, department: 'Marketing' },\n  { name: 'Frank', age: 40, score: 72, department: 'Sales' },\n  { name: 'Grace', age: 27, score: 91, department: 'Sales' },\n  { name: 'Hank', age: 33, score: 80, department: 'Marketing' }\n];\nreturn users.map(u => ({ json: u }));"
+      },
+      "id": "a1b2c3d4-0004-0001-0001-000000000002",
+      "name": "Generate Users",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filter to high performers (score >= 85)\nconst items = $input.all();\nconst filtered = items.filter(item => item.json.score >= 85);\nreturn filtered;"
+      },
+      "id": "a1b2c3d4-0004-0001-0001-000000000003",
+      "name": "Filter High Performers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Add computed fields\nconst items = $input.all();\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    grade: item.json.score >= 90 ? 'A' : 'B',\n    seniorityLevel: item.json.age >= 30 ? 'Senior' : 'Junior',\n    bonus: item.json.score >= 90 ? 5000 : 2500\n  }\n}));"
+      },
+      "id": "a1b2c3d4-0004-0001-0001-000000000004",
+      "name": "Enrich Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Final summary\nconst items = $input.all();\nconst totalBonus = items.reduce((sum, i) => sum + i.json.bonus, 0);\nconst departments = [...new Set(items.map(i => i.json.department))];\nreturn [{\n  json: {\n    status: 'success',\n    highPerformers: items.length,\n    names: items.map(i => i.json.name),\n    gradeA: items.filter(i => i.json.grade === 'A').length,\n    gradeB: items.filter(i => i.json.grade === 'B').length,\n    totalBonus: totalBonus,\n    departments: departments,\n    completedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0004-0001-0001-000000000005",
+      "name": "Final Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Run Test": {
+      "main": [[{"node": "Generate Users", "type": "main", "index": 0}]]
+    },
+    "Generate Users": {
+      "main": [[{"node": "Filter High Performers", "type": "main", "index": 0}]]
+    },
+    "Filter High Performers": {
+      "main": [[{"node": "Enrich Data", "type": "main", "index": 0}]]
+    },
+    "Enrich Data": {
+      "main": [[{"node": "Final Summary", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

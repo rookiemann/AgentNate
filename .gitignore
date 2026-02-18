@@ -1,0 +1,59 @@
+# ============================================================
+# AgentNate .gitignore
+# Runtime binaries and generated files excluded
+# Source code and installer scripts tracked
+# ============================================================
+
+# --- Runtime binaries (downloaded by install.bat) ---
+python/
+node/
+node_modules/
+
+# --- External modules (separate git repos) ---
+modules/
+
+# --- Python bytecode ---
+__pycache__/
+*.pyc
+*.pyo
+
+# --- Environment directories ---
+envs/
+vllm-source/
+
+# --- n8n runtime data ---
+.n8n-instances/
+
+# --- Temp and logs ---
+temp/
+*.log
+*.pid
+
+# --- User settings (contains API keys/secrets) ---
+settings.json
+
+# --- MCP / Claude Code local config ---
+.mcp.json
+.claude/
+
+# --- Generated data ---
+data/codebase_manifest.json
+
+# --- Release archives ---
+releases/
+
+# --- Wiki output (pushed to .wiki.git separately) ---
+manual/wiki/
+
+# --- Old archive ---
+_archive/
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+Thumbs.db
+Desktop.ini
+.DS_Store

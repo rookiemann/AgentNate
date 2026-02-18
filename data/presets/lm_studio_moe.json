@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771208792956",
+  "name": "LM Studio MOE",
+  "provider": "lm_studio",
+  "modelId": "llama-3.2-8x3b-moe-dark-champion-instruct-uncensored-abliterated-18.4b",
+  "modelName": "llama-3.2-8x3b-moe-dark-champion-instruct-uncensored-abliterated-18.4b",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 1,
+  "createdAt": 1771208792956
+}

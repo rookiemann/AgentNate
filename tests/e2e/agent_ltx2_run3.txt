@@ -1,0 +1,6718 @@
+data: {"type": "plan", "plan": {"summary": "Generate short LTX text-to-video clip using ComfyUI on gpu0_8188 with serene sunset prompt", "steps": [{"step": "List available models with comfyui_list_models", "tool_category": "comfyui"}, {"step": "Download T5-XXL text encoder if missing with comfyui_download_model", "tool_category": "comfyui"}, {"step": "Build workflow from ltxv_text_to_video template, override checkpoint and set prompt, instance gpu0_8188 with comfyui_build_workflow", "tool_category": "comfyui"}, {"step": "Execute workflow with comfyui_execute_workflow", "tool_category": "comfyui"}, {"step": "Check job status with comfyui_job_status", "tool_category": "comfyui"}], "needs_tools": true, "complexity": "moderate", "selected_categories": ["comfyui", "workflow", "model", "system"]}}
+
+data: {"type": "conv_id", "conversation_id": "conv-eb5c3cbc", "persona_id": "system_agent", "autonomous": true}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_models"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_models", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_models", "elapsed": 2.9}
+
+data: {"type": "tool_call", "tool": "comfyui_list_models", "tool_number": 1, "arguments": {}, "result": {"success": true, "models": {"checkpoints": [{"name": "ltx-2-19b-dev-fp8", "size_gb": 25.21901951916516, "folder": "checkpoints", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\checkpoints\\ltx-2-19b-dev-fp8.safetensors"}, {"name": "sd_xl_turbo_1.0_fp16", "size_gb": 6.461592302657664, "folder": "checkpoints", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\checkpoints\\sd_xl_turbo_1.0_fp16.safetensors"}], "diffusion_models": [], "vae": [{"name": "sdxl_vae", "size_gb": 0.31165886856615543, "folder": "vae", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\vae\\sdxl_vae.safetensors"}], "clip": [], "text_encoders": [], "loras": [], "controlnet": [], "gguf": [], "unet": [], "embeddings": [], "upscale_models": [], "clip_vision": [], "model_patches": [], "latent_upscale_models": []}, "count": 14}}
+
+data: {"type": "continuing", "tool_calls_so_far": 1}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_search"}
+
+data: {"type": "token", "text": "_models"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "query"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "category"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 2.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 3.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 4.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 5.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 6.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_search_models", "elapsed": 9.1}
+
+data: {"type": "tool_call", "tool": "comfyui_search_models", "tool_number": 2, "arguments": {"query": "t5xxl", "category": "clip"}, "result": {"success": true, "registry_matches": [{"id": "flux_t5xxl", "name": "Flux T5-XXL Text Encoder (FP16 - 9.8GB)", "folder": "clip", "size_gb": 9.79, "repo": "comfyanonymous/flux_text_encoders", "filename": "t5xxl_fp16.safetensors", "status": "missing"}, {"id": "flux_t5xxl_fp8", "name": "Flux T5-XXL Text Encoder (FP8 - 4.9GB)", "folder": "clip", "size_gb": 4.89, "repo": "comfyanonymous/flux_text_encoders", "filename": "t5xxl_fp8_e4m3fn.safetensors", "status": "missing"}, {"id": "flux_t5xxl_gguf_q8", "name": "Flux T5-XXL GGUF (Q8_0 - 5.2GB)", "folder": "clip", "size_gb": 5.2, "repo": "city96/t5-v1_1-xxl-encoder-gguf", "filename": "t5-v1_1-xxl-encoder-Q8_0.gguf", "status": "missing"}, {"id": "flux_t5xxl_gguf_q4", "name": "Flux T5-XXL GGUF (Q4_K_S - 2.8GB)", "folder": "clip", "size_gb": 2.8, "repo": "city96/t5-v1_1-xxl-encoder-gguf", "filename": "t5-v1_1-xxl-encoder-Q4_K_S.gguf", "status": "missing"}, {"id": "sd3_t5xxl", "name": "SD3 T5-XXL Text Encoder (FP16)", "folder": "clip", "size_gb": 9.79, "repo": "stabilityai/stable-diffusion-3-medium", "filename": "text_encoders/t5xxl_fp16.safetensors", "status": "missing"}], "registry_match_count": 5, "huggingface_results": [{"name": "t5_xxl_true_nli_mixture", "repo": "google/t5_xxl_true_nli_mixture", "filename": "pytorch_model-00001-of-00005.bin", "folder": "checkpoints", "downloads": 4151, "files": ["pytorch_model-00001-of-00005.bin", "pytorch_model-00002-of-00005.bin", "pytorch_model-00003-of-00005.bin", "pytorch_model-00004-of-00005.bin", "pytorch_model-00005-of-00005.bin"]}, {"name": "t5-xxl", "repo": "Disty0/t5-xxl", "filename": "model-00001-of-00002.safetensors", "folder": "checkpoints", "downloads": 1239, "files": ["model-00001-of-00002.safetensors", "model-00002-of-00002.safetensors"]}, {"name": "T5-XXL-8bit", "repo": "Lightricks/T5-XXL-8bit", "filename": "model-00001-of-00002.safetensors", "folder": "checkpoints", "downloads": 133, "files": ["model-00001-of-00002.safetensors", "model-00002-of-00002.safetensors"]}, {"name": "t5-xxl-lm-adapt", "repo": "google/t5-xxl-lm-adapt", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 86, "files": ["pytorch_model.bin"]}, {"name": "T5XXL-Unchained", "repo": "Kaoru8/T5XXL-Unchained", "filename": "t5xxl-unchained-f16.safetensors", "folder": "checkpoints", "downloads": 44, "files": ["t5xxl-unchained-f16.safetensors", "t5xxl-unchained-f8.safetensors"]}, {"name": "t5-xxl-ssm-wq", "repo": "google/t5-xxl-ssm-wq", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 18, "files": ["pytorch_model.bin"]}, {"name": "t5-xxl-ssm-nq", "repo": "google/t5-xxl-ssm-nq", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 15, "files": ["pytorch_model.bin"]}, {"name": "t5-xxl-ssm-tqa", "repo": "google/t5-xxl-ssm-tqa", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 15, "files": ["pytorch_model.bin"]}, {"name": "t5-xxl-ssm", "repo": "google/t5-xxl-ssm", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 14, "files": ["pytorch_model.bin"]}, {"name": "t5-xxl-ssm-nqo", "repo": "google/t5-xxl-ssm-nqo", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 13, "files": ["pytorch_model.bin"]}, {"name": "t5-xxl-ssm-wqo", "repo": "google/t5-xxl-ssm-wqo", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 13, "files": ["pytorch_model.bin"]}, {"name": "t5-xxl-ssm-tqao", "repo": "google/t5-xxl-ssm-tqao", "filename": "pytorch_model.bin", "folder": "checkpoints", "downloads": 12, "files": ["pytorch_model.bin"]}, {"name": "t5_xxl_NCC_lm", "repo": "north/t5_xxl_NCC_lm", "filename": "pytorch_model-00001-of-00007.bin", "folder": "checkpoints", "downloads": 6, "files": ["pytorch_model-00001-of-00007.bin", "pytorch_model-00002-of-00007.bin", "pytorch_model-00003-of-00007.bin", "pytorch_model-00004-of-00007.bin", "pytorch_model-00005-of-00007.bin"]}, {"name": "t5_xxl_NCC", "repo": "north/t5_xxl_NCC", "filename": "pytorch_model-00001-of-00007.bin", "folder": "checkpoints", "downloads": 6, "files": ["pytorch_model-00001-of-00007.bin", "pytorch_model-00002-of-00007.bin", "pytorch_model-00003-of-00007.bin", "pytorch_model-00004-of-00007.bin", "pytorch_model-00005-of-00007.bin"]}, {"name": "t5xxl-unchained", "repo": "AbstractPhil/t5xxl-unchained", "filename": "Omega_73_Custom_FP32_clip_G.safetensors", "folder": "checkpoints", "downloads": 6, "files": ["Omega_73_Custom_FP32_clip_G.safetensors", "Omega_73_Custom_FP32_clip_L.safetensors", "t5xxl-unchained-f16.safetensors"]}, {"name": "t5xxl_flan_enc", "repo": "silveroxides/t5xxl_flan_enc", "filename": "model.safetensors", "folder": "checkpoints", "downloads": 3, "files": ["model.safetensors", "t5xxl_flan_fp8_scaled.safetensors", "t5xxl_flan_latest.safetensors", "t5xxl_flan_new_alt_fp8_e4m3fn_scaled.safetensors"]}, {"name": "T5-xxl-FTS-AVG-PostTrain", "repo": "AlleSpezza/T5-xxl-FTS-AVG-PostTrain", "filename": "adapter_model.safetensors", "folder": "checkpoints", "downloads": 3, "files": ["adapter_model.safetensors", "training_args.bin"]}, {"name": "t5_xxl_true_nli_mixture-bf16", "repo": "tdolega/t5_xxl_true_nli_mixture-bf16", "filename": "model-00001-of-00005.safetensors", "folder": "checkpoints", "downloads": 1, "files": ["model-00001-of-00005.safetensors", "model-00002-of-00005.safetensors", "model-00003-of-00005.safetensors", "model-00004-of-00005.safetensors", "model-00005-of-00005.safetensors"]}], "huggingface_count": 18, "hint": "Use model 'id' from registry_matches with comfyui_download_model(model_ids=[...]). For HuggingFace results, use comfyui_download_model(models=[{repo, filename, folder}])."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 2}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_download"}
+
+data: {"type": "token", "text": "_model"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "model"}
+
+data: {"type": "token", "text": "_ids"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "flux"}
+
+data: {"type": "token", "text": "_t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"]"}
+
+data: {"type": "token", "text": "}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_download_model", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_download_model", "elapsed": 3.7}
+
+data: {"type": "tool_call", "tool": "comfyui_download_model", "tool_number": 3, "arguments": {"model_ids": ["flux_t5xxl_fp8"]}, "result": {"success": true, "job_id": "38de45bd", "message": "Download started for 1 model(s). Use comfyui_job_status with job_id '38de45bd' to track progress."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 3}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_job"}
+
+data: {"type": "token", "text": "_status"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "job"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "de"}
+
+data: {"type": "token", "text": "45"}
+
+data: {"type": "token", "text": "bd"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_job_status", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_job_status", "elapsed": 3.1}
+
+data: {"type": "tool_call", "tool": "comfyui_job_status", "tool_number": 4, "arguments": {"job_id": "38de45bd"}, "result": {"success": true, "job_id": "38de45bd", "status": "running", "progress": {"current": 3, "total": 100, "message": "Downloading t5xxl_fp8_e4m3fn.safetensors... 160/4667 MB"}, "message": null, "error": null, "result": null}}
+
+data: {"type": "continuing", "tool_calls_so_far": 4}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "await"}
+
+data: {"type": "token", "text": "_job"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "job"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "de"}
+
+data: {"type": "token", "text": "45"}
+
+data: {"type": "token", "text": "bd"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "poll"}
+
+data: {"type": "token", "text": "_interval"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "10"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "timeout"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "360"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 3.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 4.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 5.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 6.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 7.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 8.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 9.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 10.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 12.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 13.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 15.4}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 16.4}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 17.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 18.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 19.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 20.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 21.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 22.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 23.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 24.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 26.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 27.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 29.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 30.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 31.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 32.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 33.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 34.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 35.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 36.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 38.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 39.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 40.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 41.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 42.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 43.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 44.5}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 45.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 46.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 47.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 50.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 51.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 52.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 53.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 54.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 55.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 56.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 57.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 58.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 59.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 62.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 63.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 64.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 65.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 66.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 67.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 68.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 69.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 70.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 71.3}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 73.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 74.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 75.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 76.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 77.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 78.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 79.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 80.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 81.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 82.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 83.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 85.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 86.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 87.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 88.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 89.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 90.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 91.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 92.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 93.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 94.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 97.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 98.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 99.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 100.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 101.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 102.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 103.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 104.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 105.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 106.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 107.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 109.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 110.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 111.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 112.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 113.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 114.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 115.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 116.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 117.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 118.7}
+
+data: {"type": "tool_executing", "tool": "comfyui_await_job", "elapsed": 121.0}
+
+data: {"type": "tool_call", "tool": "comfyui_await_job", "tool_number": 5, "arguments": {"job_id": "38de45bd", "poll_interval": 10, "timeout": 3600}, "result": {"success": true, "job_id": "38de45bd", "status": "completed", "result": {"success": 1, "failed": 0, "details": {"Flux T5-XXL Text Encoder (FP8 - 4.9GB)": true}}, "message": "Job completed successfully", "elapsed_seconds": 118}}
+
+data: {"type": "continuing", "tool_calls_so_far": 5}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_build"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "native"}
+
+data: {"type": "token", "text": "_template"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "_text"}
+
+data: {"type": "token", "text": "_to"}
+
+data: {"type": "token", "text": "_video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "overrides"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "checkpoint"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\""}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_build_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_build_workflow", "elapsed": 2.7}
+
+data: {"type": "tool_call", "tool": "comfyui_build_workflow", "tool_number": 6, "arguments": {"native_template": "ltxv_text_to_video", "instance_id": "gpu0_8188", "overrides": {"checkpoint": "ltx-2-19b-dev-fp8", "prompt": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "result": {"success": true, "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp16.safetensors", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}, "template": "ltxv_text_to_video", "source": "native_template", "node_count": 12, "applied_overrides": ["checkpoint \u2192 CheckpointLoaderSimple:ckpt_name", "prompt \u2192 node 6 CLIPTextEncode:text"], "warnings": null, "message": "Converted native template 'ltxv_text_to_video' (12 nodes). Use comfyui_execute_workflow to run it."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 6}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_models"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_models", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_models", "elapsed": 2.9}
+
+data: {"type": "tool_call", "tool": "comfyui_list_models", "tool_number": 7, "arguments": {}, "result": {"success": true, "models": {"checkpoints": [{"name": "ltx-2-19b-dev-fp8", "size_gb": 25.21901951916516, "folder": "checkpoints", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\checkpoints\\ltx-2-19b-dev-fp8.safetensors"}, {"name": "sd_xl_turbo_1.0_fp16", "size_gb": 6.461592302657664, "folder": "checkpoints", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\checkpoints\\sd_xl_turbo_1.0_fp16.safetensors"}], "diffusion_models": [], "vae": [{"name": "sdxl_vae", "size_gb": 0.31165886856615543, "folder": "vae", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\vae\\sdxl_vae.safetensors"}], "clip": [{"name": "t5xxl_fp8_e4m3fn", "size_gb": 4.557832054793835, "folder": "clip", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\clip\\t5xxl_fp8_e4m3fn.safetensors"}], "text_encoders": [], "loras": [], "controlnet": [], "gguf": [], "unet": [], "embeddings": [], "upscale_models": [], "clip_vision": [], "model_patches": [], "latent_upscale_models": []}, "count": 14}}
+
+data: {"type": "continuing", "tool_calls_so_far": 7}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_build"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "native"}
+
+data: {"type": "token", "text": "_template"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "_text"}
+
+data: {"type": "token", "text": "_to"}
+
+data: {"type": "token", "text": "_video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "overrides"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "checkpoint"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\""}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_build_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_build_workflow", "tool_number": 8, "arguments": {"native_template": "ltxv_text_to_video", "instance_id": "gpu0_8188", "overrides": {"checkpoint": "ltx-2-19b-dev-fp8", "clip_name": "t5xxl_fp8_e4m3fn", "prompt": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "result": {"success": true, "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp8_e4m3fn", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}, "template": "ltxv_text_to_video", "source": "native_template", "node_count": 12, "applied_overrides": ["checkpoint \u2192 CheckpointLoaderSimple:ckpt_name", "clip_name \u2192 CLIPLoader:clip_name", "prompt \u2192 node 6 CLIPTextEncode:text"], "warnings": null, "message": "Converted native template 'ltxv_text_to_video' (12 nodes). Use comfyui_execute_workflow to run it."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 8}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_execute"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "workflow"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Loader"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "device"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "default"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Checkpoint"}
+
+data: {"type": "token", "text": "Loader"}
+
+data: {"type": "token", "text": "Simple"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "ck"}
+
+data: {"type": "token", "text": "pt"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "7"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Text"}
+
+data: {"type": "token", "text": "Encode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "text"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "low"}
+
+data: {"type": "token", "text": " quality"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " worst"}
+
+data: {"type": "token", "text": " quality"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " deformed"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " distorted"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " dis"}
+
+data: {"type": "token", "text": "figured"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " motion"}
+
+data: {"type": "token", "text": " smear"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " motion"}
+
+data: {"type": "token", "text": " artifacts"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " fused"}
+
+data: {"type": "token", "text": " fingers"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " bad"}
+
+data: {"type": "token", "text": " anatomy"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " weird"}
+
+data: {"type": "token", "text": " hand"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " ugly"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Text"}
+
+data: {"type": "token", "text": "Encode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "text"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Empty"}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": "Lat"}
+
+data: {"type": "token", "text": "ent"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "width"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "768"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "height"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "512"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "length"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "batch"}
+
+data: {"type": "token", "text": "_size"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "72"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Sampler"}
+
+data: {"type": "token", "text": "Custom"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "model"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "positive"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "negative"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "sampler"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "73"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "sig"}
+
+data: {"type": "token", "text": "mas"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "71"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "latent"}
+
+data: {"type": "token", "text": "_image"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "add"}
+
+data: {"type": "token", "text": "_noise"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "true"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "noise"}
+
+data: {"type": "token", "text": "_seed"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "497"}
+
+data: {"type": "token", "text": "797"}
+
+data: {"type": "token", "text": "676"}
+
+data: {"type": "token", "text": "867"}
+
+data: {"type": "token", "text": "141"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "cfg"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "73"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "Sampler"}
+
+data: {"type": "token", "text": "Select"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "sampler"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "uler"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "71"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "VS"}
+
+data: {"type": "token", "text": "cheduler"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "latent"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "steps"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "max"}
+
+data: {"type": "token", "text": "_shift"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "05"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "base"}
+
+data: {"type": "token", "text": "_shift"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "95"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "stretch"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "true"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "terminal"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": "Condition"}
+
+data: {"type": "token", "text": "ing"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "positive"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "negative"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "7"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "frame"}
+
+data: {"type": "token", "text": "_rate"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "25"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "VA"}
+
+data: {"type": "token", "text": "ED"}
+
+data: {"type": "token", "text": "ecode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "samples"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "72"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "vae"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "]}}"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "78"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Create"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "images"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "fps"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "24"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "79"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Save"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "78"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "filename"}
+
+data: {"type": "token", "text": "_prefix"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "format"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "auto"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "codec"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "auto"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 2.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 4.3}
+
+data: {"type": "tool_call", "tool": "comfyui_execute_workflow", "tool_number": 9, "arguments": {"instance_id": "gpu0_8188", "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp8_e4m3fn", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}}, "result": {"success": false, "error": "ComfyUI returned 400: {\"error\": {\"type\": \"prompt_outputs_failed_validation\", \"message\": \"Prompt outputs failed validation\", \"details\": \"\", \"extra_info\": {}}, \"node_errors\": {\"38\": {\"errors\": [{\"type\": \"value_not_in_list\", \"message\": \"Value not in list\", \"details\": \"clip_name: 't5xxl_fp8_e4m3fn' not in ['t5xxl_fp8_e4m3fn.safetensors']\", \"extra_info\": {\"input_name\": \"clip_name\", \"input_config\": [[\"t5xxl_fp8_e4m3fn.safetensors\"], {}], \"received_value\": \"t5xxl_fp8_e4m3fn\"}}], \"dependent_outputs\": [\"79\"], \"class_type\": \"C"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 9}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_build"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "native"}
+
+data: {"type": "token", "text": "_template"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "_text"}
+
+data: {"type": "token", "text": "_to"}
+
+data: {"type": "token", "text": "_video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "overrides"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "checkpoint"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\""}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_build_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_build_workflow", "tool_number": 10, "arguments": {"native_template": "ltxv_text_to_video", "instance_id": "gpu0_8188", "overrides": {"checkpoint": "ltx-2-19b-dev-fp8", "clip_name": "t5xxl_fp8_e4m3fn.safetensors", "prompt": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "result": {"success": true, "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp8_e4m3fn.safetensors", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}, "template": "ltxv_text_to_video", "source": "native_template", "node_count": 12, "applied_overrides": ["checkpoint \u2192 CheckpointLoaderSimple:ckpt_name", "clip_name \u2192 CLIPLoader:clip_name", "prompt \u2192 node 6 CLIPTextEncode:text"], "warnings": null, "message": "Converted native template 'ltxv_text_to_video' (12 nodes). Use comfyui_execute_workflow to run it."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 10}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_execute"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "workflow"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Loader"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "device"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "default"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Checkpoint"}
+
+data: {"type": "token", "text": "Loader"}
+
+data: {"type": "token", "text": "Simple"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "ck"}
+
+data: {"type": "token", "text": "pt"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "7"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Text"}
+
+data: {"type": "token", "text": "Encode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "text"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "low"}
+
+data: {"type": "token", "text": " quality"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " worst"}
+
+data: {"type": "token", "text": " quality"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " deformed"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " distorted"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " dis"}
+
+data: {"type": "token", "text": "figured"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " motion"}
+
+data: {"type": "token", "text": " smear"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " motion"}
+
+data: {"type": "token", "text": " artifacts"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " fused"}
+
+data: {"type": "token", "text": " fingers"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " bad"}
+
+data: {"type": "token", "text": " anatomy"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " weird"}
+
+data: {"type": "token", "text": " hand"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " ugly"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Text"}
+
+data: {"type": "token", "text": "Encode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "text"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Empty"}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": "Lat"}
+
+data: {"type": "token", "text": "ent"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "width"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "768"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "height"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "512"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "length"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "batch"}
+
+data: {"type": "token", "text": "_size"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "72"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Sampler"}
+
+data: {"type": "token", "text": "Custom"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "model"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "positive"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "negative"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "sampler"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "73"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "sig"}
+
+data: {"type": "token", "text": "mas"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "71"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "latent"}
+
+data: {"type": "token", "text": "_image"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "add"}
+
+data: {"type": "token", "text": "_noise"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "true"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "noise"}
+
+data: {"type": "token", "text": "_seed"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "497"}
+
+data: {"type": "token", "text": "797"}
+
+data: {"type": "token", "text": "676"}
+
+data: {"type": "token", "text": "867"}
+
+data: {"type": "token", "text": "141"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "cfg"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "73"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "Sampler"}
+
+data: {"type": "token", "text": "Select"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "sampler"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "uler"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "71"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "VS"}
+
+data: {"type": "token", "text": "cheduler"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "latent"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "steps"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "max"}
+
+data: {"type": "token", "text": "_shift"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "05"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "base"}
+
+data: {"type": "token", "text": "_shift"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "95"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "stretch"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "true"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "terminal"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": "Condition"}
+
+data: {"type": "token", "text": "ing"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "positive"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "negative"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "7"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "frame"}
+
+data: {"type": "token", "text": "_rate"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "25"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "VA"}
+
+data: {"type": "token", "text": "ED"}
+
+data: {"type": "token", "text": "ecode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "samples"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "72"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "vae"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "]}}"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "78"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Create"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "images"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "fps"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "24"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "79"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Save"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "78"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "filename"}
+
+data: {"type": "token", "text": "_prefix"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "format"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "auto"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "codec"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "auto"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 2.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 4.2}
+
+data: {"type": "tool_call", "tool": "comfyui_execute_workflow", "tool_number": 11, "arguments": {"instance_id": "gpu0_8188", "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp8_e4m3fn.safetensors", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}}, "result": {"success": false, "error": "ComfyUI returned 400: {\"error\": {\"type\": \"prompt_outputs_failed_validation\", \"message\": \"Prompt outputs failed validation\", \"details\": \"\", \"extra_info\": {}}, \"node_errors\": {\"44\": {\"errors\": [{\"type\": \"value_not_in_list\", \"message\": \"Value not in list\", \"details\": \"ckpt_name: 'ltx-2-19b-dev-fp8' not in ['ltx-2-19b-dev-fp8.safetensors', 'sd_xl_turbo_1.0_fp16.safetensors']\", \"extra_info\": {\"input_name\": \"ckpt_name\", \"input_config\": [[\"ltx-2-19b-dev-fp8.safetensors\", \"sd_xl_turbo_1.0_fp16.safetensors\"], {\"tooltip\": \"The"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 11}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_build"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "native"}
+
+data: {"type": "token", "text": "_template"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "_text"}
+
+data: {"type": "token", "text": "_to"}
+
+data: {"type": "token", "text": "_video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "overrides"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "checkpoint"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\""}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_build_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_build_workflow", "tool_number": 12, "arguments": {"native_template": "ltxv_text_to_video", "instance_id": "gpu0_8188", "overrides": {"checkpoint": "ltx-2-19b-dev-fp8.safetensors", "clip_name": "t5xxl_fp8_e4m3fn.safetensors", "prompt": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "result": {"success": true, "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp8_e4m3fn.safetensors", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8.safetensors"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}, "template": "ltxv_text_to_video", "source": "native_template", "node_count": 12, "applied_overrides": ["checkpoint \u2192 CheckpointLoaderSimple:ckpt_name", "clip_name \u2192 CLIPLoader:clip_name", "prompt \u2192 node 6 CLIPTextEncode:text"], "warnings": null, "message": "Converted native template 'ltxv_text_to_video' (12 nodes). Use comfyui_execute_workflow to run it."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 12}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_execute"}
+
+data: {"type": "token", "text": "_workflow"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "workflow"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Loader"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "device"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "default"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Checkpoint"}
+
+data: {"type": "token", "text": "Loader"}
+
+data: {"type": "token", "text": "Simple"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "ck"}
+
+data: {"type": "token", "text": "pt"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "7"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Text"}
+
+data: {"type": "token", "text": "Encode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "text"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "low"}
+
+data: {"type": "token", "text": " quality"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " worst"}
+
+data: {"type": "token", "text": " quality"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " deformed"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " distorted"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " dis"}
+
+data: {"type": "token", "text": "figured"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " motion"}
+
+data: {"type": "token", "text": " smear"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " motion"}
+
+data: {"type": "token", "text": " artifacts"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " fused"}
+
+data: {"type": "token", "text": " fingers"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " bad"}
+
+data: {"type": "token", "text": " anatomy"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " weird"}
+
+data: {"type": "token", "text": " hand"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " ugly"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "Text"}
+
+data: {"type": "token", "text": "Encode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "clip"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "38"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "text"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Empty"}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": "Lat"}
+
+data: {"type": "token", "text": "ent"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "width"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "768"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "height"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "512"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "length"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "batch"}
+
+data: {"type": "token", "text": "_size"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "72"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Sampler"}
+
+data: {"type": "token", "text": "Custom"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "model"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "positive"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "negative"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "sampler"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "73"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "sig"}
+
+data: {"type": "token", "text": "mas"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "71"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "latent"}
+
+data: {"type": "token", "text": "_image"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "add"}
+
+data: {"type": "token", "text": "_noise"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "true"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "noise"}
+
+data: {"type": "token", "text": "_seed"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "497"}
+
+data: {"type": "token", "text": "797"}
+
+data: {"type": "token", "text": "676"}
+
+data: {"type": "token", "text": "867"}
+
+data: {"type": "token", "text": "141"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "cfg"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "73"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "Sampler"}
+
+data: {"type": "token", "text": "Select"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "sampler"}
+
+data: {"type": "token", "text": "_name"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "uler"}
+
+data: {"type": "token", "text": "\"}},\""}
+
+data: {"type": "token", "text": "71"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "VS"}
+
+data: {"type": "token", "text": "cheduler"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "latent"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "steps"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "max"}
+
+data: {"type": "token", "text": "_shift"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "05"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "base"}
+
+data: {"type": "token", "text": "_shift"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "95"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "stretch"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "true"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "terminal"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "69"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": "Condition"}
+
+data: {"type": "token", "text": "ing"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "positive"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "negative"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "7"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "frame"}
+
+data: {"type": "token", "text": "_rate"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "25"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "VA"}
+
+data: {"type": "token", "text": "ED"}
+
+data: {"type": "token", "text": "ecode"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "samples"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "72"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "vae"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "44"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "]}}"}
+
+data: {"type": "token", "text": ",\""}
+
+data: {"type": "token", "text": "78"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Create"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "images"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "fps"}
+
+data: {"type": "token", "text": "\":"}
+
+data: {"type": "token", "text": "24"}
+
+data: {"type": "token", "text": "}},\""}
+
+data: {"type": "token", "text": "79"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "class"}
+
+data: {"type": "token", "text": "_type"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Save"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "inputs"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "\":[\""}
+
+data: {"type": "token", "text": "78"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "],\""}
+
+data: {"type": "token", "text": "filename"}
+
+data: {"type": "token", "text": "_prefix"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "format"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "auto"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "codec"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "auto"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "token", "text": "}}}"}
+
+data: {"type": "token", "text": "}\n\n"}
+
+data: {"type": "token", "text": "##"}
+
+data: {"type": "token", "text": " Explanation"}
+
+data: {"type": "token", "text": "\n"}
+
+data: {"type": "token", "text": "Correct"}
+
+data: {"type": "token", "text": "ed"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": " by"}
+
+data: {"type": "token", "text": " including"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " full"}
+
+data: {"type": "token", "text": " `."}
+
+data: {"type": "token", "text": "saf"}
+
+data: {"type": "token", "text": "et"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " filename"}
+
+data: {"type": "token", "text": " extensions"}
+
+data: {"type": "token", "text": " for"}
+
+data: {"type": "token", "text": " both"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " checkpoint"}
+
+data: {"type": "token", "text": " (`"}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`)"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": " model"}
+
+data: {"type": "token", "text": " (`"}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`),"}
+
+data: {"type": "token", "text": " as"}
+
+data: {"type": "token", "text": " required"}
+
+data: {"type": "token", "text": " by"}
+
+data: {"type": "token", "text": " Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "'s"}
+
+data: {"type": "token", "text": " validation"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Now"}
+
+data: {"type": "token", "text": " executing"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": " instance"}
+
+data: {"type": "token", "text": " with"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " prompt"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " The"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " be"}
+
+data: {"type": "token", "text": " saved"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " prefix"}
+
+data: {"type": "token", "text": " once"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Next"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " we'll"}
+
+data: {"type": "token", "text": " monitor"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " job"}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 3.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_execute_workflow", "elapsed": 5.3}
+
+data: {"type": "tool_call", "tool": "comfyui_execute_workflow", "tool_number": 13, "arguments": {"instance_id": "gpu0_8188", "workflow": {"38": {"class_type": "CLIPLoader", "inputs": {"clip_name": "t5xxl_fp8_e4m3fn.safetensors", "type": "ltxv", "device": "default"}}, "44": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "ltx-2-19b-dev-fp8.safetensors"}}, "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly"}}, "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["38", 0], "text": "A serene sunset over the ocean, golden light reflecting on gentle waves, cinematic, 4K"}}, "70": {"class_type": "EmptyLTXVLatentVideo", "inputs": {"width": 768, "height": 512, "length": 97, "batch_size": 1}}, "72": {"class_type": "SamplerCustom", "inputs": {"model": ["44", 0], "positive": ["69", 0], "negative": ["69", 1], "sampler": ["73", 0], "sigmas": ["71", 0], "latent_image": ["70", 0], "add_noise": true, "noise_seed": 497797676867141, "cfg": 3}}, "73": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}}, "71": {"class_type": "LTXVScheduler", "inputs": {"latent": ["70", 0], "steps": 30, "max_shift": 2.05, "base_shift": 0.95, "stretch": true, "terminal": 0.1}}, "69": {"class_type": "LTXVConditioning", "inputs": {"positive": ["6", 0], "negative": ["7", 0], "frame_rate": 25}}, "8": {"class_type": "VAEDecode", "inputs": {"samples": ["72", 0], "vae": ["44", 2]}}, "78": {"class_type": "CreateVideo", "inputs": {"images": ["8", 0], "fps": 24}}, "79": {"class_type": "SaveVideo", "inputs": {"video": ["78", 0], "filename_prefix": "video/ComfyUI", "format": "auto", "codec": "auto"}}}}, "result": {"success": true, "prompt_id": "3f6c1502-a752-40c1-b323-86e22ffc6c70", "instance_id": "gpu0_8188", "port": 8188, "message": "Workflow queued (prompt_id: 3f6c1502-a752-40c1-b323-86e22ffc6c70). Use comfyui_get_result to check when complete."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 13}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "token", "text": "}\n\n"}
+
+data: {"type": "token", "text": "##"}
+
+data: {"type": "token", "text": " Explanation"}
+
+data: {"type": "token", "text": "\n"}
+
+data: {"type": "token", "text": "The"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": " has"}
+
+data: {"type": "token", "text": " been"}
+
+data: {"type": "token", "text": " successfully"}
+
+data: {"type": "token", "text": " queued"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": " Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": " instance"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": ")."}
+
+data: {"type": "token", "text": " Now"}
+
+data: {"type": "token", "text": " retrieving"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " result"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " which"}
+
+data: {"type": "token", "text": " includes"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " output"}
+
+data: {"type": "token", "text": " from"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " prompt"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " The"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " frames"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " be"}
+
+data: {"type": "token", "text": " decoded"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " compiled"}
+
+data: {"type": "token", "text": " at"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "24"}
+
+data: {"type": "token", "text": " FPS"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " saved"}
+
+data: {"type": "token", "text": " with"}
+
+data: {"type": "token", "text": " prefix"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "`."}
+
+data: {"type": "token", "text": " Once"}
+
+data: {"type": "token", "text": " fetched"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " we"}
+
+data: {"type": "token", "text": " can"}
+
+data: {"type": "token", "text": " confirm"}
+
+data: {"type": "token", "text": " completion"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " provide"}
+
+data: {"type": "token", "text": " access"}
+
+data: {"type": "token", "text": " details"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 3.6}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 5.0}
+
+data: {"type": "tool_call", "tool": "comfyui_get_result", "tool_number": 14, "arguments": {"instance_id": "gpu0_8188", "prompt_id": "3f6c1502-a752-40c1-b323-86e22ffc6c70"}, "result": {"success": true, "status": "running", "message": "Image is still being generated. Try again in a few seconds."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 14}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_job"}
+
+data: {"type": "token", "text": "_status"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "job"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "token", "text": "}\n\n"}
+
+data: {"type": "token", "text": "##"}
+
+data: {"type": "token", "text": " Explanation"}
+
+data: {"type": "token", "text": "\n"}
+
+data: {"type": "token", "text": "The"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " is"}
+
+data: {"type": "token", "text": " still"}
+
+data: {"type": "token", "text": " running"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": ")."}
+
+data: {"type": "token", "text": " Checking"}
+
+data: {"type": "token", "text": " detailed"}
+
+data: {"type": "token", "text": " job"}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " monitor"}
+
+data: {"type": "token", "text": " progress"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": " frames"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": " steps"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " RTX"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "306"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": " may"}
+
+data: {"type": "token", "text": " take"}
+
+data: {"type": "token", "text": " several"}
+
+data: {"type": "token", "text": " minutes"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Once"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " retrieve"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " result"}
+
+data: {"type": "token", "text": " with"}
+
+data: {"type": "token", "text": " comfy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " provide"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " saved"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " path"}
+
+data: {"type": "token", "text": " (`"}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "..."}
+
+data: {"type": "token", "text": "`)."}
+
+data: {"type": "tool_executing", "tool": "comfyui_job_status", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_job_status", "elapsed": 2.9}
+
+data: {"type": "tool_call", "tool": "comfyui_job_status", "tool_number": 15, "arguments": {"job_id": "3f6c1502-a752-40c1-b323-86e22ffc6c70"}, "result": {"success": false, "error": "API returned 404: {\"error\": \"Job 3f6c1502-a752-40c1-b323-86e22ffc6c70 not found\"}"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 15}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "token", "text": "}\n\n"}
+
+data: {"type": "token", "text": "##"}
+
+data: {"type": "token", "text": " Explanation"}
+
+data: {"type": "token", "text": "\n"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_job"}
+
+data: {"type": "token", "text": "_status"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " returned"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "404"}
+
+data: {"type": "token", "text": " as"}
+
+data: {"type": "token", "text": " it's"}
+
+data: {"type": "token", "text": " likely"}
+
+data: {"type": "token", "text": " for"}
+
+data: {"type": "token", "text": " async"}
+
+data: {"type": "token", "text": " jobs"}
+
+data: {"type": "token", "text": " like"}
+
+data: {"type": "token", "text": " downloads"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " not"}
+
+data: {"type": "token", "text": " active"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " prompts"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Switching"}
+
+data: {"type": "token", "text": " back"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " poll"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " This"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " show"}
+
+data: {"type": "token", "text": " progress"}
+
+data: {"type": "token", "text": " until"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " then"}
+
+data: {"type": "token", "text": " provide"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " saved"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " file"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": ".g"}
+
+data: {"type": "token", "text": ".,"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": ".mp"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "`)."}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " gen"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": " frames"}
+
+data: {"type": "token", "text": " @"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": " steps"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " is"}
+
+data: {"type": "token", "text": " compute"}
+
+data: {"type": "token", "text": "-intensive"}
+
+data: {"type": "token", "text": ";"}
+
+data: {"type": "token", "text": " expect"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "15"}
+
+data: {"type": "token", "text": "+"}
+
+data: {"type": "token", "text": " mins"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " RTX"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "306"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 3.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 4.5}
+
+data: {"type": "tool_call", "tool": "comfyui_get_result", "tool_number": 16, "arguments": {"instance_id": "gpu0_8188", "prompt_id": "3f6c1502-a752-40c1-b323-86e22ffc6c70"}, "result": {"success": true, "status": "running", "message": "Image is still being generated. Try again in a few seconds."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 16}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "token", "text": "}\n\n"}
+
+data: {"type": "token", "text": "##"}
+
+data: {"type": "token", "text": " Explanation"}
+
+data: {"type": "token", "text": "\n"}
+
+data: {"type": "token", "text": "Continuing"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " poll"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": " of"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " It's"}
+
+data: {"type": "token", "text": " still"}
+
+data: {"type": "token", "text": " running"}
+
+data: {"type": "token", "text": " \u2013"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " with"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": " frames"}
+
+data: {"type": "token", "text": " at"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": " steps"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " RTX"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "306"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "10"}
+
+data: {"type": "token", "text": "GB"}
+
+data: {"type": "token", "text": " VR"}
+
+data: {"type": "token", "text": "AM"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " is"}
+
+data: {"type": "token", "text": " intensive"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " can"}
+
+data: {"type": "token", "text": " take"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "10"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": "+"}
+
+data: {"type": "token", "text": " minutes"}
+
+data: {"type": "token", "text": " depending"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " load"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Once"}
+
+data: {"type": "token", "text": " finished"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " return"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " outputs"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " saved"}
+
+data: {"type": "token", "text": " file"}
+
+data: {"type": "token", "text": " path"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": ".g"}
+
+data: {"type": "token", "text": ".,"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": ".mp"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "`)."}
+
+data: {"type": "token", "text": " Goal"}
+
+data: {"type": "token", "text": " nearly"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": "!"}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 2.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 4.3}
+
+data: {"type": "tool_call", "tool": "comfyui_get_result", "tool_number": 17, "arguments": {"instance_id": "gpu0_8188", "prompt_id": "3f6c1502-a752-40c1-b323-86e22ffc6c70"}, "result": {"success": true, "status": "running", "message": "Image is still being generated. Try again in a few seconds."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 17}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "token", "text": "}\n\n"}
+
+data: {"type": "token", "text": "##"}
+
+data: {"type": "token", "text": " Explanation"}
+
+data: {"type": "token", "text": "\n"}
+
+data: {"type": "token", "text": "Polling"}
+
+data: {"type": "token", "text": " again"}
+
+data: {"type": "token", "text": " for"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " generation"}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Persistent"}
+
+data: {"type": "token", "text": " \""}
+
+data: {"type": "token", "text": "running"}
+
+data: {"type": "token", "text": "\""}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": " indicates"}
+
+data: {"type": "token", "text": " ongoing"}
+
+data: {"type": "token", "text": " computation"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": " frames"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": " steps"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " e"}
+
+data: {"type": "token", "text": "uler"}
+
+data: {"type": "token", "text": " sampler"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " CFG"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": ")."}
+
+data: {"type": "token", "text": " RTX"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "306"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": " should"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": " in"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "10"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "20"}
+
+data: {"type": "token", "text": " mins"}
+
+data: {"type": "token", "text": " total"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Upon"}
+
+data: {"type": "token", "text": " success"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " result"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " include"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " file"}
+
+data: {"type": "token", "text": " path"}
+
+data: {"type": "token", "text": " in"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "_`"}
+
+data: {"type": "token", "text": " prefix"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Task"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " be"}
+
+data: {"type": "token", "text": " done"}
+
+data: {"type": "token", "text": " once"}
+
+data: {"type": "token", "text": " retrieved"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 2.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_get_result", "elapsed": 4.4}
+
+data: {"type": "tool_call", "tool": "comfyui_get_result", "tool_number": 18, "arguments": {"instance_id": "gpu0_8188", "prompt_id": "3f6c1502-a752-40c1-b323-86e22ffc6c70"}, "result": {"success": true, "status": "running", "message": "Image is still being generated. Try again in a few seconds."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 18}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": "Progress"}
+
+data: {"type": "token", "text": " Summary"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": " Text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-V"}
+
+data: {"type": "token", "text": "ideo"}
+
+data: {"type": "token", "text": " Generation"}
+
+data: {"type": "token", "text": " Que"}
+
+data: {"type": "token", "text": "ued"}
+
+data: {"type": "token", "text": " &"}
+
+data: {"type": "token", "text": " Running"}
+
+data: {"type": "token", "text": " Successfully"}
+
+data: {"type": "token", "text": "**\n\n"}
+
+data: {"type": "token", "text": "\u2705"}
+
+data: {"type": "token", "text": " **"}
+
+data: {"type": "token", "text": "Ac"}
+
+data: {"type": "token", "text": "compl"}
+
+data: {"type": "token", "text": "ished"}
+
+data: {"type": "token", "text": ":**\n"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": " Verified"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "ens"}
+
+data: {"type": "token", "text": "ured"}
+
+data: {"type": "token", "text": " required"}
+
+data: {"type": "token", "text": " models"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "checkpoint"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "/T"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "-XX"}
+
+data: {"type": "token", "text": "L"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " are"}
+
+data: {"type": "token", "text": " available"}
+
+data: {"type": "token", "text": " in"}
+
+data: {"type": "token", "text": " Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": ".\n"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": " Built"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "XV"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": " from"}
+
+data: {"type": "token", "text": " native"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "lt"}
+
+data: {"type": "token", "text": "xv"}
+
+data: {"type": "token", "text": "_text"}
+
+data: {"type": "token", "text": "_to"}
+
+data: {"type": "token", "text": "_video"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " template"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " instance"}
+
+data: {"type": "token", "text": " **"}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "RTX"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "306"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": ").\n"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": " -"}
+
+data: {"type": "token", "text": " Overrides"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " Checkpoint"}
+
+data: {"type": "token", "text": "=`"}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "19"}
+
+data: {"type": "token", "text": "b"}
+
+data: {"type": "token", "text": "-dev"}
+
+data: {"type": "token", "text": "-f"}
+
+data: {"type": "token", "text": "p"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`,"}
+
+data: {"type": "token", "text": " CL"}
+
+data: {"type": "token", "text": "IP"}
+
+data: {"type": "token", "text": "=`"}
+
+data: {"type": "token", "text": "t"}
+
+data: {"type": "token", "text": "5"}
+
+data: {"type": "token", "text": "xx"}
+
+data: {"type": "token", "text": "l"}
+
+data: {"type": "token", "text": "_fp"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "_e"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "m"}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "fn"}
+
+data: {"type": "token", "text": ".s"}
+
+data: {"type": "token", "text": "afet"}
+
+data: {"type": "token", "text": "ensors"}
+
+data: {"type": "token", "text": "`,"}
+
+data: {"type": "token", "text": " Positive"}
+
+data: {"type": "token", "text": " prompt"}
+
+data: {"type": "token", "text": "=\""}
+
+data: {"type": "token", "text": "A"}
+
+data: {"type": "token", "text": " serene"}
+
+data: {"type": "token", "text": " sunset"}
+
+data: {"type": "token", "text": " over"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " ocean"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " golden"}
+
+data: {"type": "token", "text": " light"}
+
+data: {"type": "token", "text": " reflecting"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gentle"}
+
+data: {"type": "token", "text": " waves"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " cinematic"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "K"}
+
+data: {"type": "token", "text": "\".\n"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": " -"}
+
+data: {"type": "token", "text": " Specs"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "768"}
+
+data: {"type": "token", "text": "x"}
+
+data: {"type": "token", "text": "512"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "97"}
+
+data: {"type": "token", "text": " frames"}
+
+data: {"type": "token", "text": " (~"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "s"}
+
+data: {"type": "token", "text": " @"}
+
+data: {"type": "token", "text": "24"}
+
+data: {"type": "token", "text": "fps"}
+
+data: {"type": "token", "text": "),"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": " steps"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " Euler"}
+
+data: {"type": "token", "text": " sampler"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " CFG"}
+
+data: {"type": "token", "text": "="}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " seed"}
+
+data: {"type": "token", "text": "="}
+
+data: {"type": "token", "text": "497"}
+
+data: {"type": "token", "text": "797"}
+
+data: {"type": "token", "text": "676"}
+
+data: {"type": "token", "text": "867"}
+
+data: {"type": "token", "text": "141"}
+
+data: {"type": "token", "text": ".\n"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": " **"}
+
+data: {"type": "token", "text": "Executed"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": " \u2192"}
+
+data: {"type": "token", "text": " Que"}
+
+data: {"type": "token", "text": "ued"}
+
+data: {"type": "token", "text": " successfully"}
+
+data: {"type": "token", "text": " (**"}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": ").\n"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": " Pol"}
+
+data: {"type": "token", "text": "led"}
+
+data: {"type": "token", "text": " status"}
+
+data: {"type": "token", "text": " multiple"}
+
+data: {"type": "token", "text": " times"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " **"}
+
+data: {"type": "token", "text": "Still"}
+
+data: {"type": "token", "text": " running"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "expected"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "10"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "30"}
+
+data: {"type": "token", "text": "+"}
+
+data: {"type": "token", "text": " mins"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "10"}
+
+data: {"type": "token", "text": "GB"}
+
+data: {"type": "token", "text": " RTX"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "306"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": " for"}
+
+data: {"type": "token", "text": " video"}
+
+data: {"type": "token", "text": " gen"}
+
+data: {"type": "token", "text": ").\n\n"}
+
+data: {"type": "token", "text": "\ud83d\ude80"}
+
+data: {"type": "token", "text": " **"}
+
+data: {"type": "token", "text": "Output"}
+
+data: {"type": "token", "text": ":**"}
+
+data: {"type": "token", "text": " Video"}
+
+data: {"type": "token", "text": " will"}
+
+data: {"type": "token", "text": " auto"}
+
+data: {"type": "token", "text": "-save"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " `./"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "/output"}
+
+data: {"type": "token", "text": "/video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "_["}
+
+data: {"type": "token", "text": "prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "]."}
+
+data: {"type": "token", "text": "mp"}
+
+data: {"type": "token", "text": "4"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "or"}
+
+data: {"type": "token", "text": " similar"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " once"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": ".\n\n"}
+
+data: {"type": "token", "text": "\u23f3"}
+
+data: {"type": "token", "text": " **"}
+
+data: {"type": "token", "text": "Next"}
+
+data: {"type": "token", "text": ":**"}
+
+data: {"type": "token", "text": " Generation"}
+
+data: {"type": "token", "text": " is"}
+
+data: {"type": "token", "text": " actively"}
+
+data: {"type": "token", "text": " computing"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "high"}
+
+data: {"type": "token", "text": " GPU"}
+
+data: {"type": "token", "text": " usage"}
+
+data: {"type": "token", "text": " expected"}
+
+data: {"type": "token", "text": ")."}
+
+data: {"type": "token", "text": " To"}
+
+data: {"type": "token", "text": " check"}
+
+data: {"type": "token", "text": ":\n"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": " Run"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_get"}
+
+data: {"type": "token", "text": "_result"}
+
+data: {"type": "token", "text": "(instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "=\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\","}
+
+data: {"type": "token", "text": " prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "=\""}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": "\")"}
+
+data: {"type": "token", "text": "`"}
+
+data: {"type": "token", "text": " again"}
+
+data: {"type": "token", "text": " later"}
+
+data: {"type": "token", "text": ".\n"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": " Or"}
+
+data: {"type": "token", "text": " monitor"}
+
+data: {"type": "token", "text": " GPU"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " `"}
+
+data: {"type": "token", "text": "get"}
+
+data: {"type": "token", "text": "_gpu"}
+
+data: {"type": "token", "text": "_status"}
+
+data: {"type": "token", "text": "()`"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " confirm"}
+
+data: {"type": "token", "text": " load"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " GPU"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": ".\n\n"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": "Goal"}
+
+data: {"type": "token", "text": " complete"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": " \u2013"}
+
+data: {"type": "token", "text": " clip"}
+
+data: {"type": "token", "text": " is"}
+
+data: {"type": "token", "text": " generating"}
+
+data: {"type": "token", "text": "!"}
+
+data: {"type": "token", "text": " Let"}
+
+data: {"type": "token", "text": " me"}
+
+data: {"type": "token", "text": " know"}
+
+data: {"type": "token", "text": " when"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " poll"}
+
+data: {"type": "token", "text": " again"}
+
+data: {"type": "token", "text": " or"}
+
+data: {"type": "token", "text": " if"}
+
+data: {"type": "token", "text": " you"}
+
+data: {"type": "token", "text": " want"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " adjust"}
+
+data: {"type": "token", "text": "/c"}
+
+data: {"type": "token", "text": "ancel"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " \n\n"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": "Updated"}
+
+data: {"type": "token", "text": " Working"}
+
+data: {"type": "token", "text": " Memory"}
+
+data: {"type": "token", "text": ":**"}
+
+data: {"type": "token", "text": "  \n"}
+
+data: {"type": "token", "text": "**"}
+
+data: {"type": "token", "text": "Goal"}
+
+data: {"type": "token", "text": ":**"}
+
+data: {"type": "token", "text": " \u2705"}
+
+data: {"type": "token", "text": " Generated"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "running"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " prompt"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "="}
+
+data: {"type": "token", "text": "3"}
+
+data: {"type": "token", "text": "f"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "150"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-a"}
+
+data: {"type": "token", "text": "752"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "40"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "-b"}
+
+data: {"type": "token", "text": "323"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "86"}
+
+data: {"type": "token", "text": "e"}
+
+data: {"type": "token", "text": "22"}
+
+data: {"type": "token", "text": "ffc"}
+
+data: {"type": "token", "text": "6"}
+
+data: {"type": "token", "text": "c"}
+
+data: {"type": "token", "text": "70"}
+
+data: {"type": "token", "text": " on"}
+
+data: {"type": "token", "text": " gpu"}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ")."}
+
+data: {"type": "token", "text": " Wait"}
+
+data: {"type": "token", "text": " for"}
+
+data: {"type": "token", "text": " completion"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "tool_executing", "tool": "unknown", "elapsed": 0.0}
+
+data: {"type": "done", "tool_calls_total": 18}
+

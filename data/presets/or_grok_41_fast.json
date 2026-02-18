@@ -1,0 +1,11 @@
+{
+  "id": "preset-1770250022856",
+  "name": "OR Grok 4.1 Fast",
+  "provider": "openrouter",
+  "modelId": "x-ai/grok-4.1-fast",
+  "modelName": "xAI: Grok 4.1 Fast",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1770250022856
+}

@@ -1,0 +1,11 @@
+{
+  "id": "preset-1770937728377",
+  "name": "qwen 2.5 vLLM",
+  "provider": "vllm",
+  "modelId": "E:\\LL STUDIO\\Andycurrent\\Qwen2.5-7B-Instruct-Uncensored_GGUF\\Qwen2.5-7B-Instruct-Uncensored_Q4_K_M.gguf",
+  "modelName": "Qwen2.5-7B-Instruct-Uncensored_Q4_K_M.gguf",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 1,
+  "createdAt": 1770937728377
+}

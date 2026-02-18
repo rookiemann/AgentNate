@@ -1,0 +1,1622 @@
+data: {"type": "plan", "plan": {"summary": "Generate LTX-2 text-to-video clip using ComfyUI of golden retriever puppy in autumn leaves.", "steps": [{"step": "Check ComfyUI status with comfyui_status", "tool_category": "comfyui"}, {"step": "Use comfyui_describe_nodes to identify LTX video nodes", "tool_category": "comfyui"}, {"step": "Build ComfyUI workflow for LTX-2 text-to-video with prompt", "tool_category": "comfyui"}, {"step": "Execute the ComfyUI workflow", "tool_category": "comfyui"}], "needs_tools": true, "complexity": "moderate", "selected_categories": ["workflow", "comfyui"]}}
+
+data: {"type": "conv_id", "conversation_id": "conv-3420ac61", "persona_id": "system_agent", "autonomous": true}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_status"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{"}
+
+data: {"type": "token", "text": "}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_status", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_status", "elapsed": 2.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_status", "elapsed": 4.3}
+
+data: {"type": "tool_call", "tool": "comfyui_status", "tool_number": 1, "arguments": {}, "result": {"success": true, "module_downloaded": true, "bootstrapped": true, "comfyui_installed": true, "api_running": true, "api_port": 5000, "instances": [{"instance_id": "gpu1_8188", "gpu_device": "1", "gpu_label": "GPU 1", "port": 8188, "host": "127.0.0.1", "vram_mode": "normal", "extra_args": [], "status": "running", "is_running": true, "url": "http://127.0.0.1:8188"}], "gpus": [{"index": 0, "name": "NVIDIA GeForce RTX 3060", "memory_total_mb": 12288}, {"index": 1, "name": "NVIDIA GeForce RTX 3090", "memory_total_mb": 24576}], "summary": "ComfyUI is installed. API running on port 5000. 1/1 instances running. GPUs: GPU ?: NVIDIA GeForce RTX 3060 (? free), GPU ?: NVIDIA GeForce RTX 3090 (? free)"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 1}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_desc"}
+
+data: {"type": "token", "text": "ribe"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_describe_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_describe_nodes", "tool_number": 2, "arguments": {"search": "LTX", "instance_id": "gpu1_8188"}, "result": {"success": true, "nodes": {}, "count": 0}}
+
+data: {"type": "continuing", "tool_calls_so_far": 2}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_templates"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "category"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "all"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_templates", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_list_templates", "tool_number": 3, "arguments": {"category": "all", "search": "LTX"}, "result": {"success": false, "error": "'ComfyUITools' object has no attribute 'settings'"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 3}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_node"}
+
+data: {"type": "token", "text": "_p"}
+
+data: {"type": "token", "text": "acks"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 2.9}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 4.0}
+
+data: {"type": "tool_call", "tool": "comfyui_list_node_packs", "tool_number": 4, "arguments": {}, "result": {"success": true, "node_packs": [{"id": "comfyui-manager", "name": "ComfyUI Manager", "category": "essential", "description": "Install and manage custom nodes directly from the UI. Essential for easy node management.", "repo": "https://github.com/ltdrdata/ComfyUI-Manager.git", "required": true, "status": "installed"}, {"id": "impact-pack", "name": "ComfyUI Impact Pack", "category": "recommended", "description": "Detectors, detailers, iterative upscale, and more. Great for face fixing and detail enhancement.", "repo": "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git", "required": false, "status": "not_installed"}, {"id": "rgthree", "name": "rgthree Nodes", "category": "recommended", "description": "Context nodes, seed management, reroute, LoRA stacks. Essential workflow organization tools.", "repo": "https://github.com/rgthree/rgthree-comfy.git", "required": false, "status": "not_installed"}, {"id": "efficiency-nodes", "name": "Efficiency Nodes", "category": "recommended", "description": "Streamlined nodes for efficient workflows. KSampler variants and batch processing.", "repo": "https://github.com/jags111/efficiency-nodes-comfyui.git", "required": false, "status": "not_installed"}, {"id": "comfyui-tooling", "name": "ComfyUI Tooling Nodes", "category": "recommended", "description": "Utility nodes for external integrations. Load/send images to external tools.", "repo": "https://github.com/Acly/comfyui-tooling-nodes.git", "required": false, "status": "not_installed"}, {"id": "was-suite", "name": "WAS Node Suite", "category": "popular", "description": "Hundreds of utility nodes for image processing, prompts, and more.", "repo": "https://github.com/WASasquatch/was-node-suite-comfyui.git", "required": false, "status": "not_installed"}, {"id": "essentials", "name": "ComfyUI Essentials", "category": "popular", "description": "Quality-of-life workflow nodes. Dimension printing, simple transformations.", "repo": "https://github.com/cubiq/ComfyUI_essentials.git", "required": false, "status": "not_installed"}, {"id": "animatediff", "name": "AnimateDiff Evolved", "category": "popular", "description": "Animation generation framework. Create videos from image workflows.", "repo": "https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git", "required": false, "status": "not_installed"}, {"id": "ipadapter", "name": "IPAdapter Plus", "category": "popular", "description": "Reference image guidance. Use images to guide generation style and content.", "repo": "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git", "required": false, "status": "not_installed"}, {"id": "controlnet-aux", "name": "ControlNet Auxiliary Preprocessors", "category": "popular", "description": "Preprocessors for ControlNet (Canny, Depth, OpenPose, etc).", "repo": "https://github.com/Fannovel16/comfyui_controlnet_aux.git", "required": false, "status": "not_installed"}, {"id": "ultimate-upscale", "name": "Ultimate SD Upscale", "category": "popular", "description": "Tiled upscaling with seamless blending. Great for high-res outputs.", "repo": "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git", "required": false, "status": "not_installed"}, {"id": "video-helper", "name": "Video Helper Suite", "category": "video", "description": "Load, combine, and export videos. Essential for video workflows.", "repo": "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git", "required": false, "status": "not_installed"}, {"id": "frame-interpolation", "name": "Frame Interpolation", "category": "video", "description": "FILM and RIFE frame interpolation for smooth video.", "repo": "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git", "required": false, "status": "not_installed"}, {"id": "crystools", "name": "CrysTools", "category": "api", "description": "Debugging and metadata tools. Useful for workflow development.", "repo": "https://github.com/crystian/ComfyUI-Crystools.git", "required": false, "status": "not_installed"}, {"id": "segment-anything", "name": "Segment Anything", "category": "image", "description": "SAM integration for automatic masking and segmentation.", "repo": "https://github.com/storyicon/comfyui_segment_anything.git", "required": false, "status": "not_installed"}, {"id": "inpaint-nodes", "name": "Inpaint Nodes", "category": "image", "description": "Advanced inpainting tools with better mask handling.", "repo": "https://github.com/Acly/comfyui-inpaint-nodes.git", "required": false, "status": "not_installed"}], "count": 16}}
+
+data: {"type": "continuing", "tool_calls_so_far": 4}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "web"}
+
+data: {"type": "token", "text": "_search"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "query"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": " nodes"}
+
+data: {"type": "token", "text": " github"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "web_search", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "web_search", "tool_number": 5, "arguments": {"query": "ComfyUI LTX-2 text-to-video workflow nodes github"}, "result": {"success": true, "query": "ComfyUI LTX-2 text-to-video workflow nodes github", "engine": "duckduckgo", "count": 5, "results": [{"title": "GitHub - Lightricks/ComfyUI-LTXVideo: LTX-Video Support for ComfyUI", "url": "https://github.com/Lightricks/ComfyUI-LTXVideo", "snippet": "LTX-2 is built into ComfyUI core (see it here), making it readily accessible to all ComfyUI users. This repository hosts additional nodes and workflows to help you get the most out of LTX-2's advanced features. To learn more about LTX-2 See the main LTX-2 repository for model details and additional resources."}, {"title": "LTX-2 Text-to-Video in ComfyUI: Copy-Paste Workflow Settings", "url": "https://www.nemovideo.com/blog/ltx-2-text-to-video-comfyui-workflow", "snippet": "A copy-paste LTX-2 text-to-video workflow for ComfyUI : key parameters, defaults, and iteration tips without wasted renders."}, {"title": "LTX-2 - ComfyUI", "url": "https://docs.comfy.org/tutorials/video/ltx/ltx-2", "snippet": "LTX-2 is a 19B parameter DiT-based audio- video foundation model by Lightricks. It generates synchronized video and audio in a single pass, creating cohesive experiences where motion, dialogue, background noise, and music are produced together."}, {"title": "Using ComfyUI with LTX-2 | LTX Documentation - docs.ltx.video", "url": "https://docs.ltx.video/open-source-model/integration-tools/comfy-ui", "snippet": "Use LTX-2 in ComfyUI with visual node -based workflows . This is the recommended way to work with LTX-2 for most users. Why ComfyUI ? ComfyUI provides the best balance of power and ease of use for LTX-2 : Visual workflows - See your entire generation pipeline Pre-built examples - Start with working templates Real-time experimentation - Iterate quickly on parameters Advanced features - Access all ..."}, {"title": "LTX Video Workflow Step-by-Step Guide - ComfyUI Wiki", "url": "https://comfyui-wiki.com/en/tutorial/advanced/ltx-video-workflow-step-by-step-guide", "snippet": "LTX Video Workflow Step-by-Step Guide Introduction to LTX Video Model LTX Video is a revolutionary DiT architecture video generation model with only 2B parameters, featuring: Real-time Generation: Capable of generating videos faster than real-time playback High-Quality Output: Smooth video output at 768x512 resolution and 24FPS Multiple Generation Modes: Supports text-to-video , image- to - video ..."}]}}
+
+data: {"type": "continuing", "tool_calls_so_far": 5}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "fetch"}
+
+data: {"type": "token", "text": "_url"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "url"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "https"}
+
+data: {"type": "token", "text": "://"}
+
+data: {"type": "token", "text": "www"}
+
+data: {"type": "token", "text": ".n"}
+
+data: {"type": "token", "text": "em"}
+
+data: {"type": "token", "text": "ov"}
+
+data: {"type": "token", "text": "ideo"}
+
+data: {"type": "token", "text": ".com"}
+
+data: {"type": "token", "text": "/blog"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "-text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": "-com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "-work"}
+
+data: {"type": "token", "text": "flow"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "fetch_url", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "fetch_url", "tool_number": 6, "arguments": {"url": "https://www.nemovideo.com/blog/ltx-2-text-to-video-comfyui-workflow"}, "result": {"success": true, "url": "https://www.nemovideo.com/blog/ltx-2-text-to-video-comfyui-workflow", "status_code": 200, "content_type": "text/html", "length": 9477, "content": "# LTX-2 Text-to-Video in ComfyUI: Copy-Paste Workflow Settings\n\nI've been knee-deep testing **LTX-2 **text to video inside** **[ ComfyUI ](https://github.com/Comfy-Org/ComfyUI)for the past two weeks (Windows 11, RTX 4090 24GB, ComfyUI nightly Jan 2026, LTX\u20112 weights). My goal: a dead-simple setup that lets me spin up 6\u201310 on\u2011brand clips per hour without babysitting. Below is exactly how I import the workflow, the parameters that actually matter, the defaults I now trust, and the prompt templates I reuse. If you're juggling client deadlines or trending sounds, this will save you the \"why does this look crunchy?\" guesswork.\n\n## Import the workflow (fast start)\n\nHere's the quickest way I've found to get LTX\u20112 running in ComfyUI without falling into dependency hell. Total time: ~15\u201325 minutes on a clean setup.\n\n**Install ComfyUI and Manager**\n\nGrab ComfyUI from the\n\n[official repo](https://github.com/Comfy-Org/ComfyUI?referrer=grok.com)(I'm on the Jan 2026 nightly).[Install ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager?referrer=grok.com)(makes node installs painless). Restart ComfyUI after install.\n\n**Add required custom nodes**\n\nIn ComfyUI Manager \u2192 Install custom nodes:\n\ncomfyui_controlnet_aux (for some preprocessors if your workflow uses them)\n\nComfyUI-VideoHelperSuite (handy I/O + frame utilities)\n\nAny\n\n**LTX\u2011Video/LTX\u20112**specific node pack (search \"LTX\" in Manager, the community pack lists as LTX-Video v2 adapters). Restart.\n\n**Download LTX\u20112 model files**\n\nWeights: LTX\u20112 base (fp16) + any motion adapters your workflow includes.\n\nPut model files where the LTX nodes expect them (usually models/ltx or models/checkpoints). The node tooltip will show the exact path.\n\n\n**Import the ready-made workflow**\n\nFile \u2192 Load \u2192 select the LTX\u20112_ComfyUI.json (I'm using a streamlined graph with: Prompt \u2192 Sampler \u2192 LTX\u20112 Video Decoder \u2192 VideoWriter). If you need mine, search \"ltx2_minimal_dora.json\" in the usual community hubs.\n\n\n**Set inference device + VRAM budget**\n\nIn the sampler node, pick your GPU. If you're on 12GB VRAM, set tiling/chunking on where available.\n\n\n**Test a 2-second clip first**\n\nKeep it small: 16 frames, 512\u00d7288, 20\u201325 steps. You want to confirm everything loads and writes a .mp4.\n\n\nWhat tripped me up: On my first attempt, I pointed the node to a mismatched adapter version and got silent black frames. Fix was matching the adapter commit date to the weights. If your output is pure black or green-ish, double-check model file names and dtypes. Also, [ LTX\u20112 ](https://huggingface.co/Lightricks/LTX-2)hates too-high CFG at low steps, you'll see crunchy edges or pop-in artifacts. We'll fix that next.\n\n## Key parameters explained (no fluff)\n\n### Steps (quality vs speed)\n\nWhat I saw: Below 18 steps, motion coherence drops and edges smear on fast action. Above 32, returns diminish hard.\n\nMy ranges:\n\nDrafts: 18\u201322\n\nGeneral: 24\u201328\n\nFinal: 28\u201334 (only if the shot really needs it)\n\nTime impact (4090): 16 frames at 512\u00d7288, 24 steps \u2248 35\u201345s per sample. Doubling steps \u2248 ~1.7\u20131.9\u00d7 longer.\n\n\n### CFG scale (control vs artifacts)\n\nToo low (2\u20133): prompts get ignored: scenes drift.\n\nToo high (8\u201310): ringing, over-sharpened edges, and flicker on textures.\n\nSweet spot for LTX\u20112 in my tests: 4.5\u20136.5. I ship 5.5 most often. If you're seeing crunchy halos, lower CFG before touching steps.\n\n\n### Resolution / aspect ratio\n\n**LTX\u20112**is happier generating smaller, then upscaling. I draft at 512\u00d7288 (16:9) or 512\u00d7512 (square for TikTok crops), then upscale 1.5\u20132\u00d7.If you must go native 1080\u00d71920, expect VRAM pressure and slower renders: artifacts can creep in at the edges.\n\nRule of thumb: Keep shortest side \u2264 512 for ideation. For final B\u2011roll, upscale with a separate node (VideoHelperSuite \u2192 frame upscale) or external upscalers.\n\n\n### Frames / duration tradeoffs\n\n12\u201316 frames: snappy 0.5\u20130.7s at 24fps. Good for cutaways and transitions.\n\n24\u201332 frames: 1\u20131.3s micro-scenes. This is my daily workhorse.\n\n48\u201364 frames: 2\u20133s shots. Only when the scene needs distinct beginning/end.\n\nMore frames = more drift risk. If your subject mutates on frame 40, try shorter clips chained together instead of one long render.\n\n\n## Recommended defaults\n\nThese are the presets I now start with. I measured with an RTX 4090. On a 3060 12GB, expect ~2\u20133\u00d7 longer.\n\n### Stable preset (least failures)\n\nResolution: 512\u00d7288 (16:9)\n\nFrames: 24\n\nSteps: 26\n\nCFG: 5.5\n\nSeed: fixed (e.g., 12345)\n\nSampler: the default Euler/UniPC equivalent bundled with LTX\u20112 nodes\n\nNotes: Rarely crashes, good baseline. I got ~1m10s per clip. Use this for client-safe drafts.\n\n\n### Fast-iteration preset (more tests / hour)\n\nResolution: 448\u00d7256\n\nFrames: 16\n\nSteps: 20\n\nCFG: 5\n\nSeed: random per batch\n\nBatch size: 4\u20136 if VRAM allows\n\nNotes: ~30\u201340s per sample. I run 3\u20134 prompts at once, skim outputs, and only \"promote\" keepers to higher quality.\n\n\n### Higher-quality preset (final render)\n\nResolution: 576\u00d7320 (then upscale 1.5\u20132\u00d7 in post)\n\nFrames: 32\n\nSteps: 30\u201332\n\nCFG: 5\u20135.5\n\nSeed: lock the winning seed from drafts\n\nNotes: ~2\u20133m per clip. I only use this after I'm sure the composition works. If flicker appears, reduce CFG to 4.8\u20135.2 or drop steps by 2.\n\n\n## Prompting that works for LTX-2\n\n### What to include (camera, motion, subject)\n\n[ LTX\u20112 ](https://huggingface.co/Lightricks/LTX-2)responds best when I specify:\n\nCamera position + movement: \"shoulder\u2011level dolly\u2011in,\" \"tripod static,\" \"drone sideways pan.\"\n\nSubject + action: \"a corgi running across a living room rug,\" \"barista steaming milk with dense fog.\"\n\nLighting + vibe: \"golden hour side\u2011light,\" \"neon cyberpunk alley, wet asphalt.\"\n\nStyle constraints (if needed): \"realistic, natural color,\" or \"stylized claymation.\" Pick one, not both.\n\nDuration feel: add \"2\u2011second shot\" to encourage compact motion.\n\n\n### What to avoid (contradictions)\n\nDon't stack mutually exclusive cues: \"handheld AND perfectly smooth gimbal\" will produce jitter.\n\nAvoid cramming too many objects: 1\u20132 focal elements per 2\u2011second clip is cleaner.\n\nSkip micro\u2011details you can't see at 512p: \"embroidered text on hat\" invites artifacts.\n\n\n### 5 prompt templates (copy-ready)\n\n**Realistic product B\u2011roll**\n\n\"Close\u2011up gimbal push\u2011in of a matte black water bottle on a wooden desk, soft window light, shallow depth of field, gentle condensation on surface, 2\u2011second shot, realistic color, clean background.\"\n\n**Lifestyle action**\n\n\"Shoulder\u2011level handheld of a young runner tying shoes then starting a jog on a city sidewalk, morning golden hour light, subtle lens breathing, natural motion blur, 2\u2011second shot.\"\n\n\n**Food steam money shot**\n\n\"Tripod static shot of a ceramic cup as milk is poured, dense white steam rising, warm cafe lighting, bokeh in background, 2\u2011second shot, realistic.\"\n\n\n**Tech aesthetic loop**\n\n\"Slow dolly\u2011right past a floating holographic circuit board in a dark studio, rim lighting, subtle particles, moody teal and magenta, 2\u2011second shot, stylized but clean.\"\n\n\n**Creator desk scene**\n\n\"Top\u2011down camera of hands opening a small box on a minimalist desk, soft daylight, crisp shadows, small dust motes, 2\u2011second shot, realistic color, no text.\"\n\n\nTip: If I'm matching a viral format, I'll feed that reference into Nemo to auto\u2011extract beats (intro pop, action, reveal), then prompt LTX\u20112 for each beat as a separate 1\u20132s clip. Glue them together in your editor, structure first, effects later.\n\nIf you\u2019re experimenting with reference clips, I often [drop them into Nemo first](https://www.nemovideo.com/)\u2014it\u2019ll auto-extract the key beats (intro, action, reveal) so I can build LTX\u20112 prompts faster. It\u2019s saved me a ton of trial-and-error.\n\n## Iteration strategy\n\n### Seed management\n\nLock a seed when you like the motion silhouette. Small text edits will keep the same \"feel.\"\n\nIf a scene mutates mid\u2011clip, try two seeds 20 apart (e.g., 1200 and 1220).\n\n**LTX\u20112**seems to settle better within small seed neighborhoods.Keep a seed log in your\n\n[ComfyUI preset name](https://github.com/Comfy-Org/ComfyUI), e.g., \"ltx2_stable_s12345.json.\" Future you will thank you.\n\n### Batch testing plan\n\nHere's exactly how I test one idea in under 10 minutes:\n\nDraft batch: Fast preset, batch=4, random seeds, 16 frames, 20 steps.\n\nQuick cull: I watch at 1.5\u00d7 speed, keep only clips with clear subject and stable motion (usually 1 of 4).\n\nPromote: Take the winner's seed \u2192 Stable preset (24 frames, 26 steps) for a sanity check.\n\nFinalize: If it holds up, render with the Higher\u2011quality preset and upscale.\n\n\nMeasured throughput: ~6\u20138 usable clips/hour on 4090. On a 3060, I averaged ~3\u20134/hour.\n\n### What to change first when results are bad\n\nOver\u2011sharpened edges, halo crunch? Lower CFG by 0.5 before anything else.\n\nMotion wobble/jitter? Add \"tripod static\" or \"gimbal slow dolly\" and reduce frames to 24.\n\nSubject drift/mutation? Shorten duration (16\u201324 frames) and lock a seed: bump steps +2.\n\nFlat/washed look? Specify lighting: \"golden hour side\u2011light\" or \"contrast studio light.\" Don't raise CFG for this.\n\nVRAM errors? Drop resolution one notch (576\u2192512 short side) or enable tiling. If it still fails, reduce batch size.\n\n\nOne failure worth sharing: I tried \"handheld running camera through neon alley, fast parallax, 3 seconds\" at 576\u00d7320, 32 steps, CFG 7. Results looked exciting in the first half, then the subject melted into signage at frame 28. The fix wasn't \"more steps\", it was splitting into two 1.5s shots, each with its own prompt and matched seeds. Structure over brute force. Always."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 6}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_desc"}
+
+data: {"type": "token", "text": "ribe"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_describe_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_describe_nodes", "tool_number": 7, "arguments": {"search": "LTXVideo", "instance_id": "gpu1_8188"}, "result": {"success": true, "nodes": {}, "count": 0}}
+
+data: {"type": "continuing", "tool_calls_so_far": 7}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "fetch"}
+
+data: {"type": "token", "text": "_url"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "url"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "https"}
+
+data: {"type": "token", "text": "://"}
+
+data: {"type": "token", "text": "github"}
+
+data: {"type": "token", "text": ".com"}
+
+data: {"type": "token", "text": "/L"}
+
+data: {"type": "token", "text": "ight"}
+
+data: {"type": "token", "text": "ricks"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-L"}
+
+data: {"type": "token", "text": "TX"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "fetch_url", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "fetch_url", "tool_number": 8, "arguments": {"url": "https://github.com/Lightricks/ComfyUI-LTXVideo"}, "result": {"success": true, "url": "https://github.com/Lightricks/ComfyUI-LTXVideo", "status_code": 200, "content_type": "text/html; charset=utf-8", "length": 4694, "content": "A collection of powerful custom nodes that extend ComfyUI's capabilities for the LTX-2 video generation model.\n\nLTX-2 is built into ComfyUI core ([see it here](https://github.com/comfyanonymous/ComfyUI/tree/master/comfy/ldm/lightricks)), making it readily accessible to all ComfyUI users. This repository hosts additional nodes and workflows to help you get the most out of LTX-2's advanced features.\n\n**To learn more about LTX-2** See the [main LTX-2 repository](https://github.com/Lightricks/LTX-2) for model details and additional resources.\n\nBefore you begin using an LTX-2 workflow in ComfyUI, make sure you have:\n\n- ComfyUI installed (Download here](\n[https://www.comfy.org/download](https://www.comfy.org/download)) - CUDA-compatible GPU with 32GB+ VRAM\n- 100GB+ free disk space for models and cache\n\nWe recommend using the LTX-2 workflows available in Comfy Manager.\n\n- Open ComfyUI\n- Click the Manager button (or press Ctrl+M)\n- Select Install Custom Nodes\n- Search for \u201cLTXVideo\u201d\n- Click Install\n- Wait for installation to complete\n- Restart ComfyUI\n\nThe nodes will appear in your node menu under the \u201cLTXVideo\u201d category. Required models will be downloaded on first use.\n\nThe ComfyUI-LTXVideo installation includes several example workflows. You can see them all at:\n\n```\nComfyUI/custom_nodes/ComfyUI-LTXVideo/example_workflows/\n```\n\n\n`Text to video full model`\n\n`Text to video distilled model (Fast)`\n\n`Image to video full model`\n\n`Image to video distilled model (Fast)`\n\n`Video to video detailer`\n\n`IC-LoRA distilled model (depth + human pose + edges)`\n\n`IC-LoRA distilled model with downscaled reference latents`\n\n\nWe introduce a new **Union IC-LoRA** model that combines depth, pose, and edge control conditions into a single unified LoRA.\n\n**Unified Control**: A single LoRA that supports multiple control conditions (depth, human pose, or edges).**Downsampled Latent Processing**: The union LoRA operates on a downsampled latent size, which reduces memory usage and significantly speeds up inference while maintaining quality.\n\nThe union LoRA is trained to understand and respond to all three control signals (depth maps, pose skeletons, and edge maps) within a single model. The model learns to:\n\n**Parse multiple conditions**: Identify which control signals are present in the input**Process at reduced resolution**: Work on downsampled latents to improve efficiency\n\nDownload the following models:\n\n**LTX-2 Model Checkpoint** - Choose and download one of the models to `COMFYUI_ROOT_FOLDER/models/checkpoints`\n\nfolder.\n\n`ltx-2-19b-dev-fp8.safetensors`\n\n`ltx-2-19b-distilled-fp8.safetensors`\n\n`ltx-2-19b-dev.safetensors`\n\n`ltx-2-19b-distilled.safetensors`\n\n\n**Spatial Upscaler** - Required for current two-stage pipeline implementations in this repository. Download to `COMFYUI_ROOT_FOLDER/models/latent_upscale_models`\n\nfolder.\n\n**Temporal Upscaler** - Required for current two-stage pipeline implementations in this repository. Download to `COMFYUI_ROOT_FOLDER/models/latent_upscale_models`\n\nfolder.\n\n**Distilled LoRA** - Required for current two-stage pipeline implementations in this repository (except DistilledPipeline and ICLoraPipeline). Download to `COMFYUI_ROOT_FOLDER/models/loras`\n\nfolder.\n\n**Gemma Text Encoder** Download all files from the repository to `COMFYUI_ROOT_FOLDER/models/text_encoders/gemma-3-12b-it-qat-q4_0-unquantized`\n\n.\n\n**LoRAs** Choose and download to `COMFYUI_ROOT_FOLDER/models/loras`\n\nfolder.\n\n`ltx-2-19b-ic-lora-union-ref0.5.safetensors`\n\n*(Union LoRA - supports depth, pose, and edges in one model)*`ltx-2-19b-ic-lora-canny-control.safetensors`\n\n`ltx-2-19b-ic-lora-depth-control.safetensors`\n\n`ltx-2-19b-ic-lora-detailer.safetensors`\n\n`ltx-2-19b-ic-lora-pose-control.safetensors`\n\n`ltx-2-19b-lora-camera-control-dolly-in.safetensors`\n\n`ltx-2-19b-lora-camera-control-dolly-left.safetensors`\n\n`ltx-2-19b-lora-camera-control-dolly-out.safetensors`\n\n`ltx-2-19b-lora-camera-control-dolly-right.safetensors`\n\n`ltx-2-19b-lora-camera-control-jib-down.safetensors`\n\n`ltx-2-19b-lora-camera-control-jib-up.safetensors`\n\n`ltx-2-19b-lora-camera-control-static.safetensors`\n\n\n- For systems with low VRAM you can use the model loader nodes from\n[low_vram_loaders.py](/Lightricks/ComfyUI-LTXVideo/blob/master/low_vram_loaders.py). Those nodes ensure the correct order of execution and perform the model offloading such that generation fits in 32 GB VRAM. - Use --reserve-vram ComfyUI parameter:\n`python -m main --reserve-vram 5`\n\n(or other number in GB). - For complete information about using LTX-2 models, workflows, and nodes in ComfyUI, please visit our\n[Open Source documentation](https://docs.ltx.video/open-source-model/integration-tools/comfy-ui)."}}
+
+data: {"type": "continuing", "tool_calls_so_far": 8}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_desc"}
+
+data: {"type": "token", "text": "ribe"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Light"}
+
+data: {"type": "token", "text": "ricks"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_describe_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_describe_nodes", "tool_number": 9, "arguments": {"search": "Lightricks", "instance_id": "gpu1_8188"}, "result": {"success": true, "nodes": {}, "count": 0}}
+
+data: {"type": "continuing", "tool_calls_so_far": 9}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_models"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_models", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_models", "elapsed": 2.9}
+
+data: {"type": "tool_call", "tool": "comfyui_list_models", "tool_number": 10, "arguments": {}, "result": {"success": true, "models": {"checkpoints": [{"name": "ltx-2-19b-dev-fp8", "size_gb": 25.21901951916516, "folder": "checkpoints", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\checkpoints\\ltx-2-19b-dev-fp8.safetensors"}, {"name": "sd_xl_turbo_1.0_fp16", "size_gb": 6.461592302657664, "folder": "checkpoints", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\checkpoints\\sd_xl_turbo_1.0_fp16.safetensors"}], "diffusion_models": [], "vae": [{"name": "sdxl_vae", "size_gb": 0.31165886856615543, "folder": "vae", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\models\\vae\\sdxl_vae.safetensors"}], "clip": [], "text_encoders": [], "loras": [], "controlnet": [], "gguf": [], "unet": [], "embeddings": [], "upscale_models": [], "clip_vision": [], "model_patches": [], "latent_upscale_models": []}, "count": 14}}
+
+data: {"type": "continuing", "tool_calls_so_far": 10}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "fetch"}
+
+data: {"type": "token", "text": "_url"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "url"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "https"}
+
+data: {"type": "token", "text": "://"}
+
+data: {"type": "token", "text": "docs"}
+
+data: {"type": "token", "text": ".com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": ".org"}
+
+data: {"type": "token", "text": "/tutorials"}
+
+data: {"type": "token", "text": "/video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "ltx"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "fetch_url", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "fetch_url", "tool_number": 11, "arguments": {"url": "https://docs.comfy.org/tutorials/video/ltx/ltx-2"}, "result": {"success": true, "url": "https://docs.comfy.org/tutorials/video/ltx/ltx-2", "status_code": 200, "content_type": "text/html; charset=utf-8", "length": 2420, "content": "[LTX-2](https://huggingface.co/Lightricks/LTX-2)is a 19B parameter DiT-based audio-video foundation model by Lightricks. It generates synchronized video and audio in a single pass, creating cohesive experiences where motion, dialogue, background noise, and music are produced together.\n\n## Key features\n\n**Synchronized audio-video generation**: Generates motion, dialogue, SFX, and music together in one pass**Multiple generation modes**: Text-to-video, image-to-video, and video-to-video**Control options**: Canny, Depth, and Pose video-to-video control via IC-LoRAs**Keyframe-driven generation**: Interpolate between keyframe images**Native upscaling**: Spatial (2x) and temporal (2x) upscalers for higher resolution and FPS**Prompt enhancement**: Automatic prompt enhancement support\n\n## Model checkpoints\n\n| Name | Description |\n|---|---|\n| ltx-2-19b-dev | Full model in bf16, flexible and trainable |\n| ltx-2-19b-dev-fp8 | Full model in fp8 quantization |\n| ltx-2-19b-distilled | Distilled version, 8 steps, CFG=1 |\n| ltx-2-spatial-upscaler-x2-1.0 | 2x spatial upscaler for higher resolution |\n| ltx-2-temporal-upscaler-x2-1.0 | 2x temporal upscaler for higher FPS |\n\n## Getting started\n\nLTX-2 is natively supported in ComfyUI. To get started:- Update ComfyUI to the latest version\n- Go to\n**Template Library**>**Video**> choose any LTX-2 workflow - Follow the pop-up to download models and run the workflow\n\n## Workflows\n\n### Text-to-video\n\nGenerate videos from text prompts.**Distilled version**(faster, 8 steps):\n\n\n## Text-to-Video Distilled\n\nDownload workflow\n\n### Image-to-video\n\nGenerate videos from an input image.**Distilled version**(faster, 8 steps):\n\n\n## Image-to-Video Distilled\n\nDownload workflow\n\n### Control-to-video\n\nGenerate videos with structural control using IC-LoRAs.**Depth control:**\n\n**Canny control:**\n\n**Pose control:**\n\n## Prompting tips\n\nWhen writing prompts for LTX-2, focus on detailed, chronological descriptions of actions and scenes. Include specific movements, appearances, camera angles, and environmental details in a single flowing paragraph. Start directly with the action and keep descriptions literal and precise. Structure your prompts with:- Main action in a single sentence\n- Specific details about movements and gestures\n- Character/object appearances\n- Background and environment details\n- Camera angles and movements\n- Lighting and colors\n- Any changes or sudden events"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 11}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_status"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_status", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_status", "elapsed": 2.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_status", "elapsed": 4.2}
+
+data: {"type": "tool_call", "tool": "comfyui_status", "tool_number": 12, "arguments": {}, "result": {"success": true, "module_downloaded": true, "bootstrapped": true, "comfyui_installed": true, "api_running": true, "api_port": 5000, "instances": [{"instance_id": "gpu1_8188", "gpu_device": "1", "gpu_label": "GPU 1", "port": 8188, "host": "127.0.0.1", "vram_mode": "normal", "extra_args": [], "status": "running", "is_running": true, "url": "http://127.0.0.1:8188"}], "gpus": [{"index": 0, "name": "NVIDIA GeForce RTX 3060", "memory_total_mb": 12288}, {"index": 1, "name": "NVIDIA GeForce RTX 3090", "memory_total_mb": 24576}], "summary": "ComfyUI is installed. API running on port 5000. 1/1 instances running. GPUs: GPU ?: NVIDIA GeForce RTX 3060 (? free), GPU ?: NVIDIA GeForce RTX 3090 (? free)"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 12}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_desc"}
+
+data: {"type": "token", "text": "ribe"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_describe_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_describe_nodes", "tool_number": 13, "arguments": {"search": "LTX", "instance_id": "gpu1_8188"}, "result": {"success": true, "nodes": {}, "count": 0}}
+
+data: {"type": "continuing", "tool_calls_so_far": 13}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_templates"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "category"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "video"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_templates", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_list_templates", "tool_number": 14, "arguments": {"search": "LTX", "category": "video"}, "result": {"success": false, "error": "'ComfyUITools' object has no attribute 'settings'"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 14}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_installed"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_installed_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_installed_nodes", "elapsed": 2.8}
+
+data: {"type": "tool_call", "tool": "comfyui_list_installed_nodes", "tool_number": 15, "arguments": {}, "result": {"success": true, "installed_nodes": [{"name": "ComfyUI-Manager", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\custom_nodes\\ComfyUI-Manager", "has_requirements": true, "has_init": true, "repo": "https://github.com/ltdrdata/ComfyUI-Manager.git"}], "count": 1}}
+
+data: {"type": "continuing", "tool_calls_so_far": 15}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_node"}
+
+data: {"type": "token", "text": "_p"}
+
+data: {"type": "token", "text": "acks"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_list_node_packs", "tool_number": 16, "arguments": {"search": "LTX"}, "result": {"success": false, "error": "Invalid arguments for comfyui_list_node_packs: ComfyUITools.comfyui_list_node_packs() got an unexpected keyword argument 'search'"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 16}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_node"}
+
+data: {"type": "token", "text": "_p"}
+
+data: {"type": "token", "text": "acks"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 2.8}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_node_packs", "elapsed": 3.8}
+
+data: {"type": "tool_call", "tool": "comfyui_list_node_packs", "tool_number": 17, "arguments": {}, "result": {"success": true, "node_packs": [{"id": "comfyui-manager", "name": "ComfyUI Manager", "category": "essential", "description": "Install and manage custom nodes directly from the UI. Essential for easy node management.", "repo": "https://github.com/ltdrdata/ComfyUI-Manager.git", "required": true, "status": "installed"}, {"id": "impact-pack", "name": "ComfyUI Impact Pack", "category": "recommended", "description": "Detectors, detailers, iterative upscale, and more. Great for face fixing and detail enhancement.", "repo": "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git", "required": false, "status": "not_installed"}, {"id": "rgthree", "name": "rgthree Nodes", "category": "recommended", "description": "Context nodes, seed management, reroute, LoRA stacks. Essential workflow organization tools.", "repo": "https://github.com/rgthree/rgthree-comfy.git", "required": false, "status": "not_installed"}, {"id": "efficiency-nodes", "name": "Efficiency Nodes", "category": "recommended", "description": "Streamlined nodes for efficient workflows. KSampler variants and batch processing.", "repo": "https://github.com/jags111/efficiency-nodes-comfyui.git", "required": false, "status": "not_installed"}, {"id": "comfyui-tooling", "name": "ComfyUI Tooling Nodes", "category": "recommended", "description": "Utility nodes for external integrations. Load/send images to external tools.", "repo": "https://github.com/Acly/comfyui-tooling-nodes.git", "required": false, "status": "not_installed"}, {"id": "was-suite", "name": "WAS Node Suite", "category": "popular", "description": "Hundreds of utility nodes for image processing, prompts, and more.", "repo": "https://github.com/WASasquatch/was-node-suite-comfyui.git", "required": false, "status": "not_installed"}, {"id": "essentials", "name": "ComfyUI Essentials", "category": "popular", "description": "Quality-of-life workflow nodes. Dimension printing, simple transformations.", "repo": "https://github.com/cubiq/ComfyUI_essentials.git", "required": false, "status": "not_installed"}, {"id": "animatediff", "name": "AnimateDiff Evolved", "category": "popular", "description": "Animation generation framework. Create videos from image workflows.", "repo": "https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git", "required": false, "status": "not_installed"}, {"id": "ipadapter", "name": "IPAdapter Plus", "category": "popular", "description": "Reference image guidance. Use images to guide generation style and content.", "repo": "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git", "required": false, "status": "not_installed"}, {"id": "controlnet-aux", "name": "ControlNet Auxiliary Preprocessors", "category": "popular", "description": "Preprocessors for ControlNet (Canny, Depth, OpenPose, etc).", "repo": "https://github.com/Fannovel16/comfyui_controlnet_aux.git", "required": false, "status": "not_installed"}, {"id": "ultimate-upscale", "name": "Ultimate SD Upscale", "category": "popular", "description": "Tiled upscaling with seamless blending. Great for high-res outputs.", "repo": "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git", "required": false, "status": "not_installed"}, {"id": "video-helper", "name": "Video Helper Suite", "category": "video", "description": "Load, combine, and export videos. Essential for video workflows.", "repo": "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git", "required": false, "status": "not_installed"}, {"id": "frame-interpolation", "name": "Frame Interpolation", "category": "video", "description": "FILM and RIFE frame interpolation for smooth video.", "repo": "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git", "required": false, "status": "not_installed"}, {"id": "crystools", "name": "CrysTools", "category": "api", "description": "Debugging and metadata tools. Useful for workflow development.", "repo": "https://github.com/crystian/ComfyUI-Crystools.git", "required": false, "status": "not_installed"}, {"id": "segment-anything", "name": "Segment Anything", "category": "image", "description": "SAM integration for automatic masking and segmentation.", "repo": "https://github.com/storyicon/comfyui_segment_anything.git", "required": false, "status": "not_installed"}, {"id": "inpaint-nodes", "name": "Inpaint Nodes", "category": "image", "description": "Advanced inpainting tools with better mask handling.", "repo": "https://github.com/Acly/comfyui-inpaint-nodes.git", "required": false, "status": "not_installed"}], "count": 16}}
+
+data: {"type": "continuing", "tool_calls_so_far": 17}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "fetch"}
+
+data: {"type": "token", "text": "_url"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "url"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "https"}
+
+data: {"type": "token", "text": "://"}
+
+data: {"type": "token", "text": "api"}
+
+data: {"type": "token", "text": ".github"}
+
+data: {"type": "token", "text": ".com"}
+
+data: {"type": "token", "text": "/repos"}
+
+data: {"type": "token", "text": "/L"}
+
+data: {"type": "token", "text": "ight"}
+
+data: {"type": "token", "text": "ricks"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-L"}
+
+data: {"type": "token", "text": "TX"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "contents"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "fetch_url", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "fetch_url", "tool_number": 18, "arguments": {"url": "https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents"}, "result": {"success": true, "url": "https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents", "status_code": 200, "content_type": "application/json; charset=utf-8", "length": 36484, "content": "[\n  {\n    \"name\": \".gitattributes\",\n    \"path\": \".gitattributes\",\n    \"sha\": \"7e0e7c8d270b417ea6bde84fdf2ca542bbd67b68\",\n    \"size\": 519,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/.gitattributes?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/.gitattributes\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/7e0e7c8d270b417ea6bde84fdf2ca542bbd67b68\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/.gitattributes\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/.gitattributes?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/7e0e7c8d270b417ea6bde84fdf2ca542bbd67b68\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/.gitattributes\"\n    }\n  },\n  {\n    \"name\": \".gitignore\",\n    \"path\": \".gitignore\",\n    \"sha\": \"82f927558a3dff0ea8c20858856e70779fd02c93\",\n    \"size\": 3139,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/.gitignore?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/.gitignore\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/82f927558a3dff0ea8c20858856e70779fd02c93\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/.gitignore\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/.gitignore?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/82f927558a3dff0ea8c20858856e70779fd02c93\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/.gitignore\"\n    }\n  },\n  {\n    \"name\": \".pre-commit-config.yaml\",\n    \"path\": \".pre-commit-config.yaml\",\n    \"sha\": \"7c0a6f724829c8a8e00185644c6ca4b4a61132c9\",\n    \"size\": 767,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/.pre-commit-config.yaml?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/.pre-commit-config.yaml\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/7c0a6f724829c8a8e00185644c6ca4b4a61132c9\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/.pre-commit-config.yaml\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/.pre-commit-config.yaml?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/7c0a6f724829c8a8e00185644c6ca4b4a61132c9\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/.pre-commit-config.yaml\"\n    }\n  },\n  {\n    \"name\": \"LICENSE\",\n    \"path\": \"LICENSE\",\n    \"sha\": \"b0d79e2e318e8931fbdad112136372ec28603d2d\",\n    \"size\": 21467,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/LICENSE?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/LICENSE\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b0d79e2e318e8931fbdad112136372ec28603d2d\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/LICENSE\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/LICENSE?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b0d79e2e318e8931fbdad112136372ec28603d2d\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/LICENSE\"\n    }\n  },\n  {\n    \"name\": \"README.md\",\n    \"path\": \"README.md\",\n    \"sha\": \"2ddadb6a91442e909a19334209a1a7d8d2e72a99\",\n    \"size\": 8537,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/README.md?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/README.md\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/2ddadb6a91442e909a19334209a1a7d8d2e72a99\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/README.md\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/README.md?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/2ddadb6a91442e909a19334209a1a7d8d2e72a99\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/README.md\"\n    }\n  },\n  {\n    \"name\": \"__init__.py\",\n    \"path\": \"__init__.py\",\n    \"sha\": \"c201748fea3d521c1d0fcd4744a5b1d0c267ad5a\",\n    \"size\": 5065,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/__init__.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/__init__.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/c201748fea3d521c1d0fcd4744a5b1d0c267ad5a\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/__init__.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/__init__.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/c201748fea3d521c1d0fcd4744a5b1d0c267ad5a\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/__init__.py\"\n    }\n  },\n  {\n    \"name\": \"conditioning_loader.py\",\n    \"path\": \"conditioning_loader.py\",\n    \"sha\": \"40d9be90f236e736dea506994631263aa0756441\",\n    \"size\": 2844,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/conditioning_loader.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/conditioning_loader.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/40d9be90f236e736dea506994631263aa0756441\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/conditioning_loader.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/conditioning_loader.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/40d9be90f236e736dea506994631263aa0756441\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/conditioning_loader.py\"\n    }\n  },\n  {\n    \"name\": \"conditioning_saver.py\",\n    \"path\": \"conditioning_saver.py\",\n    \"sha\": \"dac3b0d952f35812bf516e5bd5dc0d2405e0187c\",\n    \"size\": 2422,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/conditioning_saver.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/conditioning_saver.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/dac3b0d952f35812bf516e5bd5dc0d2405e0187c\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/conditioning_saver.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/conditioning_saver.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/dac3b0d952f35812bf516e5bd5dc0d2405e0187c\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/conditioning_saver.py\"\n    }\n  },\n  {\n    \"name\": \"decoder_noise.py\",\n    \"path\": \"decoder_noise.py\",\n    \"sha\": \"4dff6f7fdfde501a456fea4ad685374adce06a67\",\n    \"size\": 1788,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/decoder_noise.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/decoder_noise.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/4dff6f7fdfde501a456fea4ad685374adce06a67\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/decoder_noise.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/decoder_noise.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/4dff6f7fdfde501a456fea4ad685374adce06a67\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/decoder_noise.py\"\n    }\n  },\n  {\n    \"name\": \"dynamic_conditioning.py\",\n    \"path\": \"dynamic_conditioning.py\",\n    \"sha\": \"6b598d038543dd6fc512795f0a19c31e840f8dd2\",\n    \"size\": 2193,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/dynamic_conditioning.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/dynamic_conditioning.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/6b598d038543dd6fc512795f0a19c31e840f8dd2\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/dynamic_conditioning.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/dynamic_conditioning.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/6b598d038543dd6fc512795f0a19c31e840f8dd2\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/dynamic_conditioning.py\"\n    }\n  },\n  {\n    \"name\": \"easy_samplers.py\",\n    \"path\": \"easy_samplers.py\",\n    \"sha\": \"d44e77c7e0e13ce4fdbdf230ae4b6d0a7e223640\",\n    \"size\": 38451,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/easy_samplers.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/easy_samplers.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/d44e77c7e0e13ce4fdbdf230ae4b6d0a7e223640\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/easy_samplers.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/easy_samplers.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/d44e77c7e0e13ce4fdbdf230ae4b6d0a7e223640\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/easy_samplers.py\"\n    }\n  },\n  {\n    \"name\": \"embeddings_connector.py\",\n    \"path\": \"embeddings_connector.py\",\n    \"sha\": \"f3e45bb345aebb216131196c43c3bb30cbd4148c\",\n    \"size\": 12829,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/embeddings_connector.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/embeddings_connector.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f3e45bb345aebb216131196c43c3bb30cbd4148c\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/embeddings_connector.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/embeddings_connector.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f3e45bb345aebb216131196c43c3bb30cbd4148c\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/embeddings_connector.py\"\n    }\n  },\n  {\n    \"name\": \"example_workflows\",\n    \"path\": \"example_workflows\",\n    \"sha\": \"0849a1b40d9dd4b9d7ab80c8df76335f4f272ed5\",\n    \"size\": 0,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/example_workflows?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/example_workflows\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/0849a1b40d9dd4b9d7ab80c8df76335f4f272ed5\",\n    \"download_url\": null,\n    \"type\": \"dir\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/example_workflows?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/0849a1b40d9dd4b9d7ab80c8df76335f4f272ed5\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/example_workflows\"\n    }\n  },\n  {\n    \"name\": \"gemma_api_conditioning.py\",\n    \"path\": \"gemma_api_conditioning.py\",\n    \"sha\": \"01317061ac936d867b2363d5a1109fb0b164fbc2\",\n    \"size\": 4390,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/gemma_api_conditioning.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/gemma_api_conditioning.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/01317061ac936d867b2363d5a1109fb0b164fbc2\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/gemma_api_conditioning.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/gemma_api_conditioning.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/01317061ac936d867b2363d5a1109fb0b164fbc2\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/gemma_api_conditioning.py\"\n    }\n  },\n  {\n    \"name\": \"gemma_configs\",\n    \"path\": \"gemma_configs\",\n    \"sha\": \"d974a0350d16d6bbaecfdf5ee20ed0f5d9520e70\",\n    \"size\": 0,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/gemma_configs?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/gemma_configs\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/d974a0350d16d6bbaecfdf5ee20ed0f5d9520e70\",\n    \"download_url\": null,\n    \"type\": \"dir\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/gemma_configs?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/d974a0350d16d6bbaecfdf5ee20ed0f5d9520e70\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/gemma_configs\"\n    }\n  },\n  {\n    \"name\": \"gemma_encoder.py\",\n    \"path\": \"gemma_encoder.py\",\n    \"sha\": \"7c1b6795c301c21d4fd964d6ef9362d121cc5877\",\n    \"size\": 30438,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/gemma_encoder.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/gemma_encoder.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/7c1b6795c301c21d4fd964d6ef9362d121cc5877\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/gemma_encoder.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/gemma_encoder.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/7c1b6795c301c21d4fd964d6ef9362d121cc5877\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/gemma_encoder.py\"\n    }\n  },\n  {\n    \"name\": \"guide.py\",\n    \"path\": \"guide.py\",\n    \"sha\": \"404c44785ff8476861d5c0436bbce4b0c67a7e00\",\n    \"size\": 8749,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/guide.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/guide.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/404c44785ff8476861d5c0436bbce4b0c67a7e00\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/guide.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/guide.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/404c44785ff8476861d5c0436bbce4b0c67a7e00\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/guide.py\"\n    }\n  },\n  {\n    \"name\": \"guiders\",\n    \"path\": \"guiders\",\n    \"sha\": \"a19ea1924651fe6f54cfe460385f25c73a8310d8\",\n    \"size\": 0,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/guiders?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/guiders\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/a19ea1924651fe6f54cfe460385f25c73a8310d8\",\n    \"download_url\": null,\n    \"type\": \"dir\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/guiders?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/a19ea1924651fe6f54cfe460385f25c73a8310d8\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/guiders\"\n    }\n  },\n  {\n    \"name\": \"iclora.py\",\n    \"path\": \"iclora.py\",\n    \"sha\": \"483b9b8ae3d640114595703cc7df4ad5fc245b9b\",\n    \"size\": 9917,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/iclora.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/iclora.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/483b9b8ae3d640114595703cc7df4ad5fc245b9b\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/iclora.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/iclora.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/483b9b8ae3d640114595703cc7df4ad5fc245b9b\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/iclora.py\"\n    }\n  },\n  {\n    \"name\": \"latent_norm.py\",\n    \"path\": \"latent_norm.py\",\n    \"sha\": \"f41a408d0794b6b294c4334a1bb4ed08f5b4390c\",\n    \"size\": 11120,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/latent_norm.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/latent_norm.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f41a408d0794b6b294c4334a1bb4ed08f5b4390c\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/latent_norm.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/latent_norm.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f41a408d0794b6b294c4334a1bb4ed08f5b4390c\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/latent_norm.py\"\n    }\n  },\n  {\n    \"name\": \"latents.py\",\n    \"path\": \"latents.py\",\n    \"sha\": \"128018213c4cdd457576e1615e265376eeeba565\",\n    \"size\": 29390,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/latents.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/latents.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/128018213c4cdd457576e1615e265376eeeba565\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/latents.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/latents.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/128018213c4cdd457576e1615e265376eeeba565\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/latents.py\"\n    }\n  },\n  {\n    \"name\": \"looping_sampler.md\",\n    \"path\": \"looping_sampler.md\",\n    \"sha\": \"4ae495c03dbc620929c4fcbaed33acf0208b6018\",\n    \"size\": 14257,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/looping_sampler.md?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/looping_sampler.md\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/4ae495c03dbc620929c4fcbaed33acf0208b6018\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/looping_sampler.md\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/looping_sampler.md?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/4ae495c03dbc620929c4fcbaed33acf0208b6018\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/looping_sampler.md\"\n    }\n  },\n  {\n    \"name\": \"looping_sampler.py\",\n    \"path\": \"looping_sampler.py\",\n    \"sha\": \"874a06ac8d9e28843db9ac6737df68f3257eb6b0\",\n    \"size\": 39117,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/looping_sampler.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/looping_sampler.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/874a06ac8d9e28843db9ac6737df68f3257eb6b0\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/looping_sampler.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/looping_sampler.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/874a06ac8d9e28843db9ac6737df68f3257eb6b0\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/looping_sampler.py\"\n    }\n  },\n  {\n    \"name\": \"low_vram_loaders.py\",\n    \"path\": \"low_vram_loaders.py\",\n    \"sha\": \"b5803ef271c5b633b97ca4def105669aa36c6f1a\",\n    \"size\": 4283,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/low_vram_loaders.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/low_vram_loaders.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b5803ef271c5b633b97ca4def105669aa36c6f1a\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/low_vram_loaders.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/low_vram_loaders.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b5803ef271c5b633b97ca4def105669aa36c6f1a\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/low_vram_loaders.py\"\n    }\n  },\n  {\n    \"name\": \"masks.py\",\n    \"path\": \"masks.py\",\n    \"sha\": \"766069557a90819fdfcc566500623d9341828cc8\",\n    \"size\": 8060,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/masks.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/masks.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/766069557a90819fdfcc566500623d9341828cc8\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/masks.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/masks.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/766069557a90819fdfcc566500623d9341828cc8\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/masks.py\"\n    }\n  },\n  {\n    \"name\": \"nodes_registry.py\",\n    \"path\": \"nodes_registry.py\",\n    \"sha\": \"e74120c6e8222a0f394aac9fa035e75dfa988d9b\",\n    \"size\": 5600,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/nodes_registry.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/nodes_registry.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/e74120c6e8222a0f394aac9fa035e75dfa988d9b\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/nodes_registry.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/nodes_registry.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/e74120c6e8222a0f394aac9fa035e75dfa988d9b\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/nodes_registry.py\"\n    }\n  },\n  {\n    \"name\": \"pos_embedding_exp_values.py\",\n    \"path\": \"pos_embedding_exp_values.py\",\n    \"sha\": \"b373ee14867262990f6b24980e2cdaf78a18efcb\",\n    \"size\": 41442,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/pos_embedding_exp_values.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/pos_embedding_exp_values.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b373ee14867262990f6b24980e2cdaf78a18efcb\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/pos_embedding_exp_values.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/pos_embedding_exp_values.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b373ee14867262990f6b24980e2cdaf78a18efcb\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/pos_embedding_exp_values.py\"\n    }\n  },\n  {\n    \"name\": \"presets\",\n    \"path\": \"presets\",\n    \"sha\": \"2afd6e1a9d203d39cb1972c179a169d7c7eafc2e\",\n    \"size\": 0,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/presets?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/presets\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/2afd6e1a9d203d39cb1972c179a169d7c7eafc2e\",\n    \"download_url\": null,\n    \"type\": \"dir\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/presets?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/2afd6e1a9d203d39cb1972c179a169d7c7eafc2e\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/presets\"\n    }\n  },\n  {\n    \"name\": \"prompt_enhancer_nodes.py\",\n    \"path\": \"prompt_enhancer_nodes.py\",\n    \"sha\": \"6dd1e4cd87a46a3df92f4f238c309a5fc7ed9913\",\n    \"size\": 6958,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/prompt_enhancer_nodes.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/prompt_enhancer_nodes.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/6dd1e4cd87a46a3df92f4f238c309a5fc7ed9913\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/prompt_enhancer_nodes.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/prompt_enhancer_nodes.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/6dd1e4cd87a46a3df92f4f238c309a5fc7ed9913\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/prompt_enhancer_nodes.py\"\n    }\n  },\n  {\n    \"name\": \"prompt_enhancer_utils.py\",\n    \"path\": \"prompt_enhancer_utils.py\",\n    \"sha\": \"e05ecfae5d3faa016f0905a1840f593c01627521\",\n    \"size\": 9842,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/prompt_enhancer_utils.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/prompt_enhancer_utils.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/e05ecfae5d3faa016f0905a1840f593c01627521\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/prompt_enhancer_utils.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/prompt_enhancer_utils.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/e05ecfae5d3faa016f0905a1840f593c01627521\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/prompt_enhancer_utils.py\"\n    }\n  },\n  {\n    \"name\": \"q8_nodes.py\",\n    \"path\": \"q8_nodes.py\",\n    \"sha\": \"69af0310bdb3cececf4f391a857e7bb17e5ffb6b\",\n    \"size\": 6043,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/q8_nodes.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/q8_nodes.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/69af0310bdb3cececf4f391a857e7bb17e5ffb6b\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/q8_nodes.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/q8_nodes.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/69af0310bdb3cececf4f391a857e7bb17e5ffb6b\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/q8_nodes.py\"\n    }\n  },\n  {\n    \"name\": \"requirements.txt\",\n    \"path\": \"requirements.txt\",\n    \"sha\": \"5649927b29af30ddc85f5cf67c80805a3ab7fa5b\",\n    \"size\": 84,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/requirements.txt?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/requirements.txt\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/5649927b29af30ddc85f5cf67c80805a3ab7fa5b\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/requirements.txt\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/requirements.txt?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/5649927b29af30ddc85f5cf67c80805a3ab7fa5b\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/requirements.txt\"\n    }\n  },\n  {\n    \"name\": \"stg.py\",\n    \"path\": \"stg.py\",\n    \"sha\": \"9e54821a34264c740cbd99094b4ad1c6c677cde7\",\n    \"size\": 33122,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/stg.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/stg.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/9e54821a34264c740cbd99094b4ad1c6c677cde7\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/stg.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/stg.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/9e54821a34264c740cbd99094b4ad1c6c677cde7\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/stg.py\"\n    }\n  },\n  {\n    \"name\": \"system_prompts\",\n    \"path\": \"system_prompts\",\n    \"sha\": \"4a3f88b6ee5ccdd2f79d710a95b70b7d0ec6280c\",\n    \"size\": 0,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/system_prompts?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/system_prompts\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/4a3f88b6ee5ccdd2f79d710a95b70b7d0ec6280c\",\n    \"download_url\": null,\n    \"type\": \"dir\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/system_prompts?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/4a3f88b6ee5ccdd2f79d710a95b70b7d0ec6280c\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/system_prompts\"\n    }\n  },\n  {\n    \"name\": \"tiled_sampler.py\",\n    \"path\": \"tiled_sampler.py\",\n    \"sha\": \"b514220d4b51f4b6d0d269cee639633d7e9b475f\",\n    \"size\": 12999,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/tiled_sampler.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/tiled_sampler.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b514220d4b51f4b6d0d269cee639633d7e9b475f\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/tiled_sampler.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/tiled_sampler.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/b514220d4b51f4b6d0d269cee639633d7e9b475f\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/tiled_sampler.py\"\n    }\n  },\n  {\n    \"name\": \"tiled_vae_decode.py\",\n    \"path\": \"tiled_vae_decode.py\",\n    \"sha\": \"f67e53f9d5466a9056551c9afd125cdf775f2e8b\",\n    \"size\": 16961,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/tiled_vae_decode.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/tiled_vae_decode.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f67e53f9d5466a9056551c9afd125cdf775f2e8b\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/tiled_vae_decode.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/tiled_vae_decode.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f67e53f9d5466a9056551c9afd125cdf775f2e8b\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/tiled_vae_decode.py\"\n    }\n  },\n  {\n    \"name\": \"tricks\",\n    \"path\": \"tricks\",\n    \"sha\": \"621f1ae1b06f6e28c32a3d3f494f79faa2e2112f\",\n    \"size\": 0,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/tricks?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/tricks\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/621f1ae1b06f6e28c32a3d3f494f79faa2e2112f\",\n    \"download_url\": null,\n    \"type\": \"dir\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/tricks?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/trees/621f1ae1b06f6e28c32a3d3f494f79faa2e2112f\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/tree/master/tricks\"\n    }\n  },\n  {\n    \"name\": \"utiltily_nodes.py\",\n    \"path\": \"utiltily_nodes.py\",\n    \"sha\": \"f5434a93b7059def64fe5e3a303a66ddc661720a\",\n    \"size\": 1668,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/utiltily_nodes.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/utiltily_nodes.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f5434a93b7059def64fe5e3a303a66ddc661720a\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/utiltily_nodes.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/utiltily_nodes.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/f5434a93b7059def64fe5e3a303a66ddc661720a\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/utiltily_nodes.py\"\n    }\n  },\n  {\n    \"name\": \"vae_patcher.py\",\n    \"path\": \"vae_patcher.py\",\n    \"sha\": \"fc6c48db2a56ac238445437b45d8607f3420a324\",\n    \"size\": 854,\n    \"url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/vae_patcher.py?ref=master\",\n    \"html_url\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/vae_patcher.py\",\n    \"git_url\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/fc6c48db2a56ac238445437b45d8607f3420a324\",\n    \"download_url\": \"https://raw.githubusercontent.com/Lightricks/ComfyUI-LTXVideo/master/vae_patcher.py\",\n    \"type\": \"file\",\n    \"_links\": {\n      \"self\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/contents/vae_patcher.py?ref=master\",\n      \"git\": \"https://api.github.com/repos/Lightricks/ComfyUI-LTXVideo/git/blobs/fc6c48db2a56ac238445437b45d8607f3420a324\",\n      \"html\": \"https://github.com/Lightricks/ComfyUI-LTXVideo/blob/master/vae_patcher.py\"\n    }\n  }\n]\n"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 18}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "web"}
+
+data: {"type": "token", "text": "_search"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "query"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": " custom"}
+
+data: {"type": "token", "text": " nodes"}
+
+data: {"type": "token", "text": " install"}
+
+data: {"type": "token", "text": " node"}
+
+data: {"type": "token", "text": " pack"}
+
+data: {"type": "token", "text": " id"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "web_search", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "web_search", "tool_number": 19, "arguments": {"query": "ComfyUI LTX-2 custom nodes install node pack id"}, "result": {"success": true, "query": "ComfyUI LTX-2 custom nodes install node pack id", "engine": "duckduckgo", "count": 5, "results": [{"title": "Using ComfyUI with LTX-2 | LTX Documentation", "url": "https://docs.ltx.video/open-source-model/integration-tools/comfy-ui", "snippet": "ComfyUI provides the best balance of power and ease of use for LTX-2: Visual workflows - See your entire generation pipeline ... This is the easiest method and handles dependencies automatically. ... The nodes will appear in your node menu under the \u201cLTXVideo\u201d category. ... After installation, restart ComfyUI to load the new nodes."}, {"title": "How to Install ComfyUI Custom Nodes (Plugins) | ComfyUI Wiki", "url": "https://comfyui-wiki.com/en/install/install-custom-nodes", "snippet": "This guide provides a step-by-step guide on how to install ComfyUI Custom Nodes (Plugins)."}, {"title": "ComfyUI Nodes Info", "url": "https://ltdrdata.github.io/", "snippet": "ComfyUI Nodes Info \u00b7 GitHub Repositories: [ComfyUI] [ComfyUI-Manager] [ltdrdata.github.io] \u00b7 Type: \u00b7 Author \u00b7 Title \u00b7 Description \u00b7 Nodes \u00b7 Toggle Theme"}, {"title": "How to Install Custom Nodes in ComfyUI - ComfyUI", "url": "https://docs.comfy.org/installation/install_custom_node", "snippet": "This guide will show you different methods to install custom nodes in ComfyUI"}, {"title": "How to Install LTX-2 in ComfyUI (Step-by-Step, No Custom Nodes) - CrePal Content Center", "url": "https://crepal.ai/blog/aivideo/blog-how-to-install-ltx-2-in-comfyui/", "snippet": "January 8, 2026 - Optional but recommended: update dependencies in the ComfyUI Python env. ... pip install --upgrade pip pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 pip install --upgrade xformers \u00b7 Install the LTX\u20112 custom node."}]}}
+
+data: {"type": "continuing", "tool_calls_so_far": 19}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "fetch"}
+
+data: {"type": "token", "text": "_url"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "url"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "https"}
+
+data: {"type": "token", "text": "://"}
+
+data: {"type": "token", "text": "docs"}
+
+data: {"type": "token", "text": ".l"}
+
+data: {"type": "token", "text": "tx"}
+
+data: {"type": "token", "text": ".video"}
+
+data: {"type": "token", "text": "/open"}
+
+data: {"type": "token", "text": "-source"}
+
+data: {"type": "token", "text": "-model"}
+
+data: {"type": "token", "text": "/integration"}
+
+data: {"type": "token", "text": "-tools"}
+
+data: {"type": "token", "text": "/com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "-ui"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "fetch_url", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "fetch_url", "tool_number": 20, "arguments": {"url": "https://docs.ltx.video/open-source-model/integration-tools/comfy-ui"}, "result": {"success": true, "url": "https://docs.ltx.video/open-source-model/integration-tools/comfy-ui", "status_code": 200, "content_type": "text/html; charset=utf-8", "length": 6299, "content": "Using ComfyUI with LTX-2\n\nUse LTX-2 in ComfyUI with visual node-based workflows. This is the recommended way to work with LTX-2 for most users.\n\n## Why ComfyUI?\n\nComfyUI provides the best balance of power and ease of use for LTX-2:\n\n**Visual workflows**- See your entire generation pipeline**Pre-built examples**- Start with working templates**Real-time experimentation**- Iterate quickly on parameters**Advanced features**- Access all LoRAs, control models, and tools**No coding required**- Drag, drop, and connect nodes\n\n## Installation\n\n### Prerequisites\n\nBefore you begin setting up an LTX-2 workflow in ComfyUI, make sure you have:\n\n**ComfyUI**installed ([Download here](https://www.comfy.org/download))**CUDA-compatible GPU**with 32GB+ VRAM**100GB+ free disk space**for models and cache**Python 3.10+**(usually included with ComfyUI)\n\n### Recommended: ComfyUI Manager\n\nThis is the easiest method and handles dependencies automatically.\n\n- Open ComfyUI\n- Click the\n**Manager**button (or press`Ctrl+M`\n\n) - Select\n**Install Custom Nodes** - Search for\n**\u201cLTXVideo\u201d** - Click\n**Install**next to`ComfyUI-LTXVideo`\n\n- Wait for installation to complete\n**Restart ComfyUI**\n\nThe nodes will appear in your node menu under the \u201cLTXVideo\u201d category.\n\n### Alternative: Manual Installation\n\nFor more control:\n\n**For portable/embedded ComfyUI installations:**\n\nAfter installation, restart ComfyUI to load the new nodes.\n\n### Verifying Installation\n\nAfter restarting ComfyUI:\n\n- Right-click in the canvas\n- Navigate to\n**Add Node**\u2192**LTXVideo** - You should see categories like:\n`LTXVideo/loaders`\n\n`LTXVideo/samplers`\n\n`LTXVideo/conditioning`\n\n`LTXVideo/utils`\n\n\n\nIf you don\u2019t see these, check the ComfyUI console for error messages.\n\n## Models\n\n### Automatic Download (Recommended)\n\nThe LTX-2 nodes will automatically download required models on first use. This includes:\n\n- Base model checkpoint\n- Text encoder\n\nSimply load a workflow and click \u201cQueue Prompt\u201d - the nodes will handle downloading.\n\n### Manual Download\n\nIf you prefer to download models manually or need offline installation:\n\n#### Base Models\n\nDownload from [Hugging Face](https://huggingface.co/Lightricks/LTX-2):\n\n**For beginners (recommended):**\n\n**For maximum quality:**\n\n#### Text Encoder\n\nInstall the Gemma 3 encoder using ComfyUI Manager:\n\n- Open ComfyUI Manager\n- Search for\n**\u201cgemma-3-12b-it\u201d** - Install the model\n\nOr download manually from [Hugging Face](https://huggingface.co/google/gemma-3-12b-it-qat-q4_0-unquantized).\n\n## Loading and Using Workflows\n\n### Loading a Workflow\n\n- In ComfyUI, click\n**Load**(or press`Ctrl+O`\n\n) - Navigate to\n`custom_nodes/ComfyUI-LTXVideo/example_workflows/`\n\n- Select a\n`.json`\n\nworkflow file - Click\n**Open**\n\n### Modifying Parameters\n\nClick any node to see its parameters in the sidebar:\n\n**Text prompts**: Click text encode nodes**Generation settings**: Click sampler nodes**Output settings**: Click save nodes\n\n### Running a Workflow\n\n- Configure your prompt and settings\n- Click\n**Queue Prompt**(or press`Ctrl+Enter`\n\n) - Watch the progress bar\n- Find output in your\n`ComfyUI/output/`\n\nfolder\n\n### Installing Missing Nodes\n\nWhen you load a workflow with missing nodes:\n\n- ComfyUI will show a warning dialog\n- Click\n**Install Missing Custom Nodes** - ComfyUI Manager will install automatically\n- Restart ComfyUI after installation\n\nOr install manually:\n\n## Example Workflows\n\nThe `ComfyUI-LTXVideo`\n\ninstallation includes comprehensive example workflows. Find them at:\n\n### Workflow Tips\n\n**Starting a new project:**\n\n- Load a basic workflow first\n- Test with low resolution (480\u00d7720)\n- Use fewer frames (41-81) for speed\n- Increase quality once satisfied\n\n**Memory management:**\n\n- Close unused workflows\n- Clear cache between large generations\n- Use FP8 models for VRAM savings\n- Process in batches if generating multiple videos\n\n**Iteration workflow:**\n\n- Start with distilled model (fast)\n- Iterate on prompt and composition\n- Switch to full model for final render\n- Use upscaler for highest quality\n\n## Troubleshooting\n\n### Nodes Not Appearing\n\n**Issue:** LTXVideo nodes don\u2019t show up after installation\n\n**Solutions:**\n\n- Verify installation in\n`ComfyUI/custom_nodes/ComfyUI-LTXVideo/`\n\n- Check ComfyUI console for errors during startup\n- Reinstall requirements:\n`pip install -r requirements.txt`\n\n- Restart ComfyUI completely (close and reopen, not just refresh)\n- Try manual installation method if ComfyUI Manager failed\n- Check Python version (should be 3.10+)\n\n### Workflow Errors\n\n**Issue:** Workflow loads but shows red nodes or errors\n\n**Solutions:**\n\n**Missing nodes**: Click \u201cInstall Missing Custom Nodes\u201d in the error dialog**Update ComfyUI**: Make sure you\u2019re on the latest version**Update LTXVideo nodes**:**Check model paths**: Verify models are in correct locations**Incompatible workflow**: Some older workflows may need updates for newer node versions\n\n### Missing Dependencies\n\n**Issue:** Workflow requires additional custom nodes\n\n**Solutions:**\n\n- ComfyUI will show a list of missing nodes when loading\n- Click\n**\u201cInstall Missing Custom Nodes\u201d**button - Common dependencies:\n- ComfyUI-VideoHelperSuite (video processing)\n- ComfyUI-Manager (node management)\n- ComfyUI-Impact-Pack (advanced features)\n\n- Restart ComfyUI after installing dependencies\n\n### Model Loading Errors\n\n**Issue:** Models fail to load or show errors in console\n\n**Solutions:**\n\n- Verify model files aren\u2019t corrupted (check file sizes)\n- Ensure models are in correct directories:\n- Checkpoints:\n`ComfyUI/models/checkpoints/`\n\n- VAE:\n`ComfyUI/models/vae/`\n\n- LoRAs:\n`ComfyUI/models/loras/`\n\n\n- Checkpoints:\n- Try re-downloading the model\n- Check that you have the correct model version for your nodes\n- Look for specific error messages in the ComfyUI console\n\n## Advanced Features\n\n### Custom Workflow Creation\n\nBuild your own workflows by combining nodes:\n\n- Start with a template\n- Add/remove nodes as needed\n- Connect nodes with click-and-drag\n- Save your workflow for reuse\n\n**Common node patterns:**\n\n**Basic generation:**\n\n**Image-to-video:**\n\n**With upscaling:**\n\n### Integration with Other Nodes\n\nLTXVideo nodes work with:\n\n**ControlNet nodes**: For additional control**Image processing nodes**: Pre-process inputs**Video nodes**: Post-process outputs**Batch nodes**: Automate workflows"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 20}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "run"}
+
+data: {"type": "token", "text": "_shell"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "command"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "cd"}
+
+data: {"type": "token", "text": " /"}
+
+data: {"type": "token", "text": "d"}
+
+data: {"type": "token", "text": " \\\""}
+
+data: {"type": "token", "text": "E"}
+
+data: {"type": "token", "text": ":\\\\"}
+
+data: {"type": "token", "text": "Agent"}
+
+data: {"type": "token", "text": "N"}
+
+data: {"type": "token", "text": "ate"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "modules"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "custom"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\\\""}
+
+data: {"type": "token", "text": " &&"}
+
+data: {"type": "token", "text": " git"}
+
+data: {"type": "token", "text": " clone"}
+
+data: {"type": "token", "text": " https"}
+
+data: {"type": "token", "text": "://"}
+
+data: {"type": "token", "text": "github"}
+
+data: {"type": "token", "text": ".com"}
+
+data: {"type": "token", "text": "/L"}
+
+data: {"type": "token", "text": "ight"}
+
+data: {"type": "token", "text": "ricks"}
+
+data: {"type": "token", "text": "/"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-L"}
+
+data: {"type": "token", "text": "TX"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": ".git"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "run_shell", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "run_shell", "tool_number": 21, "arguments": {"command": "cd /d \"E:\\AgentNate\\modules\\comfyui\\comfyui\\custom_nodes\" && git clone https://github.com/Lightricks/ComfyUI-LTXVideo.git"}, "result": {"success": true, "command": "cd /d \"E:\\AgentNate\\modules\\comfyui\\comfyui\\custom_nodes\" && git clone https://github.com/Lightricks/ComfyUI-LTXVideo.git", "stdout": "", "stderr": "Cloning into 'ComfyUI-LTXVideo'...\nUpdating files:  28% (21/73)\nUpdating files:  30% (22/73)\nUpdating files:  31% (23/73)\nUpdating files:  32% (24/73)\nUpdating files:  34% (25/73)\nUpdating files:  35% (26/73)\nUpdating files:  36% (27/73)\nUpdating files:  38% (28/73)\nUpdating files:  39% (29/73)\nUpdating files:  41% (30/73)\nUpdating files:  42% (31/73)\nUpdating files:  43% (32/73)\nUpdating files:  45% (33/73)\nUpdating files:  46% (34/73)\nUpdating files:  47% (35/73)\nUpdating files:  49% (36/73)\nUpdating files:  50% (37/73)\nUpdating files:  52% (38/73)\nUpdating files:  53% (39/73)\nUpdating files:  54% (40/73)\nUpdating files:  56% (41/73)\nUpdating files:  57% (42/73)\nUpdating files:  58% (43/73)\nUpdating files:  60% (44/73)\nUpdating files:  61% (45/73)\nUpdating files:  63% (46/73)\nUpdating files:  64% (47/73)\nUpdating files:  65% (48/73)\nUpdating files:  67% (49/73)\nUpdating files:  68% (50/73)\nUpdating files:  69% (51/73)\nUpdating files:  71% (52/73)\nUpdating files:  72% (53/73)\nUpdating files:  73% (54/73)\nUpdating files:  75% (55/73)\nUpdating files:  76% (56/73)\nUpdating files:  78% (57/73)\nUpdating files:  79% (58/73)\nUpdating files:  80% (59/73)\nUpdating files:  82% (60/73)\nUpdating files:  83% (61/73)\nUpdating files:  84% (62/73)\nUpdating files:  86% (63/73)\nUpdating files:  87% (64/73)\nUpdating files:  89% (65/73)\nUpdating files:  90% (66/73)\nUpdating files:  91% (67/73)\nUpdating files:  93% (68/73)\nUpdating files:  94% (69/73)\nUpdating files:  95% (70/73)\nUpdating files:  97% (71/73)\nUpdating files:  98% (72/73)\nUpdating files: 100% (73/73)\nUpdating files: 100% (73/73), done.\nFiltering content:  50% (2/4)\nFiltering content:  75% (3/4)\nFiltering content: 100% (4/4)\nFiltering content: 100% (4/4), 10.76 MiB | 6.80 MiB/s, done.\n", "return_code": 0}}
+
+data: {"type": "continuing", "tool_calls_so_far": 21}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_stop"}
+
+data: {"type": "token", "text": "_instance"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_stop_instance", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_stop_instance", "elapsed": 3.1}
+
+data: {"type": "tool_call", "tool": "comfyui_stop_instance", "tool_number": 22, "arguments": {"instance_id": "gpu1_8188"}, "result": {"success": true, "result": {"instance_id": "gpu1_8188", "gpu_device": "1", "gpu_label": "GPU 1", "port": 8188, "host": "127.0.0.1", "vram_mode": "normal", "extra_args": [], "status": "stopped", "is_running": false, "url": "http://127.0.0.1:8188"}, "message": "Instance gpu1_8188 stopped"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 22}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_start"}
+
+data: {"type": "token", "text": "_instance"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 3.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 4.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 5.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 6.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 7.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 8.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 9.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 10.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 11.1}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 12.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 13.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 14.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 15.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 16.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 17.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 18.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 19.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 20.2}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 21.3}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 22.3}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 23.3}
+
+data: {"type": "tool_executing", "tool": "comfyui_start_instance", "elapsed": 24.3}
+
+data: {"type": "tool_call", "tool": "comfyui_start_instance", "tool_number": 23, "arguments": {"instance_id": "gpu1_8188"}, "result": {"success": true, "result": {"instance_id": "gpu1_8188", "gpu_device": "1", "gpu_label": "GPU 1", "port": 8188, "host": "127.0.0.1", "vram_mode": "normal", "extra_args": [], "status": "running", "is_running": true, "url": "http://127.0.0.1:8188"}, "message": "Instance gpu1_8188 started"}}
+
+data: {"type": "continuing", "tool_calls_so_far": 23}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_list"}
+
+data: {"type": "token", "text": "_installed"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\"}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_installed_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_executing", "tool": "comfyui_list_installed_nodes", "elapsed": 2.8}
+
+data: {"type": "tool_call", "tool": "comfyui_list_installed_nodes", "tool_number": 24, "arguments": {}, "result": {"success": true, "installed_nodes": [{"name": "ComfyUI-LTXVideo", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\custom_nodes\\ComfyUI-LTXVideo", "has_requirements": true, "has_init": true, "repo": "https://github.com/Lightricks/ComfyUI-LTXVideo.git"}, {"name": "ComfyUI-Manager", "path": "E:\\AgentNate\\modules\\comfyui\\comfyui\\custom_nodes\\ComfyUI-Manager", "has_requirements": true, "has_init": true, "repo": "https://github.com/ltdrdata/ComfyUI-Manager.git"}], "count": 2}}
+
+data: {"type": "continuing", "tool_calls_so_far": 24}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-L"}
+
+data: {"type": "token", "text": "TX"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": " custom"}
+
+data: {"type": "token", "text": " nodes"}
+
+data: {"type": "token", "text": " have"}
+
+data: {"type": "token", "text": " been"}
+
+data: {"type": "token", "text": " successfully"}
+
+data: {"type": "token", "text": " installed"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " instance"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " has"}
+
+data: {"type": "token", "text": " been"}
+
+data: {"type": "token", "text": " restarted"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " load"}
+
+data: {"type": "token", "text": " them"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " There"}
+
+data: {"type": "token", "text": " are"}
+
+data: {"type": "token", "text": " now"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "2"}
+
+data: {"type": "token", "text": " installed"}
+
+data: {"type": "token", "text": " node"}
+
+data: {"type": "token", "text": " packs"}
+
+data: {"type": "token", "text": ":"}
+
+data: {"type": "token", "text": " Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-L"}
+
+data: {"type": "token", "text": "TX"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": " and"}
+
+data: {"type": "token", "text": " Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-"}
+
+data: {"type": "token", "text": "Manager"}
+
+data: {"type": "token", "text": ".\n\n"}
+
+data: {"type": "token", "text": "Next"}
+
+data: {"type": "token", "text": ","}
+
+data: {"type": "token", "text": " I'll"}
+
+data: {"type": "token", "text": " inspect"}
+
+data: {"type": "token", "text": " the"}
+
+data: {"type": "token", "text": " available"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": " nodes"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " understand"}
+
+data: {"type": "token", "text": " how"}
+
+data: {"type": "token", "text": " to"}
+
+data: {"type": "token", "text": " build"}
+
+data: {"type": "token", "text": " a"}
+
+data: {"type": "token", "text": " text"}
+
+data: {"type": "token", "text": "-to"}
+
+data: {"type": "token", "text": "-video"}
+
+data: {"type": "token", "text": " workflow"}
+
+data: {"type": "token", "text": ".\n\n"}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "_desc"}
+
+data: {"type": "token", "text": "ribe"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "search"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "instance"}
+
+data: {"type": "token", "text": "_id"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "gpu"}
+
+data: {"type": "token", "text": "1"}
+
+data: {"type": "token", "text": "_"}
+
+data: {"type": "token", "text": "818"}
+
+data: {"type": "token", "text": "8"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "tool_executing", "tool": "comfyui_describe_nodes", "elapsed": 0.0}
+
+data: {"type": "tool_call", "tool": "comfyui_describe_nodes", "tool_number": 25, "arguments": {"search": "LTX", "instance_id": "gpu1_8188"}, "result": {"success": true, "nodes": {}, "count": 0}}
+
+data: {"type": "followup_start"}
+
+data: {"type": "token", "text": "The"}
+
+data: {"type": "token", "text": " LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": " custom"}
+
+data: {"type": "token", "text": " nodes"}
+
+data: {"type": "token", "text": " are"}
+
+data: {"type": "token", "text": " installed"}
+
+data: {"type": "token", "text": " but"}
+
+data: {"type": "token", "text": " not"}
+
+data: {"type": "token", "text": " yet"}
+
+data: {"type": "token", "text": " loaded"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "describe"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": " found"}
+
+data: {"type": "token", "text": " "}
+
+data: {"type": "token", "text": "0"}
+
+data: {"type": "token", "text": " matching"}
+
+data: {"type": "token", "text": " \""}
+
+data: {"type": "token", "text": "LT"}
+
+data: {"type": "token", "text": "X"}
+
+data: {"type": "token", "text": "\""}
+
+data: {"type": "token", "text": " nodes"}
+
+data: {"type": "token", "text": ")."}
+
+data: {"type": "token", "text": " This"}
+
+data: {"type": "token", "text": " is"}
+
+data: {"type": "token", "text": " likely"}
+
+data: {"type": "token", "text": " because"}
+
+data: {"type": "token", "text": " their"}
+
+data: {"type": "token", "text": " Python"}
+
+data: {"type": "token", "text": " dependencies"}
+
+data: {"type": "token", "text": " ("}
+
+data: {"type": "token", "text": "requirements"}
+
+data: {"type": "token", "text": ".txt"}
+
+data: {"type": "token", "text": ")"}
+
+data: {"type": "token", "text": " haven't"}
+
+data: {"type": "token", "text": " been"}
+
+data: {"type": "token", "text": " installed"}
+
+data: {"type": "token", "text": " yet"}
+
+data: {"type": "token", "text": "."}
+
+data: {"type": "token", "text": " Installing"}
+
+data: {"type": "token", "text": " those"}
+
+data: {"type": "token", "text": " now"}
+
+data: {"type": "token", "text": ".\n\n"}
+
+data: {"type": "token", "text": "{\""}
+
+data: {"type": "token", "text": "tool"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "run"}
+
+data: {"type": "token", "text": "_shell"}
+
+data: {"type": "token", "text": "\",\""}
+
+data: {"type": "token", "text": "arguments"}
+
+data: {"type": "token", "text": "\":{\""}
+
+data: {"type": "token", "text": "command"}
+
+data: {"type": "token", "text": "\":\""}
+
+data: {"type": "token", "text": "cd"}
+
+data: {"type": "token", "text": " /"}
+
+data: {"type": "token", "text": "d"}
+
+data: {"type": "token", "text": " \\\""}
+
+data: {"type": "token", "text": "E"}
+
+data: {"type": "token", "text": ":\\\\"}
+
+data: {"type": "token", "text": "Agent"}
+
+data: {"type": "token", "text": "N"}
+
+data: {"type": "token", "text": "ate"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "modules"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "ui"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "custom"}
+
+data: {"type": "token", "text": "_nodes"}
+
+data: {"type": "token", "text": "\\\\"}
+
+data: {"type": "token", "text": "Com"}
+
+data: {"type": "token", "text": "fy"}
+
+data: {"type": "token", "text": "UI"}
+
+data: {"type": "token", "text": "-L"}
+
+data: {"type": "token", "text": "TX"}
+
+data: {"type": "token", "text": "Video"}
+
+data: {"type": "token", "text": "\\\""}
+
+data: {"type": "token", "text": " &&"}
+
+data: {"type": "token", "text": " pip"}
+
+data: {"type": "token", "text": " install"}
+
+data: {"type": "token", "text": " -"}
+
+data: {"type": "token", "text": "r"}
+
+data: {"type": "token", "text": " requirements"}
+
+data: {"type": "token", "text": ".txt"}
+
+data: {"type": "token", "text": "\"}}"}
+
+data: {"type": "done", "tool_calls_total": 25}
+

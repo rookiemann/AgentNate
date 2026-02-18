@@ -1,0 +1,43 @@
+{
+  "id": "rp-1771335838923",
+  "name": "Auto-image_generation",
+  "description": "Auto-provisioned for image_generation",
+  "created_at": 1771335838923,
+  "routes": {
+    "coder": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    },
+    "code_assistant": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    },
+    "researcher": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    },
+    "data_analyst": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    },
+    "image_creator": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    },
+    "workflow_builder": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    },
+    "vision_agent": {
+      "provider": "openrouter",
+      "model_match": "OpenRouter: xAI: Grok 4.1 Fast",
+      "label": "OpenRouter: xAI: Grok 4.1 Fast (openrouter)"
+    }
+  }
+}

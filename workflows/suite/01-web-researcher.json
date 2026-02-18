@@ -1,0 +1,146 @@
+{
+  "name": "Web Researcher",
+  "active": true,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "input-1",
+      "name": "Set Query",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// ===== EDIT YOUR SEARCH QUERY HERE =====\nconst QUERY = 'latest breakthroughs in AI agents 2026';\n// ========================================\n\nreturn [{ json: { query: QUERY } }];"
+      }
+    },
+    {
+      "id": "model-1",
+      "name": "Get Loaded Models",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [650, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "http://localhost:8000/api/models/loaded"
+      }
+    },
+    {
+      "id": "extract-1",
+      "name": "Extract Model ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.all();\nconst query = input[0].json.query;\n\n// Find the model - handle both array and split-item responses\nlet instanceId = '';\nlet modelName = '';\nfor (const item of input) {\n  if (item.json.id && item.json.status === 'ready') {\n    instanceId = item.json.id;\n    modelName = item.json.name || item.json.model || '';\n    break;\n  }\n}\nif (!instanceId && input.length > 0 && Array.isArray(input[0].json)) {\n  const m = input[0].json.find(x => x.status === 'ready');\n  if (m) { instanceId = m.id; modelName = m.name || m.model || ''; }\n}\nif (!instanceId) throw new Error('No models loaded! Load a model in AgentNate first.');\n\nreturn [{ json: { query, instance_id: instanceId, model_name: modelName } }];"
+      }
+    },
+    {
+      "id": "search-1",
+      "name": "Web Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1050, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/tools/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tool: 'web_search', arguments: { query: $json.query, num_results: 5 } }) }}"
+      }
+    },
+    {
+      "id": "parse-1",
+      "name": "Fetch Top Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.all();\nconst searchData = input[0].json;\n\n// Get previous node data (instance_id, query) from the item chain\nconst prevItems = $('Extract Model ID').all();\nconst instanceId = prevItems[0].json.instance_id;\nconst query = prevItems[0].json.query;\n\n// Parse search results\nlet results = [];\nif (searchData.result && typeof searchData.result === 'string') {\n  try { results = JSON.parse(searchData.result); } catch(e) { results = []; }\n} else if (Array.isArray(searchData.result)) {\n  results = searchData.result;\n} else if (searchData.results) {\n  results = searchData.results;\n}\n\n// Build a summary of what we found\nconst snippets = results.slice(0, 5).map((r, i) =>\n  `[${i+1}] ${r.title || 'Untitled'}\\nURL: ${r.href || r.url || r.link || 'N/A'}\\n${r.body || r.snippet || r.description || ''}`\n).join('\\n\\n');\n\nreturn [{ json: {\n  instance_id: instanceId,\n  query: query,\n  search_snippets: snippets,\n  result_count: results.length,\n  top_url: results[0]?.href || results[0]?.url || results[0]?.link || ''\n} }];"
+      }
+    },
+    {
+      "id": "fetch-1",
+      "name": "Fetch Article",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1450, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/tools/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tool: 'fetch_url', arguments: { url: $json.top_url, extract_text: true, max_length: 10000 } }) }}"
+      }
+    },
+    {
+      "id": "prep-llm-1",
+      "name": "Prepare Summary Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1650, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const fetchResult = $input.first().json;\nconst prev = $('Fetch Top Result').first().json;\n\nconst articleText = (fetchResult.result || fetchResult.text || fetchResult.content || 'No content fetched').substring(0, 8000);\n\nreturn [{ json: {\n  instance_id: prev.instance_id,\n  messages: [\n    { role: 'system', content: 'You are a research assistant. Synthesize information into a clear, well-structured research briefing. Include key facts, trends, and actionable insights.' },\n    { role: 'user', content: `Research Topic: ${prev.query}\\n\\n--- SEARCH RESULTS ---\\n${prev.search_snippets}\\n\\n--- TOP ARTICLE CONTENT ---\\n${articleText}\\n\\n---\\nPlease synthesize a comprehensive research briefing on this topic. Include:\\n1. Key findings and facts\\n2. Current trends\\n3. Notable developments\\n4. Actionable insights` }\n  ],\n  max_tokens: 2048,\n  temperature: 0.7\n} }];"
+      }
+    },
+    {
+      "id": "llm-1",
+      "name": "LLM Summarize",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1850, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "output-1",
+      "name": "Format Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2050, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const llmResponse = $input.first().json;\nconst prev = $('Fetch Top Result').first().json;\n\nconst report = llmResponse.content || llmResponse.text || 'No response generated';\n\nreturn [{ json: {\n  topic: prev.query,\n  sources_found: prev.result_count,\n  top_source: prev.top_url,\n  report: report,\n  generated_at: new Date().toISOString()\n} }];"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Set Query", "type": "main", "index": 0 }]] },
+    "Set Query": { "main": [[{ "node": "Get Loaded Models", "type": "main", "index": 0 }]] },
+    "Get Loaded Models": { "main": [[{ "node": "Extract Model ID", "type": "main", "index": 0 }]] },
+    "Extract Model ID": { "main": [[{ "node": "Web Search", "type": "main", "index": 0 }]] },
+    "Web Search": { "main": [[{ "node": "Fetch Top Result", "type": "main", "index": 0 }]] },
+    "Fetch Top Result": { "main": [[{ "node": "Fetch Article", "type": "main", "index": 0 }]] },
+    "Fetch Article": { "main": [[{ "node": "Prepare Summary Prompt", "type": "main", "index": 0 }]] },
+    "Prepare Summary Prompt": { "main": [[{ "node": "LLM Summarize", "type": "main", "index": 0 }]] },
+    "LLM Summarize": { "main": [[{ "node": "Format Report", "type": "main", "index": 0 }]] }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "name": "Data Extractor",
+  "active": true,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "input-1",
+      "name": "Set Input Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// ===== EDIT YOUR INPUT TEXT AND EXTRACTION SCHEMA =====\nconst RAW_TEXT = `\nJohn Smith, CEO of TechCorp (john@techcorp.com, +1-555-0123)\nmet with Sarah Chen, VP Engineering at DataFlow Inc (sarah.chen@dataflow.io)\non February 5, 2026 to discuss a $2.5M partnership deal.\nThe meeting was held at 123 Innovation Drive, San Francisco, CA 94105.\nFollow-up scheduled for March 1, 2026.\n`;\n\nconst SCHEMA = `Extract the following fields as a JSON object:\n- people: array of { name, title, company, email, phone }\n- meeting_date: ISO date string\n- location: full address\n- deal_value: number\n- followup_date: ISO date string\n- summary: one-sentence summary`;\n// ======================================================\n\nreturn [{ json: { raw_text: RAW_TEXT, schema: SCHEMA } }];"
+      }
+    },
+    {
+      "id": "model-1",
+      "name": "Get Loaded Models",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [650, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "http://localhost:8000/api/models/loaded"
+      }
+    },
+    {
+      "id": "extract-1",
+      "name": "Extract Model ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.all();\nconst prev = $('Set Input Data').first().json;\n\nlet instanceId = '';\nfor (const item of input) {\n  if (item.json.id && item.json.status === 'ready') {\n    instanceId = item.json.id;\n    break;\n  }\n}\nif (!instanceId && input.length > 0 && Array.isArray(input[0].json)) {\n  const m = input[0].json.find(x => x.status === 'ready');\n  if (m) instanceId = m.id;\n}\nif (!instanceId) throw new Error('No models loaded! Load a model in AgentNate first.');\n\nreturn [{ json: {\n  instance_id: instanceId,\n  messages: [\n    { role: 'system', content: 'You are a precise data extraction engine. You ONLY output valid JSON, nothing else. No explanations, no markdown, just the JSON object.' },\n    { role: 'user', content: `Input text:\\n${prev.raw_text}\\n\\n${prev.schema}\\n\\nRespond with ONLY the JSON object, no other text.` }\n  ],\n  max_tokens: 1024,\n  temperature: 0.1\n} }];"
+      }
+    },
+    {
+      "id": "llm-1",
+      "name": "LLM Extract",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1050, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "parse-1",
+      "name": "Parse Structured Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const llmResponse = $input.first().json;\nconst content = llmResponse.content || '';\n\nlet extracted = null;\nlet parseError = null;\n\ntry {\n  // Try direct parse\n  extracted = JSON.parse(content);\n} catch(e1) {\n  try {\n    // Try extracting JSON from markdown code blocks\n    const match = content.match(/```(?:json)?\\s*([\\s\\S]*?)```/);\n    if (match) extracted = JSON.parse(match[1].trim());\n  } catch(e2) {\n    try {\n      // Try finding any JSON object\n      const match = content.match(/(\\{[\\s\\S]*\\})/);\n      if (match) extracted = JSON.parse(match[1]);\n    } catch(e3) {\n      parseError = 'Could not parse JSON from LLM response';\n    }\n  }\n}\n\nif (extracted) {\n  return [{ json: { success: true, data: extracted, raw_response: content } }];\n} else {\n  return [{ json: { success: false, error: parseError, raw_response: content } }];\n}"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Set Input Data", "type": "main", "index": 0 }]] },
+    "Set Input Data": { "main": [[{ "node": "Get Loaded Models", "type": "main", "index": 0 }]] },
+    "Get Loaded Models": { "main": [[{ "node": "Extract Model ID", "type": "main", "index": 0 }]] },
+    "Extract Model ID": { "main": [[{ "node": "LLM Extract", "type": "main", "index": 0 }]] },
+    "LLM Extract": { "main": [[{ "node": "Parse Structured Output", "type": "main", "index": 0 }]] }
+  }
+}

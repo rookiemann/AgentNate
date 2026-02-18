@@ -1,0 +1,60 @@
+{
+  "name": "Test 02 - Public API Fetch (No Credentials)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0002-0001-0001-000000000001",
+      "name": "Run Test",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts/1",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-0001-0001-000000000002",
+      "name": "Fetch Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts/1/comments",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-0001-0001-000000000003",
+      "name": "Fetch Comments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const post = $('Fetch Post').first().json;\nconst comments = $('Fetch Comments').all().map(c => c.json);\nreturn [{\n  json: {\n    status: 'success',\n    postTitle: post.title,\n    postBody: post.body,\n    commentCount: comments.length,\n    firstComment: comments[0]?.name || 'none',\n    completedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0002-0001-0001-000000000004",
+      "name": "Combine Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Run Test": {
+      "main": [[{"node": "Fetch Post", "type": "main", "index": 0}]]
+    },
+    "Fetch Post": {
+      "main": [[{"node": "Fetch Comments", "type": "main", "index": 0}]]
+    },
+    "Fetch Comments": {
+      "main": [[{"node": "Combine Results", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

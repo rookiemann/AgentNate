@@ -1,0 +1,147 @@
+{
+  "name": "News Briefing Generator",
+  "active": true,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "input-1",
+      "name": "Set Topics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// ===== EDIT YOUR NEWS TOPICS HERE =====\nconst TOPICS = [\n  'AI artificial intelligence news today',\n  'technology industry latest',\n  'science breakthroughs 2026'\n];\n// =======================================\n\nreturn [{ json: { topics: TOPICS } }];"
+      }
+    },
+    {
+      "id": "model-1",
+      "name": "Get Loaded Models",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [650, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "http://localhost:8000/api/models/loaded"
+      }
+    },
+    {
+      "id": "extract-1",
+      "name": "Extract Model ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.all();\nconst topics = $('Set Topics').first().json.topics;\n\nlet instanceId = '';\nfor (const item of input) {\n  if (item.json.id && item.json.status === 'ready') {\n    instanceId = item.json.id;\n    break;\n  }\n}\nif (!instanceId && input.length > 0 && Array.isArray(input[0].json)) {\n  const m = input[0].json.find(x => x.status === 'ready');\n  if (m) instanceId = m.id;\n}\nif (!instanceId) throw new Error('No models loaded! Load a model in AgentNate first.');\n\nreturn [{ json: { instance_id: instanceId, topics: topics } }];"
+      }
+    },
+    {
+      "id": "search-all",
+      "name": "Search All Topics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const prev = $input.first().json;\nconst topics = prev.topics;\n\n// Build tool calls for each topic\nconst items = topics.map(topic => ({\n  json: {\n    tool: 'web_search',\n    arguments: { query: topic, num_results: 3 },\n    _meta: { topic, instance_id: prev.instance_id }\n  }\n}));\n\nreturn items;"
+      }
+    },
+    {
+      "id": "search-http",
+      "name": "Execute Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1250, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/tools/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tool: $json.tool, arguments: $json.arguments }) }}",
+        "options": { "batching": { "batch": { "batchSize": 3, "batchInterval": 500 } } }
+      }
+    },
+    {
+      "id": "combine-1",
+      "name": "Combine Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1450, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const searchResults = $input.all();\nconst prev = $('Extract Model ID').first().json;\n\nlet allSnippets = '';\nfor (let i = 0; i < searchResults.length; i++) {\n  const data = searchResults[i].json;\n  const topic = prev.topics[i] || 'Topic ' + (i+1);\n  \n  let results = [];\n  if (data.result && typeof data.result === 'string') {\n    try { results = JSON.parse(data.result); } catch(e) {}\n  } else if (Array.isArray(data.result)) {\n    results = data.result;\n  } else if (data.results) {\n    results = data.results;\n  }\n  \n  allSnippets += `\\n\\n=== ${topic.toUpperCase()} ===\\n`;\n  for (const r of results.slice(0, 3)) {\n    allSnippets += `- ${r.title || 'Untitled'}: ${r.body || r.snippet || r.description || ''}\\n`;\n  }\n}\n\nreturn [{ json: {\n  instance_id: prev.instance_id,\n  messages: [\n    { role: 'system', content: 'You are a news editor creating a daily briefing. Write a clear, engaging summary organized by topic. Include the most important developments and why they matter. Keep it concise but informative.' },\n    { role: 'user', content: `Create a news briefing from these search results gathered today (${new Date().toLocaleDateString()}):\\n${allSnippets}\\n\\nWrite a well-organized daily briefing with sections for each topic area.` }\n  ],\n  max_tokens: 2048,\n  temperature: 0.7\n} }];"
+      }
+    },
+    {
+      "id": "llm-1",
+      "name": "LLM Write Briefing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1650, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "save-1",
+      "name": "Save Briefing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1850, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/tools/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tool: 'write_file', arguments: { path: 'E:/AgentNate/.n8n-instances/reports/briefing-' + new Date().toISOString().slice(0,10) + '.md', content: '# Daily News Briefing - ' + new Date().toLocaleDateString() + '\\n\\n' + ($json.content || 'No content generated') } }) }}"
+      }
+    },
+    {
+      "id": "output-1",
+      "name": "Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2050, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const saveResult = $input.first().json;\nconst briefing = $('LLM Write Briefing').first().json;\n\nreturn [{ json: {\n  briefing: briefing.content || 'No briefing generated',\n  saved: saveResult.success !== false,\n  generated_at: new Date().toISOString()\n} }];"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Set Topics", "type": "main", "index": 0 }]] },
+    "Set Topics": { "main": [[{ "node": "Get Loaded Models", "type": "main", "index": 0 }]] },
+    "Get Loaded Models": { "main": [[{ "node": "Extract Model ID", "type": "main", "index": 0 }]] },
+    "Extract Model ID": { "main": [[{ "node": "Search All Topics", "type": "main", "index": 0 }]] },
+    "Search All Topics": { "main": [[{ "node": "Execute Search", "type": "main", "index": 0 }]] },
+    "Execute Search": { "main": [[{ "node": "Combine Results", "type": "main", "index": 0 }]] },
+    "Combine Results": { "main": [[{ "node": "LLM Write Briefing", "type": "main", "index": 0 }]] },
+    "LLM Write Briefing": { "main": [[{ "node": "Save Briefing", "type": "main", "index": 0 }]] },
+    "Save Briefing": { "main": [[{ "node": "Output", "type": "main", "index": 0 }]] }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771212456475",
+  "name": "OpenRouter GLM 4.7",
+  "provider": "openrouter",
+  "modelId": "z-ai/glm-4.7",
+  "modelName": "Z.ai: GLM 4.7",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771212456475
+}

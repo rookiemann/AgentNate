@@ -1,0 +1,115 @@
+{
+  "name": "Smart Scraper",
+  "active": true,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "trigger-1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "input-1",
+      "name": "Set URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// ===== EDIT YOUR TARGET URL AND INSTRUCTIONS HERE =====\nconst URL = 'https://news.ycombinator.com';\nconst INSTRUCTIONS = 'Extract the top 10 stories with their titles, URLs, points, and comment counts. Return as a JSON array.';\n// ======================================================\n\nreturn [{ json: { url: URL, instructions: INSTRUCTIONS } }];"
+      }
+    },
+    {
+      "id": "model-1",
+      "name": "Get Loaded Models",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [650, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "http://localhost:8000/api/models/loaded"
+      }
+    },
+    {
+      "id": "extract-1",
+      "name": "Extract Model ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.all();\nconst prev = $('Set URL').first().json;\n\nlet instanceId = '';\nfor (const item of input) {\n  if (item.json.id && item.json.status === 'ready') {\n    instanceId = item.json.id;\n    break;\n  }\n}\nif (!instanceId && input.length > 0 && Array.isArray(input[0].json)) {\n  const m = input[0].json.find(x => x.status === 'ready');\n  if (m) instanceId = m.id;\n}\nif (!instanceId) throw new Error('No models loaded! Load a model in AgentNate first.');\n\nreturn [{ json: { instance_id: instanceId, url: prev.url, instructions: prev.instructions } }];"
+      }
+    },
+    {
+      "id": "fetch-1",
+      "name": "Smart Fetch URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1050, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/tools/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tool: 'fetch_url', arguments: { url: $json.url, extract_text: true, max_length: 30000 } }) }}"
+      }
+    },
+    {
+      "id": "prep-1",
+      "name": "Prepare Analysis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const fetchResult = $input.first().json;\nconst prev = $('Extract Model ID').first().json;\n\nconst pageText = (fetchResult.result || fetchResult.text || fetchResult.content || 'No content fetched').substring(0, 15000);\n\nreturn [{ json: {\n  instance_id: prev.instance_id,\n  messages: [\n    { role: 'system', content: 'You are a data extraction specialist. Extract structured data from webpage content exactly as instructed. Always respond with valid JSON when asked for structured output.' },\n    { role: 'user', content: `URL: ${prev.url}\\n\\nPage Content:\\n${pageText}\\n\\n---\\nInstructions: ${prev.instructions}` }\n  ],\n  max_tokens: 2048,\n  temperature: 0.3\n} }];"
+      }
+    },
+    {
+      "id": "llm-1",
+      "name": "LLM Analyze",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1450, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "output-1",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1650, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const llmResponse = $input.first().json;\nconst prev = $('Extract Model ID').first().json;\nconst content = llmResponse.content || '';\n\n// Try to parse JSON from LLM response\nlet structured = null;\ntry {\n  // Find JSON in the response (might be wrapped in markdown code blocks)\n  const jsonMatch = content.match(/```(?:json)?\\s*([\\s\\S]*?)```/) || content.match(/(\\[\\s*\\{[\\s\\S]*\\}\\s*\\])/) || content.match(/(\\{[\\s\\S]*\\})/);\n  if (jsonMatch) structured = JSON.parse(jsonMatch[1]);\n  else structured = JSON.parse(content);\n} catch(e) {\n  structured = null;\n}\n\nreturn [{ json: {\n  url: prev.url,\n  analysis: content,\n  structured_data: structured,\n  scraped_at: new Date().toISOString()\n} }];"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Set URL", "type": "main", "index": 0 }]] },
+    "Set URL": { "main": [[{ "node": "Get Loaded Models", "type": "main", "index": 0 }]] },
+    "Get Loaded Models": { "main": [[{ "node": "Extract Model ID", "type": "main", "index": 0 }]] },
+    "Extract Model ID": { "main": [[{ "node": "Smart Fetch URL", "type": "main", "index": 0 }]] },
+    "Smart Fetch URL": { "main": [[{ "node": "Prepare Analysis", "type": "main", "index": 0 }]] },
+    "Prepare Analysis": { "main": [[{ "node": "LLM Analyze", "type": "main", "index": 0 }]] },
+    "LLM Analyze": { "main": [[{ "node": "Format Output", "type": "main", "index": 0 }]] }
+  }
+}

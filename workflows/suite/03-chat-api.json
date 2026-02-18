@@ -1,0 +1,117 @@
+{
+  "name": "Chat API Service",
+  "active": true,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "webhook-1",
+      "name": "Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "chat-api-webhook-001",
+      "parameters": {
+        "path": "chat",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "model-1",
+      "name": "Get Loaded Models",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [450, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "http://localhost:8000/api/models/loaded"
+      }
+    },
+    {
+      "id": "prep-1",
+      "name": "Build LLM Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.all();\nconst webhookData = $('Chat Webhook').first().json;\n\n// Extract the message from webhook body\nconst userMessage = webhookData.body?.message || webhookData.body?.prompt || webhookData.body?.content || JSON.stringify(webhookData.body);\nconst systemPrompt = webhookData.body?.system || 'You are a helpful AI assistant. Be concise and accurate.';\nconst maxTokens = webhookData.body?.max_tokens || 1024;\nconst temperature = webhookData.body?.temperature || 0.7;\n\n// Find loaded model\nlet instanceId = '';\nfor (const item of input) {\n  if (item.json.id && item.json.status === 'ready') {\n    instanceId = item.json.id;\n    break;\n  }\n}\nif (!instanceId && input.length > 0 && Array.isArray(input[0].json)) {\n  const m = input[0].json.find(x => x.status === 'ready');\n  if (m) instanceId = m.id;\n}\n\nif (!instanceId) {\n  return [{ json: { error: true, message: 'No models loaded in AgentNate' } }];\n}\n\nreturn [{ json: {\n  instance_id: instanceId,\n  messages: [\n    { role: 'system', content: systemPrompt },\n    { role: 'user', content: userMessage }\n  ],\n  max_tokens: maxTokens,\n  temperature: temperature\n} }];"
+      }
+    },
+    {
+      "id": "check-1",
+      "name": "Check Model Found",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-1",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "notTrue" }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "llm-1",
+      "name": "Call LLM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1050, 200],
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "respond-ok",
+      "name": "Send Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1250, 200],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, response: $json.content, finish_reason: $json.finish_reason }) }}"
+      }
+    },
+    {
+      "id": "respond-err",
+      "name": "Send Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1050, 400],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, error: $json.message || 'No model loaded' }) }}",
+        "options": { "responseCode": 503 }
+      }
+    }
+  ],
+  "connections": {
+    "Chat Webhook": { "main": [[{ "node": "Get Loaded Models", "type": "main", "index": 0 }]] },
+    "Get Loaded Models": { "main": [[{ "node": "Build LLM Request", "type": "main", "index": 0 }]] },
+    "Build LLM Request": { "main": [[{ "node": "Check Model Found", "type": "main", "index": 0 }]] },
+    "Check Model Found": {
+      "main": [
+        [{ "node": "Call LLM", "type": "main", "index": 0 }],
+        [{ "node": "Send Error", "type": "main", "index": 0 }]
+      ]
+    },
+    "Call LLM": { "main": [[{ "node": "Send Response", "type": "main", "index": 0 }]] }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "preset-1770254977653",
+  "name": "MOE gated 3090",
+  "provider": "llama_cpp",
+  "modelId": "E:\\LL STUDIO\\mradermacher\\Llama-3.2-8X3B-GATED-MOE-Reasoning-Dark-Champion-Instruct-uncensored-abliterated-18.4B-i1-GGUF\\Llama-3.2-8X3B-GATED-MOE-Reasoning-Dark-Champion-Instruct-uncensored-abliterated-18.4B.i1-Q6_K.gguf",
+  "modelName": "Llama-3.2-8X3B-GATED-MOE-Reasoning-Dark-Champion-Instruct-uncensored-abliterated-18.4B.i1-Q6_K.gguf",
+  "contextLength": 4096,
+  "gpuLayers": -1,
+  "gpuIndex": 1,
+  "createdAt": 1770254977653
+}

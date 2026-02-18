@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771100000001",
+  "name": "OR Claude Sonnet 4.5",
+  "provider": "openrouter",
+  "modelId": "anthropic/claude-sonnet-4.5",
+  "modelName": "Anthropic: Claude Sonnet 4.5",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771100000001
+}

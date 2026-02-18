@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>AgentNate</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- Connection Status Banner -->
+    <div id="connection-banner" class="connection-banner hidden">
+        <div class="connection-content">
+            <div class="connection-icon">⚠</div>
+            <div class="connection-text">
+                <div class="connection-message">Server Disconnected</div>
+                <div class="connection-reason">Connection lost. The server may have crashed or been stopped.</div>
+            </div>
+            <div class="connection-actions">
+                <span class="connection-hint">Restart server with: python run.py --mode server</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>AgentNate</h1>
+            </div>
+
+            <!-- Model Presets Section -->
+            <section class="sidebar-section presets-section">
+                <div class="presets-header">
+                    <label>Quick Load</label>
+                    <button id="manage-presets-btn" class="btn-icon" onclick="openPresetsModal()" title="Manage presets">&#9881;</button>
+                </div>
+                <select id="preset-dropdown" onchange="loadFromPreset(this.value)">
+                    <option value="">Select a preset...</option>
+                </select>
+            </section>
+
+            <!-- Models Section -->
+            <section class="sidebar-section">
+                <div class="section-header">
+                    <span>Models</span>
+                    <button class="btn-icon" onclick="showLoadModal()" title="Load Model">+</button>
+                </div>
+                <div id="loaded-models" class="model-list">
+                    <div class="empty-state">No models loaded</div>
+                </div>
+            </section>
+
+            <!-- Providers Section -->
+            <section class="sidebar-section">
+                <div class="section-header">
+                    <span>Providers</span>
+                    <button class="btn-icon" onclick="refreshHealth()" title="Refresh">&#8635;</button>
+                </div>
+                <div id="provider-status" class="provider-list"></div>
+                <div class="provider-legend">
+                    <span class="status-dot online"></span> Online
+                    <span class="status-dot offline"></span> Offline
+                </div>
+            </section>
+
+            <!-- n8n Queue Section -->
+            <section class="sidebar-section n8n-queue-section">
+                <div class="section-header">
+                    <span>n8n Workflows</span>
+                </div>
+
+                <!-- Main Admin Status -->
+                <div class="n8n-main-control">
+                    <span class="status-dot" id="main-status-dot"></span>
+                    <span class="main-label">Main Admin</span>
+                    <span id="main-status-text" class="main-status-text">Stopped</span>
+                    <button id="main-open-btn" class="btn-small" onclick="openMainAdminTab()" title="Start and open n8n dashboard">Start</button>
+                </div>
+
+                <button class="btn-secondary btn-full-width" onclick="switchTab('workflows')" title="Browse and deploy automation workflows">
+                    Workflows Tab &rarr;
+                </button>
+            </section>
+
+            <div class="sidebar-footer">
+                <button class="btn-secondary" onclick="showSettings()" title="Configure providers, models, and system settings">Settings</button>
+                <button id="shutdown-btn" class="btn-danger-solid" onclick="shutdownSystem()" title="Shutdown AgentNate - unload all models, stop all services">Shutdown</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <div id="tabs" class="tabs">
+                    <button class="tab active" data-tab="chat" onclick="switchTab('chat')" title="Chat with AI models">Chat</button>
+                    <button class="tab" data-tab="arena" onclick="switchTab('arena')" title="Test and compare models">LLM Lab</button>
+                    <button class="tab" data-tab="workflows" onclick="switchTab('workflows')" title="n8n workflow automation">Workflows</button>
+                    <button class="tab" data-tab="executions" onclick="switchTab('executions')" title="Workflow execution history">Executions</button>
+                    <button class="tab" data-tab="comfyui" onclick="switchTab('comfyui')" title="AI image generation with ComfyUI">ComfyUI</button>
+                    <button class="tab" data-tab="tts" onclick="switchTab('tts')" title="Text-to-Speech generation">TTS</button>
+                    <button class="tab" data-tab="music" onclick="switchTab('music')" title="AI Music Generation">Music</button>
+                    <button class="tab" data-tab="gpu" onclick="switchTab('gpu')" title="GPU monitoring dashboard">GPU</button>
+                    <button class="tab" data-tab="logs" onclick="switchTab('logs')" title="Application logs">Logs</button>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content" class="tab-content">
+                <!-- Chat Tab -->
+                <div id="tab-chat" class="tab-panel active">
+                    <!-- Panel Tab Bar (hidden when only 1 panel) -->
+                    <div class="chat-panel-tabs" id="chat-panel-tabs" style="display: none;">
+                        <div class="panel-tabs-scroll" id="panel-tabs">
+                            <!-- Rendered by panels.js -->
+                        </div>
+                        <button class="btn-add-panel" onclick="createNewPanel()" title="New chat panel">+</button>
+                    </div>
+                    <!-- Panel Container — panels rendered dynamically by panels.js -->
+                    <div id="panel-container" class="panel-container">
+                    </div>
+                </div>
+
+
+                <!-- Arena Tab (Model Comparison) -->
+                <div id="tab-arena" class="tab-panel">
+                    <div class="arena-container">
+                        <div class="arena-header">
+                            <h3>LLM Lab</h3>
+                            <div class="arena-mode-toggle">
+                                <button class="mode-btn active" data-mode="compare" onclick="setArenaMode('compare')">
+                                    Compare
+                                </button>
+                                <button class="mode-btn" data-mode="debate" onclick="setArenaMode('debate')">
+                                    Debate
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="arena-setup">
+                            <div class="arena-prompt-selector" id="arena-prompt-row">
+                                <label>System Prompt</label>
+                                <select id="arena-system-prompt">
+                                    <option value="">None (raw model output)</option>
+                                </select>
+                            </div>
+                            <div class="arena-models">
+                                <div class="arena-model-slot" id="arena-slot-1">
+                                    <label>Model 1</label>
+                                    <select id="arena-model-1" onchange="updateArenaModels()">
+                                        <option value="">Select a model...</option>
+                                    </select>
+                                </div>
+                                <div class="arena-vs">VS</div>
+                                <div class="arena-model-slot" id="arena-slot-2">
+                                    <label>Model 2</label>
+                                    <select id="arena-model-2" onchange="updateArenaModels()">
+                                        <option value="">Select a model...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="arena-battle">
+                            <div class="arena-responses">
+                                <div class="arena-response" id="arena-response-1">
+                                    <div class="arena-response-header">
+                                        <span id="arena-name-1">Model 1</span>
+                                        <span class="arena-time" id="arena-time-1"></span>
+                                    </div>
+                                    <div class="arena-response-content" id="arena-content-1">
+                                        <div class="arena-placeholder">Select a model and send a prompt to begin</div>
+                                    </div>
+                                </div>
+                                <div class="arena-response" id="arena-response-2">
+                                    <div class="arena-response-header">
+                                        <span id="arena-name-2">Model 2</span>
+                                        <span class="arena-time" id="arena-time-2"></span>
+                                    </div>
+                                    <div class="arena-response-content" id="arena-content-2">
+                                        <div class="arena-placeholder">Select a model and send a prompt to begin</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Judge Verdict -->
+                        <div id="arena-judge-section" class="arena-judge-section hidden">
+                            <div class="arena-judge-header">
+                                <button id="arena-judge-btn" class="btn-secondary" onclick="runAutoJudge()">Auto-Judge</button>
+                                <span id="arena-judge-status" class="arena-judge-status"></span>
+                            </div>
+                            <div id="arena-judge-verdict" class="arena-judge-verdict hidden"></div>
+                        </div>
+
+                        <!-- Compare Mode Input -->
+                        <div class="arena-input-area" id="arena-compare-input">
+                            <textarea
+                                id="arena-input"
+                                placeholder="Enter a prompt to compare models..."
+                                rows="2"
+                                onkeydown="handleArenaKeydown(event)"
+                            ></textarea>
+                            <button id="arena-send-btn" onclick="runArenaComparison()" disabled>
+                                <span>Compare</span>
+                            </button>
+                        </div>
+
+                        <!-- Debate Mode Input -->
+                        <div class="arena-input-area debate-input hidden" id="arena-debate-input">
+                            <div class="debate-topic-input">
+                                <input
+                                    type="text"
+                                    id="debate-topic"
+                                    placeholder="Enter debate topic (e.g., 'AI will benefit humanity more than harm it')"
+                                />
+                                <div class="debate-options">
+                                    <label>
+                                        Rounds:
+                                        <select id="debate-rounds">
+                                            <option value="2">2 rounds</option>
+                                            <option value="3" selected>3 rounds</option>
+                                            <option value="4">4 rounds</option>
+                                            <option value="5">5 rounds</option>
+                                        </select>
+                                    </label>
+                                    <label>
+                                        Model 1 argues:
+                                        <select id="debate-position">
+                                            <option value="for">FOR the topic</option>
+                                            <option value="against">AGAINST the topic</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <button id="debate-send-btn" onclick="runDebate()" disabled>
+                                <span>Start Debate</span>
+                            </button>
+                        </div>
+
+                        <!-- Debate Transcript (shown during/after debate) -->
+                        <div id="debate-transcript" class="debate-transcript hidden">
+                            <div class="debate-transcript-header">
+                                <h4>Debate Transcript</h4>
+                                <span id="debate-status"></span>
+                            </div>
+                            <div id="debate-turns" class="debate-turns">
+                                <!-- Debate turns will be rendered here -->
+                            </div>
+                        </div>
+
+                        <div class="arena-history" id="arena-history">
+                            <!-- Previous comparisons will show here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workflows Tab (Real Marketplace) -->
+                <div id="tab-workflows" class="tab-panel">
+                    <div class="marketplace-container">
+                        <!-- Sub-tabs: Marketplace | Deployed -->
+                        <div class="workflows-subtabs">
+                            <button class="subtab active" data-subtab="marketplace" onclick="switchWorkflowSubtab('marketplace')">
+                                Marketplace
+                            </button>
+                            <button class="subtab" data-subtab="deployed" onclick="switchWorkflowSubtab('deployed')">
+                                Deployed
+                                <span id="deployed-count" class="subtab-badge">0</span>
+                            </button>
+                            <button class="subtab" data-subtab="workers" onclick="switchWorkflowSubtab('workers')">
+                                Active Workers
+                                <span id="workers-count" class="subtab-badge">0</span>
+                            </button>
+                        </div>
+
+                        <!-- Marketplace Subtab -->
+                        <div id="subtab-marketplace" class="subtab-content active">
+                            <div class="marketplace-header">
+                                <div class="marketplace-header-content">
+                                    <h3>Workflow Marketplace</h3>
+                                    <p>Browse and deploy real n8n workflows from the community</p>
+                                    <span id="marketplace-stats" class="marketplace-stats"></span>
+                                </div>
+                                <div class="marketplace-search">
+                                    <input type="text" id="marketplace-search" placeholder="Search workflows..." oninput="searchMarketplace()">
+                                </div>
+                            </div>
+
+                        <div class="marketplace-layout">
+                            <!-- Category Sidebar -->
+                            <div class="marketplace-categories" id="marketplace-categories">
+                                <div class="category-item active" data-category="all" onclick="selectMarketplaceCategory('all')">
+                                    <span class="category-icon">&#128218;</span>
+                                    <span class="category-name">All Categories</span>
+                                </div>
+                                <div class="loading-categories">Loading categories...</div>
+                            </div>
+
+                            <!-- Workflow Grid -->
+                            <div class="marketplace-workflows">
+                                <div id="workflows-grid" class="workflows-grid">
+                                    <div class="loading">Loading workflows...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workflow Preview Modal -->
+                        <div id="workflow-preview-modal" class="workflow-preview-modal hidden">
+                            <div class="preview-modal-content">
+                                <div class="preview-modal-header">
+                                    <div>
+                                        <h4 id="preview-workflow-name">Workflow Name</h4>
+                                        <span id="preview-workflow-meta" class="preview-meta">Category | Trigger type | Nodes</span>
+                                    </div>
+                                    <button class="btn-close" onclick="closeWorkflowPreviewModal()">&times;</button>
+                                </div>
+                                <div class="preview-modal-body">
+                                    <!-- Workflow Description -->
+                                    <div id="preview-description-section" class="description-section hidden">
+                                        <p id="preview-workflow-description" class="workflow-description"></p>
+                                    </div>
+
+                                    <!-- Integrations Used -->
+                                    <div id="preview-integrations-section" class="integrations-section hidden">
+                                        <h5>Integrations</h5>
+                                        <div id="preview-integrations-list" class="integrations-list"></div>
+                                    </div>
+
+                                    <!-- Workflow Nodes -->
+                                    <div class="workflow-summary">
+                                        <div class="summary-section">
+                                            <h5>Workflow Nodes</h5>
+                                            <div id="preview-nodes-list" class="nodes-list"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- JSON Preview (collapsible) -->
+                                    <details class="json-details">
+                                        <summary>View Raw JSON</summary>
+                                        <pre id="preview-workflow-json" class="workflow-json-preview"></pre>
+                                    </details>
+                                </div>
+                                <div class="preview-modal-footer">
+                                    <button class="btn-secondary" onclick="copyWorkflowJson()">Copy JSON</button>
+                                    <button class="btn-secondary" onclick="downloadWorkflowJson()">Download</button>
+                                    <div class="deploy-dropdown">
+                                        <button class="btn-primary deploy-run-btn" onclick="deployAndRunWorkflow('once')">
+                                            Deploy &amp; Run
+                                        </button>
+                                        <div class="deploy-dropdown-content">
+                                            <button onclick="deployAndRunWorkflow('once')">Run Once</button>
+                                            <button onclick="deployAndRunWorkflow('loop')">Loop (continuous)</button>
+                                            <button onclick="deployAndRunWorkflow('standby')">Standby (webhook)</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Workflow Inspection Modal (pre-deploy credential/placeholder check) -->
+                        <div id="workflow-inspection-modal" class="workflow-preview-modal hidden">
+                            <div class="preview-modal-content">
+                                <div class="preview-modal-header">
+                                    <div>
+                                        <h4 id="inspection-workflow-name">Configure Workflow</h4>
+                                        <span id="inspection-workflow-meta" class="preview-meta"></span>
+                                    </div>
+                                    <button class="btn-close" onclick="closeInspectionPanel()">&times;</button>
+                                </div>
+                                <div class="preview-modal-body">
+                                    <div id="inspection-summary" class="inspection-summary"></div>
+                                    <div id="inspection-credentials" class="inspection-section"></div>
+                                    <div id="inspection-placeholders" class="inspection-section"></div>
+                                </div>
+                                <div class="preview-modal-footer">
+                                    <button class="btn-secondary" onclick="openAgentForWorkflow()">🤖 Configure with Agent</button>
+                                    <button class="btn-primary" onclick="configureAndDeploy()">Deploy</button>
+                                </div>
+                            </div>
+                        </div>
+                        </div><!-- End marketplace subtab -->
+
+                        <!-- Deployed Workflows Subtab -->
+                        <div id="subtab-deployed" class="subtab-content hidden">
+                            <div class="deployed-header">
+                                <div>
+                                    <h3>Deployed Workflows</h3>
+                                    <p>Workflows saved in Main Admin - ready to spawn as workers</p>
+                                </div>
+                                <div class="deployed-header-actions">
+                                    <button class="btn-secondary" onclick="toggleImportZone()">Import</button>
+                                    <button class="btn-secondary" onclick="refreshDeployedWorkflows()">Refresh</button>
+                                </div>
+                            </div>
+
+                            <!-- Import Zone (hidden by default) -->
+                            <div id="import-zone" class="import-zone hidden">
+                                <div class="import-drop-area" id="import-drop-area">
+                                    <div class="import-drop-icon">&#128230;</div>
+                                    <div class="import-drop-text">Drop workflow JSON(s) here, paste, or upload (multi-select supported)</div>
+                                    <div class="import-drop-actions">
+                                        <button class="btn-secondary btn-small" onclick="document.getElementById('import-file-input').click()">Upload File</button>
+                                        <button class="btn-secondary btn-small" onclick="pasteWorkflowFromClipboard()">Paste from Clipboard</button>
+                                    </div>
+                                    <input type="file" id="import-file-input" accept=".json" multiple style="display:none" onchange="handleImportFile(event)">
+                                </div>
+                                <textarea id="import-json-input" class="import-json-textarea" placeholder="Or paste workflow JSON here..." rows="4"></textarea>
+                                <button class="btn-primary btn-small" onclick="validateImportedWorkflow()">Validate</button>
+
+                                <!-- Validation Results -->
+                                <div id="import-results" class="import-results hidden"></div>
+                            </div>
+
+                            <div id="deployed-workflows-list" class="deployed-list">
+                                <div class="empty-state">Loading deployed workflows...</div>
+                            </div>
+                        </div>
+
+                        <!-- Workflow Parameter Editor Modal -->
+                        <div id="param-editor-modal" class="param-editor-modal hidden">
+                            <div class="param-editor-content">
+                                <div class="param-editor-header">
+                                    <h4 id="param-editor-title">Edit Workflow Parameters</h4>
+                                    <button class="btn-close" onclick="closeParamEditor()">&times;</button>
+                                </div>
+                                <div class="param-editor-body">
+                                    <div id="param-editor-form" class="param-form">
+                                        <!-- Dynamic parameter inputs will be inserted here -->
+                                    </div>
+                                </div>
+                                <div class="param-editor-footer">
+                                    <button class="btn-link" onclick="openAdvancedEditor()" title="Open full n8n editor for advanced changes">Advanced Edit</button>
+                                    <div class="param-footer-actions">
+                                        <button class="btn-secondary" onclick="closeParamEditor()">Cancel</button>
+                                        <button class="btn-primary" onclick="saveWorkflowParams()">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Workers Subtab -->
+                        <div id="subtab-workers" class="subtab-content hidden">
+                            <div class="workers-header">
+                                <div>
+                                    <h3>Active Workers</h3>
+                                    <p>Running workflow instances with isolated databases</p>
+                                </div>
+                                <button class="btn-danger" onclick="stopAllWorkers()" id="stop-all-workers-btn" disabled>Stop All</button>
+                            </div>
+                            <div id="workers-full-list" class="workers-full-list">
+                                <div class="empty-state">No workers running</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executions Tab -->
+                <div id="tab-executions" class="tab-panel">
+                    <div class="executions-container">
+                        <!-- Filter Bar -->
+                        <div class="executions-filter-bar">
+                            <select id="exec-filter-workflow" onchange="applyExecutionFilters()">
+                                <option value="">All Workflows</option>
+                            </select>
+                            <select id="exec-filter-status" onchange="applyExecutionFilters()">
+                                <option value="">All Status</option>
+                                <option value="success">Success</option>
+                                <option value="error">Error</option>
+                                <option value="running">Running</option>
+                            </select>
+                            <select id="exec-filter-time" onchange="applyExecutionFilters()">
+                                <option value="">All Time</option>
+                                <option value="1h">Last Hour</option>
+                                <option value="24h">Last 24 Hours</option>
+                                <option value="7d">Last 7 Days</option>
+                            </select>
+                            <button class="btn-secondary" onclick="refreshExecutions()">Refresh</button>
+                            <button class="btn-danger" onclick="clearExecutionHistory()">Clear History</button>
+                        </div>
+
+                        <!-- Stats Summary -->
+                        <div id="executions-stats" class="executions-stats"></div>
+
+                        <!-- Execution List -->
+                        <div id="executions-list" class="executions-list">
+                            <div class="loading">Loading executions...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ComfyUI Tab -->
+                <div id="tab-comfyui" class="tab-panel">
+                    <div class="comfyui-container">
+                        <!-- Subtab Bar -->
+                        <div class="comfyui-subtabs">
+                            <button class="comfyui-subtab active" data-subtab="overview" onclick="switchComfyUISubtab('overview')">Overview</button>
+                            <button class="comfyui-subtab" data-subtab="instances" onclick="switchComfyUISubtab('instances')">Instances</button>
+                            <button class="comfyui-subtab" data-subtab="models" onclick="switchComfyUISubtab('models')">Models</button>
+                            <button class="comfyui-subtab" data-subtab="nodes" onclick="switchComfyUISubtab('nodes')">Nodes</button>
+                            <button class="comfyui-subtab" data-subtab="gallery" onclick="switchComfyUISubtab('gallery')">Gallery</button>
+                        </div>
+
+                        <!-- Overview Subtab -->
+                        <div id="comfyui-subtab-overview" class="comfyui-subtab-content active" >
+                            <div id="comfyui-overview">
+                                <!-- Status Grid -->
+                                <div class="comfyui-status-grid"></div>
+
+                                <!-- Info Box -->
+                                <div class="comfyui-info-box">
+                                    <h3>ComfyUI Portable</h3>
+                                    <p>A zero-dependency portable ComfyUI installer for Windows. No Docker, no Python, no Git, no admin rights required. Downloads everything automatically and is fully relocatable.</p>
+                                    <p class="comfyui-info-source">Source: <a href="https://github.com/rookiemann/comfyui-portable-installer" target="_blank">github.com/rookiemann/comfyui-portable-installer</a></p>
+                                    <ul class="comfyui-features">
+                                        <li>Auto-downloads Python 3.12.8, Git, FFmpeg</li>
+                                        <li>Installs PyTorch with CUDA 12.8 support</li>
+                                        <li>Up to 8 simultaneous GPU instances</li>
+                                        <li>101 pre-configured models from HuggingFace</li>
+                                        <li>16 curated custom node packs</li>
+                                        <li>Full REST API + WebSocket for real-time progress</li>
+                                        <li>Connect to external ComfyUI installations</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Installation -->
+                                <div class="comfyui-section">
+                                    <h3>Installation</h3>
+                                    <button id="comfyui-btn-full-install" class="btn-accent" onclick="fullInstall()" style="margin-bottom: 12px; width: 100%;">Set Up Everything</button>
+                                    <div class="comfyui-install-steps">
+                                        <div class="comfyui-install-step">
+                                            <span class="comfyui-step-num">1</span>
+                                            <span class="comfyui-step-label">Clone from GitHub</span>
+                                            <button id="comfyui-btn-download" class="btn-accent btn-small" onclick="downloadModule()">Download Module</button>
+                                        </div>
+                                        <div class="comfyui-install-step">
+                                            <span class="comfyui-step-num">2</span>
+                                            <span class="comfyui-step-label">Python, Git, FFmpeg</span>
+                                            <button id="comfyui-btn-bootstrap" class="btn-accent btn-small" onclick="bootstrapModule()" disabled>Bootstrap</button>
+                                        </div>
+                                        <div class="comfyui-install-step">
+                                            <span class="comfyui-step-num">3</span>
+                                            <span class="comfyui-step-label">PyTorch + ComfyUI</span>
+                                            <button id="comfyui-btn-install" class="btn-accent btn-small" onclick="installComfyUI()" disabled>Install ComfyUI</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="comfyui-section">
+                                    <h3>Quick Actions</h3>
+                                    <div class="comfyui-actions">
+                                        <button id="comfyui-btn-start-api" class="btn-accent btn-small" onclick="startAPIServer()" disabled>Start API Server</button>
+                                        <button id="comfyui-btn-stop-api" class="btn-secondary btn-small" onclick="stopAPIServer()" disabled>Stop API Server</button>
+                                        <button id="comfyui-btn-update" class="btn-secondary btn-small" onclick="updateComfyUI()" disabled>Update ComfyUI</button>
+                                    </div>
+                                </div>
+
+                                <!-- External ComfyUI (only visible when API is running) -->
+                                <div id="comfyui-external-section" class="comfyui-section hidden">
+                                    <h3>External ComfyUI</h3>
+                                    <p class="comfyui-info-desc">Connect to an existing ComfyUI installation on your system.</p>
+                                    <div class="comfyui-external-add">
+                                        <input type="text" id="comfyui-external-path" placeholder="Path to ComfyUI directory..." class="input-field">
+                                        <button class="btn-accent btn-small" onclick="addExternalDir()">Add</button>
+                                    </div>
+                                    <div id="comfyui-external-list"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Instances Subtab -->
+                        <div id="comfyui-subtab-instances" class="comfyui-subtab-content hidden">
+                            <div class="comfyui-instances-header">
+                                <div class="comfyui-add-form">
+                                    <select id="comfyui-add-gpu" class="input-field">
+                                        <option value="0">GPU 0</option>
+                                        <option value="1">GPU 1</option>
+                                        <option value="cpu">CPU</option>
+                                    </select>
+                                    <input type="number" id="comfyui-add-port" value="8188" min="8188" max="8199" class="input-field" style="width: 80px;">
+                                    <select id="comfyui-add-vram" class="input-field">
+                                        <option value="normal">Normal VRAM</option>
+                                        <option value="low">Low VRAM</option>
+                                        <option value="none">No VRAM</option>
+                                        <option value="cpu">CPU Only</option>
+                                    </select>
+                                    <button class="btn-accent btn-small" onclick="addInstance()">Add Instance</button>
+                                    <button class="btn-secondary btn-small" onclick="startAllInstances()">Start All</button>
+                                    <button class="btn-secondary btn-small" onclick="stopAllInstances()">Stop All</button>
+                                </div>
+                            </div>
+                            <div id="comfyui-instances-list"></div>
+                        </div>
+
+                        <!-- Models Subtab -->
+                        <div id="comfyui-subtab-models" class="comfyui-subtab-content hidden">
+                            <div class="comfyui-models-header">
+                                <select id="comfyui-model-category" class="input-field" onchange="filterModelsByCategory()">
+                                    <option value="">All Categories</option>
+                                </select>
+                                <input type="text" id="comfyui-model-search" placeholder="Search HuggingFace..." class="input-field" onkeydown="if(event.key==='Enter') searchModels()">
+                                <button class="btn-secondary btn-small" onclick="searchModels()">Search</button>
+                            </div>
+                            <div id="comfyui-models-list"></div>
+                        </div>
+
+                        <!-- Nodes Subtab -->
+                        <div id="comfyui-subtab-nodes" class="comfyui-subtab-content hidden">
+                            <div class="comfyui-nodes-header">
+                                <button class="btn-secondary btn-small" onclick="updateAllNodes()">Update All</button>
+                            </div>
+                            <div id="comfyui-nodes-list"></div>
+                        </div>
+
+                        <!-- Gallery Subtab -->
+                        <div id="comfyui-subtab-gallery" class="comfyui-subtab-content hidden">
+                            <div id="gallery-stats-bar"></div>
+                            <div id="gallery-filters"></div>
+                            <div id="gallery-grid" class="gallery-grid"></div>
+                            <div id="gallery-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TTS Tab -->
+                <div id="tab-tts" class="tab-panel">
+                    <div class="tts-container">
+                        <!-- Subtab Bar -->
+                        <div class="tts-subtabs">
+                            <button class="tts-subtab active" data-subtab="overview" onclick="switchTTSSubtab('overview')">Overview</button>
+                            <button class="tts-subtab" data-subtab="workers" onclick="switchTTSSubtab('workers')">Workers</button>
+                            <button class="tts-subtab" data-subtab="generate" onclick="switchTTSSubtab('generate')">Generate</button>
+                            <button class="tts-subtab" data-subtab="jobs" onclick="switchTTSSubtab('jobs')">Jobs</button>
+                            <button class="tts-subtab" data-subtab="library" onclick="switchTTSSubtab('library')">Library</button>
+                        </div>
+
+                        <!-- Overview Subtab -->
+                        <div id="tts-subtab-overview" class="tts-subtab-content active">
+                            <div id="tts-overview">
+                                <!-- Status Grid -->
+                                <div class="tts-status-grid" id="tts-status-grid"></div>
+
+                                <!-- Info Box -->
+                                <div class="tts-info-box">
+                                    <h3>Portable TTS Server</h3>
+                                    <p>A production-grade, multi-GPU text-to-speech synthesis server with 10 state-of-the-art TTS models. Gateway + Worker architecture with a 7-stage audio processing pipeline.</p>
+                                    <p class="tts-info-source">Source: <a href="https://github.com/rookiemann/portable-tts-server" target="_blank">github.com/rookiemann/portable-tts-server</a></p>
+                                    <ul class="tts-features">
+                                        <li>10 TTS models: Kokoro, XTTS, Bark, Fish Speech, Dia, Chatterbox, F5-TTS, Qwen, VibeVoice, Higgs</li>
+                                        <li>Multi-GPU support with isolated venv per model</li>
+                                        <li>7-stage audio post-processing (de-reverb, high-pass, de-ess, tempo, trim, normalize, peak limit)</li>
+                                        <li>Whisper-based verification for quality assurance</li>
+                                        <li>Job recovery and chunk-level progress tracking</li>
+                                        <li>Voice cloning via reference audio</li>
+                                        <li>Multiple output formats (WAV, MP3, OGG, FLAC, M4A)</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Installation -->
+                                <div class="tts-section">
+                                    <h3>Installation</h3>
+                                    <button id="tts-btn-full-install" class="btn-accent" onclick="ttsFullInstall()" style="margin-bottom: 12px; width: 100%;">Set Up Everything</button>
+                                    <div class="tts-install-steps">
+                                        <div class="tts-install-step">
+                                            <span class="tts-step-num">1</span>
+                                            <span class="tts-step-label">Clone from GitHub</span>
+                                            <button id="tts-btn-download" class="btn-accent btn-small" onclick="downloadTTSModule()">Download Module</button>
+                                        </div>
+                                        <div class="tts-install-step">
+                                            <span class="tts-step-num">2</span>
+                                            <span class="tts-step-label">Python, Git, FFmpeg, venvs, models</span>
+                                            <button id="tts-btn-bootstrap" class="btn-accent btn-small" onclick="bootstrapTTSModule()" disabled>Bootstrap</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="tts-section">
+                                    <h3>Quick Actions</h3>
+                                    <div class="tts-actions">
+                                        <button id="tts-btn-start" class="btn-accent btn-small" onclick="startTTSServer()" disabled>Start TTS Server</button>
+                                        <button id="tts-btn-stop" class="btn-secondary btn-small" onclick="stopTTSServer()" disabled>Stop TTS Server</button>
+                                        <button id="tts-btn-update" class="btn-secondary btn-small" onclick="updateTTSModule()" disabled>Update Module</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workers Subtab -->
+                        <div id="tts-subtab-workers" class="tts-subtab-content hidden">
+                            <!-- Model Setup (install envs + download weights) -->
+                            <div class="tts-section">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                                    <h3 style="margin:0;">Model Setup</h3>
+                                    <div style="display:flex;gap:6px;">
+                                        <button class="btn-secondary btn-small" onclick="refreshTTSModelInfo()" style="font-size:11px;">Refresh</button>
+                                        <button class="btn-accent btn-small" onclick="installAllTTSModels()" style="font-size:11px;">Install All</button>
+                                    </div>
+                                </div>
+                                <div id="tts-model-setup" class="tts-model-setup"></div>
+                            </div>
+                            <!-- Model Status Grid (runtime — requires API running) -->
+                            <div class="tts-section">
+                                <h3>Runtime Status <button class="btn-secondary btn-small" onclick="refreshTTSModelStatus()" style="margin-left:8px;font-size:11px;">Refresh</button></h3>
+                                <div id="tts-models-grid" class="tts-models-grid"></div>
+                            </div>
+                            <!-- Server + Spawn Worker -->
+                            <div class="tts-section">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                                    <h3 style="margin:0;">Spawn Worker</h3>
+                                    <div id="tts-server-controls" style="display:flex;gap:6px;align-items:center;">
+                                        <span id="tts-server-badge" class="tts-setup-badge pending" style="font-size:9px;">Gateway Stopped</span>
+                                        <button class="btn-accent btn-small" onclick="startTTSServer()" style="font-size:11px;">Start Server</button>
+                                        <button class="btn-secondary btn-small" onclick="restartTTSServer()" style="font-size:11px;">Restart</button>
+                                        <button class="btn-secondary btn-small" onclick="stopTTSServer()" style="font-size:11px;">Stop</button>
+                                    </div>
+                                </div>
+                                <div class="tts-workers-header">
+                                    <div class="tts-spawn-form">
+                                        <select id="tts-spawn-model" class="input-field">
+                                            <option value="">Select model...</option>
+                                        </select>
+                                        <select id="tts-spawn-device" class="input-field">
+                                            <option value="cuda:1">GPU 1 (RTX 3090)</option>
+                                            <option value="cuda:0">GPU 0</option>
+                                            <option value="cpu">CPU</option>
+                                        </select>
+                                        <button class="btn-accent btn-small" onclick="spawnTTSWorker()">Spawn Worker</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Active Workers -->
+                            <div class="tts-section">
+                                <h3>Active Workers</h3>
+                                <div id="tts-workers-list"></div>
+                            </div>
+                            <!-- Whisper Verification -->
+                            <div class="tts-section">
+                                <h3>Whisper Verification</h3>
+                                <div id="tts-whisper-status" class="tts-whisper-section"></div>
+                            </div>
+                        </div>
+
+                        <!-- Generate Subtab -->
+                        <div id="tts-subtab-generate" class="tts-subtab-content hidden">
+                            <div class="tts-generate-form">
+                                <div class="tts-gen-row">
+                                    <div class="tts-gen-field">
+                                        <label>Model</label>
+                                        <select id="tts-gen-model" class="input-field" onchange="onTTSModelSelect()">
+                                            <option value="">Select model...</option>
+                                        </select>
+                                    </div>
+                                    <div class="tts-gen-field" id="tts-gen-voice-wrap">
+                                        <label>Voice</label>
+                                        <select id="tts-gen-voice" class="input-field">
+                                            <option value="">Default</option>
+                                        </select>
+                                    </div>
+                                    <div class="tts-gen-field">
+                                        <label>Format</label>
+                                        <select id="tts-gen-format" class="input-field">
+                                            <option value="wav">WAV</option>
+                                            <option value="mp3">MP3</option>
+                                            <option value="ogg">OGG</option>
+                                            <option value="flac">FLAC</option>
+                                            <option value="m4a">M4A</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tts-gen-row">
+                                    <div class="tts-gen-field tts-gen-full">
+                                        <label>Text</label>
+                                        <textarea id="tts-gen-text" class="input-field" rows="5" placeholder="Enter text to synthesize..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- Dynamic Model Parameters (rebuilt per model selection) -->
+                                <div id="tts-gen-model-params"></div>
+
+                                <!-- Voice Cloning (shown for cloning models) -->
+                                <div id="tts-gen-cloning-section" class="tts-gen-row hidden">
+                                    <div class="tts-gen-field">
+                                        <label>Reference Audio <span id="tts-gen-ref-audio-req" class="tts-required-badge" style="display:none">REQUIRED</span></label>
+                                        <input type="file" id="tts-gen-ref-audio" class="input-field" accept="audio/*">
+                                    </div>
+                                    <div class="tts-gen-field" id="tts-gen-ref-text-wrap">
+                                        <label>Reference Text <span id="tts-gen-ref-text-req" class="tts-required-badge" style="display:none">REQUIRED</span></label>
+                                        <input type="text" id="tts-gen-ref-text" class="input-field" placeholder="Transcript of reference audio...">
+                                    </div>
+                                </div>
+
+                                <!-- Generate Button -->
+                                <div class="tts-gen-row" style="margin-top:8px">
+                                    <div class="tts-gen-field" style="display: flex; align-items: flex-end;">
+                                        <button id="tts-btn-generate" class="btn-accent" onclick="generateTTS()" style="width: 100%;">Generate Speech</button>
+                                    </div>
+                                </div>
+
+                                <!-- Advanced Options (collapsed by default) -->
+                                <details class="tts-advanced-details">
+                                    <summary>Advanced Options</summary>
+                                    <div class="tts-gen-row tts-gen-options">
+                                        <div class="tts-gen-field">
+                                            <label>De-reverb</label>
+                                            <input type="number" id="tts-gen-dereverb" class="input-field" value="0.7" min="0" max="1.0" step="0.1">
+                                        </div>
+                                        <div class="tts-gen-field">
+                                            <label>De-ess</label>
+                                            <input type="number" id="tts-gen-deess" class="input-field" value="0.0" min="0" max="1.0" step="0.1">
+                                        </div>
+                                        <div class="tts-gen-field">
+                                            <label>Auto Retry</label>
+                                            <input type="number" id="tts-gen-retry" class="input-field" value="3" min="0" max="10" step="1">
+                                        </div>
+                                        <div class="tts-gen-field">
+                                            <label>Save Path</label>
+                                            <input type="text" id="tts-gen-save-path" class="input-field" placeholder="Optional (e.g. project/scene1)">
+                                        </div>
+                                    </div>
+                                    <div class="tts-gen-row">
+                                        <div class="tts-gen-field">
+                                            <label>Device</label>
+                                            <select id="tts-gen-device" class="input-field">
+                                                <option value="">Auto</option>
+                                                <option value="cuda:1">GPU 1 (RTX 3090)</option>
+                                                <option value="cuda:0">GPU 0</option>
+                                                <option value="cpu">CPU</option>
+                                            </select>
+                                        </div>
+                                        <div class="tts-gen-field">
+                                            <label>Whisper Model</label>
+                                            <select id="tts-gen-whisper-model" class="input-field">
+                                                <option value="">None</option>
+                                                <option value="tiny">Tiny (39M)</option>
+                                                <option value="base">Base (74M)</option>
+                                                <option value="small">Small (244M)</option>
+                                                <option value="medium" selected>Medium (769M)</option>
+                                                <option value="large">Large (1.5B)</option>
+                                            </select>
+                                        </div>
+                                        <div class="tts-gen-field tts-gen-toggles">
+                                            <label class="tts-toggle-row">
+                                                <input type="checkbox" id="tts-gen-verify-whisper" checked> Verify with Whisper
+                                            </label>
+                                            <label class="tts-toggle-row">
+                                                <input type="checkbox" id="tts-gen-skip-postprocess"> Skip post-processing
+                                            </label>
+                                        </div>
+                                    </div>
+                                </details>
+                            </div>
+                            <!-- Generation Result -->
+                            <div id="tts-gen-result" class="tts-gen-result hidden">
+                                <div id="tts-gen-status" class="tts-gen-status"></div>
+                                <div id="tts-gen-player" class="tts-gen-player"></div>
+                            </div>
+                        </div>
+
+                        <!-- Jobs Subtab -->
+                        <div id="tts-subtab-jobs" class="tts-subtab-content hidden">
+                            <div class="tts-jobs-header">
+                                <button class="btn-secondary btn-small" onclick="refreshTTSJobs()">Refresh</button>
+                            </div>
+                            <div id="tts-jobs-list"></div>
+                            <!-- Job Detail Panel (shown when a job row is clicked) -->
+                            <div id="tts-job-detail" class="tts-job-detail hidden">
+                                <div class="tts-job-detail-header">
+                                    <h4 id="tts-job-detail-title">Job Details</h4>
+                                    <button class="btn-secondary btn-small" onclick="closeTTSJobDetail()">Close</button>
+                                </div>
+                                <div id="tts-job-detail-content"></div>
+                            </div>
+                        </div>
+
+                        <!-- Library Subtab -->
+                        <div id="tts-subtab-library" class="tts-subtab-content hidden">
+                            <div class="tts-library-header">
+                                <select id="tts-library-model-filter" class="input-field" onchange="filterTTSLibrary()">
+                                    <option value="">All Models</option>
+                                </select>
+                                <input type="text" id="tts-library-search" class="input-field" placeholder="Search text..." onkeydown="if(event.key==='Enter') filterTTSLibrary()">
+                                <select id="tts-library-sort" class="input-field" onchange="filterTTSLibrary()">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="longest">Longest Duration</option>
+                                </select>
+                                <button class="btn-secondary btn-small" onclick="refreshTTSLibrary()">Refresh</button>
+                            </div>
+                            <div id="tts-library-grid" class="tts-library-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Music Generation Tab -->
+                <div id="tab-music" class="tab-panel">
+                    <div class="tts-container">
+                        <!-- Subtab Bar -->
+                        <div class="tts-subtabs">
+                            <button class="tts-subtab active" data-subtab="overview" onclick="switchMusicSubtab('overview')">Overview</button>
+                            <button class="tts-subtab" data-subtab="models" onclick="switchMusicSubtab('models')">Models</button>
+                            <button class="tts-subtab" data-subtab="workers" onclick="switchMusicSubtab('workers')">Workers</button>
+                            <button class="tts-subtab" data-subtab="generate" onclick="switchMusicSubtab('generate')">Generate</button>
+                            <button class="tts-subtab" data-subtab="library" onclick="switchMusicSubtab('library')">Library</button>
+                        </div>
+
+                        <!-- Overview Subtab -->
+                        <div id="music-subtab-overview" class="tts-subtab-content active">
+                            <div id="music-overview">
+                                <!-- Status Grid -->
+                                <div class="tts-status-grid">
+                                    <div class="tts-status-card"><div class="tts-status-label">MODULE</div><div id="music-status-downloaded" class="tts-status-value">Checking...</div></div>
+                                    <div class="tts-status-card"><div class="tts-status-label">BOOTSTRAP</div><div id="music-status-bootstrapped" class="tts-status-value">Checking...</div></div>
+                                    <div class="tts-status-card"><div class="tts-status-label">INSTALLED</div><div id="music-status-installed" class="tts-status-value">Checking...</div></div>
+                                    <div class="tts-status-card"><div class="tts-status-label">SERVER</div><div id="music-status-server" class="tts-status-value">Checking...</div></div>
+                                </div>
+
+                                <!-- Info Box -->
+                                <div class="tts-info-box">
+                                    <h3>Portable Music Server</h3>
+                                    <p>A production-grade, multi-GPU music generation server with 8 AI models. Gateway + Worker architecture with an 8-stage audio mastering pipeline.</p>
+                                    <p class="tts-info-source">Source: <a href="https://github.com/rookiemann/portable-music-server" target="_blank">github.com/rookiemann/portable-music-server</a></p>
+                                    <ul class="tts-features">
+                                        <li>8 music models: ACE-Step v1.5, ACE-Step v1, HeartMuLa, DiffRhythm, YuE, MusicGen, Riffusion, Stable Audio</li>
+                                        <li>Multi-GPU support with isolated venv per model</li>
+                                        <li>8-stage audio mastering (denoise, highpass, compress, stereo widen, EQ, trim, LUFS normalize, peak limit)</li>
+                                        <li>CLAP audio-text scoring for quality assurance</li>
+                                        <li>Persistent output library with metadata</li>
+                                        <li>Text-to-music, lyrics-to-song, and melody conditioning</li>
+                                        <li>Multiple output formats (WAV, MP3, OGG, FLAC, M4A)</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Installation -->
+                                <div class="tts-section">
+                                    <h3>Installation</h3>
+                                    <button id="music-full-install-btn" class="btn-accent" onclick="musicFullInstall()" style="margin-bottom: 12px; width: 100%;">Set Up Everything</button>
+                                    <div class="tts-install-steps">
+                                        <div class="tts-install-step">
+                                            <span class="tts-step-num">1</span>
+                                            <span class="tts-step-label">Clone from GitHub</span>
+                                            <button id="music-download-btn" class="btn-accent btn-small" onclick="downloadMusicModule()">Download Module</button>
+                                        </div>
+                                        <div class="tts-install-step">
+                                            <span class="tts-step-num">2</span>
+                                            <span class="tts-step-label">Python, Git, FFmpeg, base requirements</span>
+                                            <button id="music-bootstrap-btn" class="btn-accent btn-small" onclick="bootstrapMusicModule()" disabled>Bootstrap</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="tts-section">
+                                    <h3>Quick Actions</h3>
+                                    <div class="tts-actions">
+                                        <button id="music-start-btn" class="btn-accent btn-small" onclick="startMusicServer()" disabled>Start Music Server</button>
+                                        <button id="music-stop-btn" class="btn-secondary btn-small" onclick="stopMusicServer()" disabled>Stop Music Server</button>
+                                        <button id="music-update-btn" class="btn-secondary btn-small" onclick="updateMusicModule()" disabled>Update Module</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Models Subtab -->
+                        <div id="music-subtab-models" class="tts-subtab-content hidden">
+                            <div class="tts-section">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                                    <h3 style="margin:0;">Model Installation</h3>
+                                    <button class="btn-secondary btn-small" onclick="refreshModelsSubtab()" style="font-size:11px;">Refresh</button>
+                                </div>
+                                <div id="music-models-grid" class="tts-models-grid"></div>
+                            </div>
+                        </div>
+
+                        <!-- Workers Subtab -->
+                        <div id="music-subtab-workers" class="tts-subtab-content hidden">
+                            <div class="tts-section">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                                    <h3 style="margin:0;">Spawn Worker</h3>
+                                    <div id="music-server-controls" style="display:flex;gap:6px;align-items:center;">
+                                        <span id="music-server-badge" class="tts-setup-badge pending" style="font-size:9px;">Gateway Stopped</span>
+                                        <button class="btn-accent btn-small" onclick="startMusicServer()" style="font-size:11px;">Start Server</button>
+                                        <button class="btn-secondary btn-small" onclick="stopMusicServer()" style="font-size:11px;">Stop</button>
+                                    </div>
+                                </div>
+                                <div class="tts-workers-header">
+                                    <div class="tts-spawn-form">
+                                        <select id="music-spawn-model" class="input-field">
+                                            <option value="">Select model...</option>
+                                        </select>
+                                        <select id="music-spawn-device" class="input-field">
+                                            <option value="cuda:1">GPU 1 (RTX 3090)</option>
+                                            <option value="cuda:0">GPU 0</option>
+                                            <option value="cpu">CPU</option>
+                                        </select>
+                                        <button class="btn-accent btn-small" onclick="spawnMusicWorker()">Spawn Worker</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Active Workers -->
+                            <div class="tts-section">
+                                <h3>Active Workers</h3>
+                                <div id="music-workers-list"></div>
+                            </div>
+                        </div>
+
+                        <!-- Generate Subtab -->
+                        <div id="music-subtab-generate" class="tts-subtab-content hidden">
+                            <div class="tts-generate-form">
+                                <!-- Model + Preset + Format row -->
+                                <div class="tts-gen-row">
+                                    <div class="tts-gen-field" style="flex:2">
+                                        <label>Model</label>
+                                        <select id="music-gen-model" class="input-field" onchange="onMusicModelSelect()">
+                                            <option value="">Select model...</option>
+                                        </select>
+                                    </div>
+                                    <div class="tts-gen-field">
+                                        <label>Preset</label>
+                                        <select id="music-gen-preset" class="input-field" onchange="onMusicPresetSelect()">
+                                            <option value="">Default</option>
+                                        </select>
+                                    </div>
+                                    <div class="tts-gen-field">
+                                        <label>Format</label>
+                                        <select id="music-gen-format" class="input-field">
+                                            <option value="wav">WAV</option>
+                                            <option value="mp3">MP3</option>
+                                            <option value="ogg">OGG</option>
+                                            <option value="flac">FLAC</option>
+                                            <option value="m4a">M4A</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Prompt -->
+                                <div class="tts-gen-row">
+                                    <div class="tts-gen-field tts-gen-full">
+                                        <label>Prompt / Description</label>
+                                        <textarea id="music-gen-prompt" class="input-field" rows="3" placeholder="Describe the music you want to generate..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- Lyrics (shown for lyrics-capable models) -->
+                                <div id="music-gen-lyrics-wrap" class="tts-gen-row hidden">
+                                    <div class="tts-gen-field tts-gen-full">
+                                        <label>Lyrics</label>
+                                        <textarea id="music-gen-lyrics" class="input-field" rows="5" placeholder="Enter lyrics with [verse]/[chorus] markers..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- Reference audio (shown for models that support it) -->
+                                <div id="music-gen-ref-audio-wrap" class="tts-gen-row hidden">
+                                    <div class="tts-gen-field">
+                                        <label>Reference Audio (melody conditioning)</label>
+                                        <input type="file" id="music-gen-ref-audio" class="input-field" accept="audio/*">
+                                    </div>
+                                </div>
+                                <!-- Dynamic model params (populated by JS) -->
+                                <div id="music-gen-model-params"></div>
+                                <!-- Duration + Generate -->
+                                <div class="tts-gen-row" style="margin-top:8px">
+                                    <div class="tts-gen-field" style="max-width:160px"><label>Duration (s)</label><input type="number" id="music-gen-duration" class="input-field" value="30" min="1" max="600" step="1"></div>
+                                    <div class="tts-gen-field" style="flex:2;display:flex;align-items:flex-end">
+                                        <button id="music-gen-btn" class="btn-accent" style="width:100%" onclick="generateMusic()">Generate Music</button>
+                                    </div>
+                                </div>
+
+                                <!-- Advanced Options (collapsed by default) -->
+                                <details class="tts-advanced-details">
+                                    <summary>Advanced Options</summary>
+                                    <div class="tts-gen-row tts-gen-options">
+                                        <div class="tts-gen-field"><label>Seed</label><input type="number" id="music-gen-seed" class="input-field" value="-1" min="-1" max="999999" step="1"></div>
+                                        <div class="tts-gen-field"><label>Denoise</label><input type="number" id="music-gen-denoise" class="input-field" value="0.2" min="0" max="1" step="0.1"></div>
+                                        <div class="tts-gen-field"><label>EQ Preset</label>
+                                            <select id="music-gen-eq" class="input-field">
+                                                <option value="balanced">Balanced</option>
+                                                <option value="flat">Flat</option>
+                                                <option value="warm">Warm</option>
+                                                <option value="bright">Bright</option>
+                                            </select>
+                                        </div>
+                                        <div class="tts-gen-field"><label>Device</label>
+                                            <select id="music-gen-device" class="input-field">
+                                                <option value="">Auto</option>
+                                                <option value="cuda:1">GPU 1 (RTX 3090)</option>
+                                                <option value="cuda:0">GPU 0</option>
+                                                <option value="cpu">CPU</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="tts-gen-row tts-gen-options">
+                                        <div class="tts-gen-field"><label>LUFS Target</label><input type="number" id="music-gen-lufs" class="input-field" value="-14" min="-24" max="-8" step="1"></div>
+                                        <div class="tts-gen-field"><label>Stereo Width</label><input type="number" id="music-gen-stereo" class="input-field" value="1.2" min="0" max="2" step="0.1"></div>
+                                        <div class="tts-gen-field"><label>Compression</label><input type="number" id="music-gen-compression" class="input-field" value="2.0" min="1" max="8" step="0.5"></div>
+                                        <div class="tts-gen-field"><label>Peak Limit</label><input type="number" id="music-gen-peak" class="input-field" value="0.95" min="0.5" max="1" step="0.05"></div>
+                                    </div>
+                                    <div class="tts-gen-row tts-gen-options">
+                                        <div class="tts-gen-field" style="display:flex;align-items:center;gap:8px;padding-top:8px">
+                                            <input type="checkbox" id="music-gen-skip-post"> <label for="music-gen-skip-post" style="margin:0">Skip Post-Processing</label>
+                                        </div>
+                                    </div>
+                                </details>
+                                <!-- Result / Audio Player -->
+                                <div id="music-gen-result" class="tts-gen-result hidden">
+                                    <div id="music-gen-result-info" class="tts-gen-success"></div>
+                                    <div class="tts-gen-player">
+                                        <audio id="music-gen-audio" controls class="tts-audio-player"></audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Library Subtab -->
+                        <div id="music-subtab-library" class="tts-subtab-content hidden">
+                            <div class="tts-library-header">
+                                <h3>Generated Music Library</h3>
+                                <div style="display:flex;gap:8px;align-items:center;">
+                                    <input type="text" id="music-library-search" class="input-field" placeholder="Search..." oninput="filterMusicLibrary()" style="width:200px">
+                                    <select id="music-library-model-filter" class="input-field" onchange="filterMusicLibrary()" style="width:150px">
+                                        <option value="">All Models</option>
+                                    </select>
+                                    <button class="btn-secondary btn-small" onclick="refreshMusicLibrary()">Refresh</button>
+                                </div>
+                            </div>
+                            <div id="music-library-grid" class="tts-library-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPU Dashboard Tab -->
+                <div id="tab-gpu" class="tab-panel">
+                    <div class="gpu-dashboard">
+                        <div class="gpu-header">
+                            <h3>GPU Dashboard</h3>
+                            <div class="gpu-refresh">
+                                <div id="gpu-driver-info" class="gpu-driver-info"></div>
+                                <span id="gpu-last-update"></span>
+                                <label>
+                                    <input type="checkbox" id="gpu-auto-refresh" checked onchange="toggleGpuAutoRefresh()">
+                                    Auto-refresh (2s)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="gpu-cards" class="gpu-cards">
+                            <div class="loading">Loading GPU stats...</div>
+                        </div>
+
+                        <div class="gpu-charts">
+                            <div class="chart-section">
+                                <h4>GPU Utilization History</h4>
+                                <div id="utilization-chart" class="chart-container">
+                                    <canvas id="util-canvas"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-section">
+                                <h4>Memory Usage History</h4>
+                                <div id="memory-chart" class="chart-container">
+                                    <canvas id="mem-canvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gpu-models-section">
+                            <h4>Loaded Models by GPU</h4>
+                            <div id="gpu-models-map" class="gpu-models-map">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs Tab -->
+                <div id="tab-logs" class="tab-panel">
+                    <div class="logs-container">
+                        <div class="logs-header">
+                            <span>Application Logs</span>
+                            <button class="btn-secondary" onclick="clearLogs()">Clear</button>
+                        </div>
+                        <div id="log-output" class="log-output"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Model Settings Panel (slide-out) -->
+    <aside id="model-settings-panel" class="model-settings-panel hidden">
+        <div class="settings-panel-header">
+            <h3>Model Settings</h3>
+            <button class="btn-close" onclick="closeModelSettingsPanel()">&times;</button>
+        </div>
+
+        <div class="settings-panel-body">
+            <!-- Model Identity -->
+            <div class="settings-section">
+                <h4>Model</h4>
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="model-display-name" placeholder="Custom name...">
+                </div>
+                <div class="model-info-row">
+                    <span id="model-original-name" class="text-muted"></span>
+                    <span id="model-context-info" class="text-muted"></span>
+                </div>
+            </div>
+
+            <!-- Generation Parameters -->
+            <div class="settings-section">
+                <h4>Generation</h4>
+
+                <div class="form-group">
+                    <label>Max Tokens <span class="param-value" id="max-tokens-value">2048</span></label>
+                    <input type="range" id="param-max-tokens" min="1" max="4096" value="2048">
+                    <small class="form-hint">Limited by model context: <span id="max-tokens-limit">4096</span></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Temperature <span class="param-value" id="temp-value">0.7</span></label>
+                    <input type="range" id="param-temperature" min="0" max="2" step="0.05" value="0.7">
+                    <small class="form-hint">0 = deterministic, 2 = very creative</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Top P <span class="param-value" id="top-p-value">0.95</span></label>
+                    <input type="range" id="param-top-p" min="0" max="1" step="0.01" value="0.95">
+                </div>
+
+                <div class="form-group">
+                    <label>Top K <span class="param-value" id="top-k-value">40</span></label>
+                    <input type="range" id="param-top-k" min="0" max="100" value="40">
+                    <small class="form-hint">0 = disabled</small>
+                </div>
+            </div>
+
+            <!-- Penalty Parameters -->
+            <div class="settings-section">
+                <h4>Penalties</h4>
+
+                <div class="form-group">
+                    <label>Repeat Penalty <span class="param-value" id="repeat-penalty-value">1.1</span></label>
+                    <input type="range" id="param-repeat-penalty" min="1" max="2" step="0.05" value="1.1">
+                </div>
+
+                <div class="form-group">
+                    <label>Presence Penalty <span class="param-value" id="presence-penalty-value">0.0</span></label>
+                    <input type="range" id="param-presence-penalty" min="0" max="2" step="0.1" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Frequency Penalty <span class="param-value" id="frequency-penalty-value">0.0</span></label>
+                    <input type="range" id="param-frequency-penalty" min="0" max="2" step="0.1" value="0">
+                </div>
+            </div>
+
+            <!-- Advanced Sampling -->
+            <div class="settings-section collapsible">
+                <h4 onclick="toggleAdvancedParams()">
+                    Advanced <span class="collapse-arrow">&#9660;</span>
+                </h4>
+                <div id="advanced-params" class="collapsed">
+                    <div class="form-group">
+                        <label>Mirostat Mode</label>
+                        <select id="param-mirostat">
+                            <option value="0">Off</option>
+                            <option value="1">Mirostat v1</option>
+                            <option value="2">Mirostat v2</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mirostat-params hidden">
+                        <label>Mirostat Tau <span class="param-value" id="mirostat-tau-value">5.0</span></label>
+                        <input type="range" id="param-mirostat-tau" min="0" max="10" step="0.1" value="5">
+                    </div>
+
+                    <div class="form-group mirostat-params hidden">
+                        <label>Mirostat Eta <span class="param-value" id="mirostat-eta-value">0.1</span></label>
+                        <input type="range" id="param-mirostat-eta" min="0" max="1" step="0.01" value="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Typical P <span class="param-value" id="typical-p-value">1.0</span></label>
+                        <input type="range" id="param-typical-p" min="0" max="1" step="0.01" value="1">
+                        <small class="form-hint">1.0 = disabled</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>TFS Z <span class="param-value" id="tfs-z-value">1.0</span></label>
+                        <input type="range" id="param-tfs-z" min="0" max="1" step="0.01" value="1">
+                        <small class="form-hint">1.0 = disabled</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-panel-footer">
+            <button class="btn-secondary" onclick="resetToDefaults()">Reset to Defaults</button>
+            <button class="btn-primary" onclick="saveModelSettings()">Save</button>
+        </div>
+    </aside>
+
+    <!-- Load Model Modal -->
+    <div id="load-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Load Model</h2>
+                <button class="btn-close" onclick="hideLoadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Provider</label>
+                    <select id="load-provider" onchange="onProviderChange()">
+                        <option value="llama_cpp">llama.cpp (Local)</option>
+                        <option value="vllm">vLLM (Local)</option>
+                        <option value="lm_studio">LM Studio</option>
+                        <option value="ollama">Ollama</option>
+                        <option value="openrouter">OpenRouter</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <select id="load-model" onchange="onModelSelectChange()">
+                        <option value="">Select a model...</option>
+                    </select>
+                </div>
+                <!-- GGUF Model Search (visible when llama_cpp selected) -->
+                <div id="gguf-browse-section" class="gguf-browse-section hidden">
+                    <div class="gguf-search-row">
+                        <input type="text" id="gguf-search-input" placeholder="Search HuggingFace for GGUF models..." onkeydown="handleGGUFSearchKeydown(event)">
+                        <button class="btn-primary btn-sm" onclick="searchGGUF()">Search</button>
+                    </div>
+                    <div id="gguf-search-results" class="gguf-search-results"></div>
+                    <div id="gguf-files-section" class="gguf-files-section hidden">
+                        <div class="gguf-files-header">
+                            <span id="gguf-files-header">Files</span>
+                        </div>
+                        <div id="gguf-files-list" class="gguf-files-list"></div>
+                    </div>
+                    <div id="gguf-downloads" class="gguf-downloads hidden">
+                        <div class="gguf-downloads-header">Downloads</div>
+                        <div id="gguf-downloads-list" class="gguf-downloads-list"></div>
+                    </div>
+                </div>
+
+                <div class="form-group local-model-option">
+                    <label>GPU</label>
+                    <select id="load-gpu">
+                        <option value="">Auto (best available)</option>
+                    </select>
+                </div>
+                <div class="form-group local-model-option">
+                    <label for="context-length">Context Length</label>
+                    <div class="slider-with-value">
+                        <input type="range" id="context-length" min="512" max="131072" step="512" value="4096">
+                        <span id="context-length-value">4096</span>
+                    </div>
+                    <small class="form-hint">Higher = more memory, longer conversations</small>
+                </div>
+                <div class="form-group local-model-option">
+                    <label for="gpu-layers">GPU Layers</label>
+                    <div class="gpu-layers-input">
+                        <input type="number" id="gpu-layers" min="-1" max="999" value="-1">
+                        <small class="form-hint">-1 = auto (max layers), 0 = CPU only</small>
+                    </div>
+                </div>
+                <div class="form-group preset-save-option hidden" id="preset-save-option">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="save-as-preset" onchange="togglePresetNameInput()">
+                        Save as preset
+                    </label>
+                    <input type="text" id="preset-name" placeholder="Preset name..." class="preset-name-input hidden">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="hideLoadModal()">Cancel</button>
+                <button id="load-model-btn" class="btn-primary" onclick="loadSelectedModel()">Load</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Preview Modal -->
+    <div id="template-modal" class="modal hidden">
+        <div class="modal-content template-modal-content">
+            <div class="modal-header">
+                <div class="template-modal-title">
+                    <span id="modal-template-icon" class="template-modal-icon">&#128279;</span>
+                    <div>
+                        <h2 id="modal-template-name">Template Name</h2>
+                        <span id="modal-template-category" class="template-modal-category">Category</span>
+                    </div>
+                </div>
+                <button class="btn-close" onclick="hideTemplateModal()">&times;</button>
+            </div>
+            <div class="modal-body template-modal-body">
+                <p id="modal-template-description" class="template-modal-description">Template description goes here...</p>
+
+                <div class="template-modal-section">
+                    <h4>Configuration</h4>
+                    <div id="modal-template-config" class="template-config-form">
+                        <!-- Dynamic configuration fields -->
+                    </div>
+                </div>
+
+                <div class="template-modal-section">
+                    <h4>Preview</h4>
+                    <pre id="modal-template-preview" class="template-preview-json"></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="hideTemplateModal()">Cancel</button>
+                <button class="btn-primary" onclick="useTemplate()">
+                    <span class="btn-icon-inline">&#10003;</span>
+                    Use Template
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content settings-modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="btn-close" onclick="hideSettings()">&times;</button>
+            </div>
+            <div class="modal-body settings-modal-body">
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-tab="providers">Providers</button>
+                    <button class="settings-tab" data-tab="ui">UI</button>
+                    <button class="settings-tab" data-tab="gpu">GPU</button>
+                    <button class="settings-tab" data-tab="n8n">n8n</button>
+                    <button class="settings-tab" data-tab="startup">Startup</button>
+                </div>
+
+                <!-- Providers Tab -->
+                <div class="settings-panel active" data-panel="providers">
+                    <div class="settings-section">
+                        <h4>llama.cpp</h4>
+                        <div class="form-group">
+                            <label>Models Directory</label>
+                            <input type="text" id="setting-llama-models-dir" placeholder="E:\Models\GGUF">
+                            <small class="setting-help">Path to folder containing .gguf model files</small>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Default Context Size</label>
+                                <input type="number" id="setting-llama-n-ctx" min="512" max="131072" step="512">
+                                <small class="setting-help">Max context window. 4096 is a good default.</small>
+                            </div>
+                            <div class="form-group">
+                                <label>GPU Layers</label>
+                                <input type="number" id="setting-llama-gpu-layers" min="0" max="999">
+                                <small class="setting-help">99 = full GPU offload, 0 = CPU only</small>
+                            </div>
+                        </div>
+                        <div class="form-row checkboxes">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="setting-llama-mmap"> Use mmap
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="setting-llama-flash-attn"> Flash Attention
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="setting-llama-mlock"> Use mlock
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>LM Studio</h4>
+                        <div class="form-group">
+                            <label>Base URL</label>
+                            <input type="text" id="setting-lmstudio-url" placeholder="http://localhost:1234/v1">
+                            <small class="setting-help">Start LM Studio first, then enable this provider</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Default GPU Index</label>
+                            <input type="number" id="setting-lmstudio-default-gpu" min="0" step="1" placeholder="0">
+                            <small class="setting-help">Optional fallback GPU for LM Studio loads. Leave blank to auto-select first detected GPU. Per-load GPU selection still overrides this.</small>
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-lmstudio-enabled"> Enabled
+                        </label>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>OpenRouter</h4>
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <input type="password" id="setting-openrouter-key" placeholder="sk-or-...">
+                            <small class="setting-help">Get your key from openrouter.ai/keys &mdash; free tier available</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Default Model</label>
+                            <input type="text" id="setting-openrouter-model" placeholder="openrouter/auto">
+                            <small class="setting-help">e.g. openai/gpt-4o-mini, anthropic/claude-3-haiku</small>
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-openrouter-enabled"> Enabled
+                        </label>
+                        <div class="openrouter-balance-section">
+                            <button class="btn-secondary btn-small" onclick="checkOpenRouterBalance()">Check Balance</button>
+                            <div id="openrouter-balance-info" class="balance-info hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Search Engines</h4>
+                        <div class="form-group">
+                            <label>Default Engine</label>
+                            <select id="setting-search-default">
+                                <option value="duckduckgo">DuckDuckGo (no key needed)</option>
+                                <option value="google">Google Custom Search</option>
+                                <option value="serper">Serper.dev</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Google Custom Search API</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-google-enabled" onchange="toggleSearchSection('google')"> Enabled
+                        </label>
+                        <div id="google-keys-container" class="search-keys-container"></div>
+                        <button class="btn-secondary btn-small" onclick="addSearchKey('google')">+ Add Google Key</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Serper.dev API</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-serper-enabled" onchange="toggleSearchSection('serper')"> Enabled
+                        </label>
+                        <div id="serper-keys-container" class="search-keys-container"></div>
+                        <button class="btn-secondary btn-small" onclick="addSearchKey('serper')">+ Add Serper Key</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Ollama</h4>
+                        <div class="form-group">
+                            <label>Base URL</label>
+                            <input type="text" id="setting-ollama-url" placeholder="http://localhost:11434">
+                            <small class="setting-help">Install Ollama first, then enable this provider</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Keep Alive</label>
+                            <input type="text" id="setting-ollama-keepalive" placeholder="5m">
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-ollama-enabled"> Enabled
+                        </label>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>vLLM</h4>
+                        <div class="form-group">
+                            <label>Models Directory</label>
+                            <input type="text" id="setting-vllm-models-dir" placeholder="E:\Models">
+                            <small class="setting-help">Path to folder containing model files for vLLM</small>
+                        </div>
+                        <div class="form-group">
+                            <label>GPU Memory Utilization</label>
+                            <input type="number" id="setting-vllm-gpu-util" min="0.1" max="1.0" step="0.05" placeholder="0.9">
+                            <small class="form-hint">Fraction of GPU memory to use (0.1 - 1.0)</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Load Timeout (seconds)</label>
+                            <input type="number" id="setting-vllm-timeout" min="60" max="3600" placeholder="600">
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-vllm-enforce-eager"> Enforce Eager (disable CUDA graphs)
+                        </label>
+                        <small class="setting-help">Speeds up model loading significantly. Recommended for interactive use.</small>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-vllm-enabled"> Enabled
+                        </label>
+                    </div>
+                </div>
+
+                <!-- UI Tab -->
+                <div class="settings-panel" data-panel="ui">
+                    <div class="settings-section">
+                        <h4>Appearance</h4>
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <select id="setting-ui-theme">
+                                <option value="dark">Dark</option>
+                                <option value="light">Light</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Chat</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-ui-autoscroll"> Auto-scroll messages
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-ui-timestamps"> Show timestamps
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-ui-highlighting"> Code highlighting
+                        </label>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Chat History</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-chat-save"> Save chat history
+                        </label>
+                        <div class="form-group">
+                            <label>Max History Messages</label>
+                            <input type="number" id="setting-chat-max-history" min="10" max="1000">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPU Tab -->
+                <div class="settings-panel" data-panel="gpu">
+                    <div class="settings-section">
+                        <h4>Monitoring</h4>
+                        <div class="form-group">
+                            <label>Refresh Interval (seconds)</label>
+                            <input type="number" id="setting-gpu-refresh" min="1" max="30" step="1">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>VRAM Warning Threshold (%)</label>
+                                <input type="number" id="setting-gpu-warn-threshold" min="50" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label>VRAM Critical Threshold (%)</label>
+                                <input type="number" id="setting-gpu-crit-threshold" min="50" max="100">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Temperature Warning (°C)</label>
+                            <input type="number" id="setting-gpu-temp-warn" min="50" max="100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- n8n Tab -->
+                <div class="settings-panel" data-panel="n8n">
+                    <div class="settings-section">
+                        <h4>n8n Configuration</h4>
+                        <div class="form-group">
+                            <label>Default Port</label>
+                            <input type="number" id="setting-n8n-port" min="1024" max="65535">
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-n8n-autostart"> Auto-start n8n on launch
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Startup Tab -->
+                <div class="settings-panel" data-panel="startup">
+                    <div class="settings-section">
+                        <h4>Startup Behavior</h4>
+                        <div class="form-group">
+                            <label>Auto-load Preset on Startup</label>
+                            <select id="setting-auto-load-preset">
+                                <option value="">None (disabled)</option>
+                            </select>
+                            <small class="form-hint">Automatically load this model preset when the UI starts</small>
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="setting-startup-remember-size"> Remember window size
+                        </label>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Data Location</h4>
+                        <div class="form-group">
+                            <label>Settings File</label>
+                            <input type="text" id="setting-path-display" readonly class="readonly-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
+                <button class="btn-secondary" onclick="hideSettings()">Cancel</button>
+                <button class="btn-primary" onclick="saveSettings()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Prompt Modal -->
+    <div id="prompt-modal" class="modal hidden">
+        <div class="modal-content prompt-modal-content">
+            <div class="modal-header">
+                <h2>System Prompts</h2>
+                <button class="btn-close" onclick="closePromptModal()">&times;</button>
+            </div>
+            <div class="modal-body prompt-modal-body">
+                <!-- Tabs: Library | My Prompts | Generate -->
+                <div class="prompt-tabs">
+                    <button class="prompt-tab active" data-tab="library" onclick="switchPromptTab('library')">Library</button>
+                    <button class="prompt-tab" data-tab="custom" onclick="switchPromptTab('custom')">My Prompts</button>
+                    <button class="prompt-tab" data-tab="generate" onclick="switchPromptTab('generate')">AI Generate</button>
+                </div>
+
+                <!-- Library Tab -->
+                <div id="prompt-tab-library" class="prompt-tab-content active">
+                    <div class="prompt-categories" id="prompt-categories">
+                        <!-- Category buttons populated by JS -->
+                    </div>
+                    <div class="prompt-list" id="library-prompt-list">
+                        <!-- Prompt cards populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Custom Tab -->
+                <div id="prompt-tab-custom" class="prompt-tab-content hidden">
+                    <div class="prompt-list" id="custom-prompt-list">
+                        <div class="empty-state">No custom prompts yet</div>
+                    </div>
+                    <button class="btn-primary" onclick="createNewPrompt()" style="margin-top: 16px;">
+                        + Create New Prompt
+                    </button>
+                </div>
+
+                <!-- Generate Tab -->
+                <div id="prompt-tab-generate" class="prompt-tab-content hidden">
+                    <div class="generate-prompt-form">
+                        <p class="generate-hint">Describe what you want the assistant to do, and AI will write a system prompt for you.</p>
+                        <textarea
+                            id="prompt-description"
+                            placeholder="e.g., A Python expert that explains concepts simply, provides working code examples, and always considers edge cases..."
+                            rows="4"
+                        ></textarea>
+                        <button id="generate-prompt-btn" class="btn-primary" onclick="generatePromptWithAI()">
+                            ✨ Generate with AI
+                        </button>
+                    </div>
+                    <div id="generated-prompt-result" class="generated-result hidden">
+                        <label>Generated Prompt:</label>
+                        <textarea id="generated-prompt-text" rows="8"></textarea>
+                        <div class="generated-actions">
+                            <input type="text" id="generated-prompt-name" placeholder="Prompt name...">
+                            <button class="btn-primary" onclick="saveGeneratedPrompt()">Save & Use</button>
+                            <button class="btn-secondary" onclick="useGeneratedPromptOnce()">Use Once</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prompt Editor Modal -->
+    <div id="prompt-editor-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="prompt-editor-title">Edit Prompt</h2>
+                <button class="btn-close" onclick="closePromptEditor()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="edit-prompt-name" placeholder="My Custom Prompt">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="edit-prompt-category">
+                        <option value="custom">Custom</option>
+                        <option value="coding">Coding</option>
+                        <option value="writing">Writing</option>
+                        <option value="business">Business</option>
+                        <option value="creative">Creative</option>
+                        <option value="education">Education</option>
+                        <option value="productivity">Productivity</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Icon (emoji)</label>
+                    <input type="text" id="edit-prompt-icon" placeholder="🤖" maxlength="2" style="width: 60px;">
+                </div>
+                <div class="form-group">
+                    <label>System Prompt</label>
+                    <textarea id="edit-prompt-content" rows="10" placeholder="You are a..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closePromptEditor()">Cancel</button>
+                <button id="delete-prompt-btn" class="btn-secondary btn-danger" onclick="deleteCurrentPrompt()" style="display: none;">Delete</button>
+                <button class="btn-primary" onclick="savePromptFromEditor()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Presets Modal -->
+    <div id="presets-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Presets</h2>
+                <button class="btn-close" onclick="closePresetsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="presets-list" class="presets-list">
+                    <div class="empty-state">No presets saved yet</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closePresetsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conversation History Modal -->
+    <div id="conversation-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Saved Conversations</h2>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <button class="btn-secondary btn-small" onclick="clearUntitledConversations()">Clear Untitled</button>
+                    <button class="btn-close" onclick="closeConversationHistory()">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="conversation-list" class="conversation-list">
+                    <div class="empty-state">No saved conversations yet</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeConversationHistory()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Conversation Modal -->
+    <div id="save-conversation-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Save Conversation</h2>
+                <button class="btn-close" onclick="closeSaveConversation()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Conversation Name</label>
+                    <input type="text" id="save-conversation-name" placeholder="My conversation...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeSaveConversation()">Cancel</button>
+                <button class="btn-primary" onclick="confirmSaveConversation()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome / Onboarding Modal -->
+    <div id="welcome-modal" class="modal hidden">
+        <div class="modal-content modal-welcome">
+            <div class="modal-header">
+                <h2>Welcome to AgentNate</h2>
+                <button class="btn-close" onclick="dismissOnboarding()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 16px; color: var(--text-secondary);">Your local AI platform is ready. Configure a model provider to get started.</p>
+
+                <div class="setup-card">
+                    <h4>Local Models (llama.cpp)</h4>
+                    <p>Have .gguf model files? Point AgentNate to your models directory and load one.</p>
+                </div>
+                <div class="setup-card">
+                    <h4>LM Studio / Ollama</h4>
+                    <p>Already running LM Studio or Ollama? Enable the provider and enter the URL.</p>
+                </div>
+                <div class="setup-card">
+                    <h4>Cloud API (OpenRouter)</h4>
+                    <p>Paste an OpenRouter API key for instant access to 100+ models. No local GPU required.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="dismissOnboarding()">Skip for now</button>
+                <button class="btn-primary" onclick="openSettingsFromOnboarding()">Open Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

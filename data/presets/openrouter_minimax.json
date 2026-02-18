@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771212352018",
+  "name": "OpenRouter MiniMax",
+  "provider": "openrouter",
+  "modelId": "minimax/minimax-m2.5",
+  "modelName": "MiniMax: MiniMax M2.5",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771212352018
+}

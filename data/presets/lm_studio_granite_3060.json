@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771296465351",
+  "name": "LM Studio Granite 3060",
+  "provider": "lm_studio",
+  "modelId": "granite-3.3-8b-instruct",
+  "modelName": "granite-3.3-8b-instruct",
+  "contextLength": 32768,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771296465351
+}

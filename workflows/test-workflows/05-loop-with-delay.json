@@ -1,0 +1,73 @@
+{
+  "name": "Test 05 - Loop With Delay (Longer Run)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0005-0001-0001-000000000001",
+      "name": "Run Test",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Create a batch of 3 tasks to process\nreturn [\n  { json: { taskId: 1, taskName: 'Process invoices', priority: 'high' } },\n  { json: { taskId: 2, taskName: 'Send reports', priority: 'medium' } },\n  { json: { taskId: 3, taskName: 'Archive logs', priority: 'low' } }\n];"
+      },
+      "id": "a1b2c3d4-0005-0001-0001-000000000002",
+      "name": "Create Tasks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "seconds"
+      },
+      "id": "a1b2c3d4-0005-0001-0001-000000000003",
+      "name": "Wait 1s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [680, 300],
+      "webhookId": "wait-webhook-001"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Simulate processing each task\nconst task = $input.first().json;\nconst processingTime = Math.floor(Math.random() * 500) + 100;\nreturn [{\n  json: {\n    ...task,\n    status: 'completed',\n    processingTimeMs: processingTime,\n    processedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0005-0001-0001-000000000004",
+      "name": "Process Task",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Final report\nconst items = $input.all();\nreturn [{\n  json: {\n    status: 'all_tasks_complete',\n    totalTasks: items.length,\n    tasks: items.map(i => ({\n      name: i.json.taskName,\n      status: i.json.status,\n      time: i.json.processingTimeMs + 'ms'\n    })),\n    completedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0005-0001-0001-000000000005",
+      "name": "Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Run Test": {
+      "main": [[{"node": "Create Tasks", "type": "main", "index": 0}]]
+    },
+    "Create Tasks": {
+      "main": [[{"node": "Wait 1s", "type": "main", "index": 0}]]
+    },
+    "Wait 1s": {
+      "main": [[{"node": "Process Task", "type": "main", "index": 0}]]
+    },
+    "Process Task": {
+      "main": [[{"node": "Report", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

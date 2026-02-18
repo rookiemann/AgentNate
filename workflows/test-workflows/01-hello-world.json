@@ -1,0 +1,45 @@
+{
+  "name": "Test 01 - Hello World (Code Only)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Run Test",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate some test data\nconst items = [];\nfor (let i = 1; i <= 5; i++) {\n  items.push({\n    json: {\n      id: i,\n      message: `Hello from item ${i}`,\n      timestamp: new Date().toISOString(),\n      random: Math.floor(Math.random() * 1000)\n    }\n  });\n}\nreturn items;"
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000002",
+      "name": "Generate Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Count items and summarize\nconst count = $input.all().length;\nconst ids = $input.all().map(item => item.json.id);\nreturn [{\n  json: {\n    status: 'success',\n    itemCount: count,\n    processedIds: ids,\n    completedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000003",
+      "name": "Summarize Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Run Test": {
+      "main": [[{"node": "Generate Data", "type": "main", "index": 0}]]
+    },
+    "Generate Data": {
+      "main": [[{"node": "Summarize Results", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

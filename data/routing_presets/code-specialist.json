@@ -1,0 +1,13 @@
+{
+  "id": "rp-1771201141481",
+  "name": "code-specialist",
+  "description": "",
+  "created_at": 1771201141481,
+  "routes": [
+    {
+      "model": "granite-3.3-8b-instruct",
+      "persona": "developer",
+      "temperature": 0.3
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771296246015",
+  "name": "LM Studio Gemma 3 12b",
+  "provider": "lm_studio",
+  "modelId": "E:\\LL STUDIO\\DreamFast\\gemma-3-12b-it-heretic\\gemma-3-12b-it-heretic-Q4_K_S.gguf",
+  "modelName": "gemma-3-12b-it-heretic-Q4_K_S.gguf",
+  "contextLength": 30208,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771296246015
+}

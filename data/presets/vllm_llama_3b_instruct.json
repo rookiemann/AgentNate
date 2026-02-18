@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771209032905",
+  "name": "vLLM Llama 3B Instruct",
+  "provider": "vllm",
+  "modelId": "E:\\LL STUDIO\\bartowski\\Llama-3.2-3B-Instruct-GGUF\\Llama-3.2-3B-Instruct-Q8_0.gguf",
+  "modelName": "Llama-3.2-3B-Instruct-Q8_0.gguf",
+  "contextLength": 4608,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771209032905
+}

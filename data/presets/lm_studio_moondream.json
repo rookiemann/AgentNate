@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771208959004",
+  "name": "LM Studio Moondream",
+  "provider": "lm_studio",
+  "modelId": "moondream2",
+  "modelName": "moondream2",
+  "contextLength": 2048,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771208959004
+}

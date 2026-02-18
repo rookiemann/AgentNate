@@ -1,0 +1,11 @@
+{
+  "id": "preset-1771277025072",
+  "name": "Agent test preset",
+  "provider": "lm_studio",
+  "modelId": "m1",
+  "modelName": "m1",
+  "contextLength": 4096,
+  "gpuLayers": -1,
+  "gpuIndex": 0,
+  "createdAt": 1771277025072
+}
