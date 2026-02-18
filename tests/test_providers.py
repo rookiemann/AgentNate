@@ -27,7 +27,7 @@ async def test_providers():
     print()
     print("=== Testing OpenRouter ===")
     from providers.openrouter_provider import OpenRouterProvider
-    api_key = "your-api-key-here"
+    api_key = os.environ.get("OPENROUTER_API_KEY", "your-api-key-here")
     orr = OpenRouterProvider(api_key=api_key)
     health = await orr.health_check()
     print(f"Status: {health}")

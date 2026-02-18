@@ -8,7 +8,7 @@ import asyncio
 from providers.openrouter_provider import OpenRouterProvider
 from providers.base import InferenceRequest, ChatMessage
 
-API_KEY = "your-api-key-here"
+API_KEY = os.environ.get("OPENROUTER_API_KEY", "your-api-key-here")
 
 async def test_openrouter_safe():
     print("=== OpenRouter Safe Test (Free Models Only) ===")

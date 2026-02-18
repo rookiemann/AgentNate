@@ -7,7 +7,7 @@ sys.path.insert(0, ROOT)
 import asyncio
 from providers.openrouter_provider import OpenRouterProvider
 
-API_KEY = "your-api-key-here"
+API_KEY = os.environ.get("OPENROUTER_API_KEY", "your-api-key-here")
 
 async def check_credits():
     print("=== OpenRouter Credit Check ===")
