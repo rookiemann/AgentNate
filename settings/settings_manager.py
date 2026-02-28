@@ -27,7 +27,7 @@ class SettingsManager:
         "providers": {
             "llama_cpp": {
                 "enabled": True,
-                "models_directory": r"E:\LL STUDIO",
+                "models_directory": "",
                 "default_n_ctx": 4096,
                 "default_n_gpu_layers": 99,
                 "default_n_parallel": 1,
@@ -56,8 +56,8 @@ class SettingsManager:
             },
             "vllm": {
                 "enabled": False,
-                "env_path": "envs/vllm",
-                "models_directory": r"E:\LL STUDIO",
+                "env_path": "modules/vllm",
+                "models_directory": "",
                 "default_port_range_start": 8100,
                 "default_max_model_len": None,  # Auto-detect from model
                 "default_gpu_memory_utilization": 0.6,

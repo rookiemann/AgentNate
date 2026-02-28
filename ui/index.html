@@ -101,6 +101,7 @@
                     <button class="tab" data-tab="comfyui" onclick="switchTab('comfyui')" title="AI image generation with ComfyUI">ComfyUI</button>
                     <button class="tab" data-tab="tts" onclick="switchTab('tts')" title="Text-to-Speech generation">TTS</button>
                     <button class="tab" data-tab="music" onclick="switchTab('music')" title="AI Music Generation">Music</button>
+                    <button class="tab" data-tab="vllm" onclick="switchTab('vllm')" title="vLLM high-throughput LLM serving">vLLM</button>
                     <button class="tab" data-tab="gpu" onclick="switchTab('gpu')" title="GPU monitoring dashboard">GPU</button>
                     <button class="tab" data-tab="logs" onclick="switchTab('logs')" title="Application logs">Logs</button>
                 </div>
@@ -584,10 +585,14 @@
                                         <option value="none">No VRAM</option>
                                         <option value="cpu">CPU Only</option>
                                     </select>
+                                    <select id="comfyui-add-dir" class="input-field" title="ComfyUI directory for this instance">
+                                        <option value="">Default (Active Dir)</option>
+                                    </select>
                                     <button class="btn-accent btn-small" onclick="addInstance()">Add Instance</button>
                                     <button class="btn-secondary btn-small" onclick="startAllInstances()">Start All</button>
                                     <button class="btn-secondary btn-small" onclick="stopAllInstances()">Stop All</button>
                                 </div>
+                                <div id="comfyui-add-flags" class="comfyui-flags-row"></div>
                             </div>
                             <div id="comfyui-instances-list"></div>
                         </div>
@@ -598,6 +603,10 @@
                                 <select id="comfyui-model-category" class="input-field" onchange="filterModelsByCategory()">
                                     <option value="">All Categories</option>
                                 </select>
+                                <label class="comfyui-flag-checkbox" style="margin-left: 4px;">
+                                    <input type="checkbox" id="comfyui-model-installed-only" checked onchange="renderModels()">
+                                    <span>Installed only</span>
+                                </label>
                                 <input type="text" id="comfyui-model-search" placeholder="Search HuggingFace..." class="input-field" onkeydown="if(event.key==='Enter') searchModels()">
                                 <button class="btn-secondary btn-small" onclick="searchModels()">Search</button>
                             </div>
@@ -1120,6 +1129,67 @@
                                 </div>
                             </div>
                             <div id="music-library-grid" class="tts-library-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- vLLM Tab -->
+                <div id="tab-vllm" class="tab-panel">
+                    <div class="tts-container">
+                        <!-- Overview (no subtabs — simpler module) -->
+                        <div id="vllm-overview">
+                            <!-- Status Grid -->
+                            <div class="tts-status-grid">
+                                <div class="tts-status-card"><div class="tts-status-label">MODULE</div><div id="vllm-status-downloaded" class="tts-status-value">Checking...</div></div>
+                                <div class="tts-status-card"><div class="tts-status-label">INSTALLED</div><div id="vllm-status-installed" class="tts-status-value">Checking...</div></div>
+                            </div>
+
+                            <!-- Info Box -->
+                            <div class="tts-info-box">
+                                <h3>vLLM - High-Throughput LLM Serving</h3>
+                                <p>vLLM is a high-throughput, memory-efficient inference engine for large language models. It uses PagedAttention for optimal GPU memory management and continuous batching to serve multiple requests simultaneously.</p>
+                                <p class="tts-info-source">Source: <a href="https://github.com/rookiemann/vllm-windows-build" target="_blank">github.com/rookiemann/vllm-windows-build</a> (pre-built Windows release)</p>
+                                <ul class="tts-features">
+                                    <li><strong>Concurrency:</strong> Serves multiple requests simultaneously via continuous batching (vs llama.cpp's single-request-at-a-time)</li>
+                                    <li><strong>Best for:</strong> Multi-agent workflows, parallel tool calls, batch processing</li>
+                                    <li><strong>PagedAttention:</strong> Efficient GPU VRAM usage — serves larger models or more concurrent requests</li>
+                                    <li><strong>HuggingFace models:</strong> Supports safetensors format (not GGUF) — download models from HuggingFace Hub</li>
+                                    <li><strong>Requirements:</strong> NVIDIA GPU with CUDA support</li>
+                                    <li><strong>Included:</strong> Pre-built Windows package with Python 3.10, PyTorch, and vLLM wheel (~371 MB download)</li>
+                                </ul>
+                            </div>
+
+                            <!-- Installation -->
+                            <div class="tts-section">
+                                <h3>Installation</h3>
+                                <div class="tts-install-steps">
+                                    <div class="tts-install-step">
+                                        <span class="tts-step-num">1</span>
+                                        <span class="tts-step-label">Download pre-built release from GitHub (~371 MB)</span>
+                                        <button id="vllm-download-btn" class="btn-accent btn-small" onclick="downloadVLLMModule()">Download Module</button>
+                                    </div>
+                                    <div id="vllm-download-progress" class="hidden" style="margin: 8px 0 8px 32px;">
+                                        <div class="tts-progress-bar">
+                                            <div id="vllm-progress-fill" class="tts-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <div id="vllm-progress-text" class="tts-progress-text" style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">0%</div>
+                                    </div>
+                                    <div class="tts-install-step">
+                                        <span class="tts-step-num">2</span>
+                                        <span class="tts-step-label">Install Python 3.10, PyTorch, and vLLM</span>
+                                        <button id="vllm-bootstrap-btn" class="btn-accent btn-small" onclick="bootstrapVLLMModule()" disabled>Install</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Usage Note -->
+                            <div class="tts-section" id="vllm-usage-section" style="display: none;">
+                                <h3>Usage</h3>
+                                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                                    vLLM is ready. Go to <strong>Settings &rarr; Providers &rarr; vLLM</strong> to enable it, configure your models directory, and load HuggingFace models.
+                                    Models are managed through the Chat sidebar — load a model with the vLLM provider selected.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

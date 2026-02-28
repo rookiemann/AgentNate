@@ -20,6 +20,9 @@ export function switchTab(tabId) {
     if (previousTab === 'music' && tabId !== 'music') {
         import('./music.js').then(m => m.stopMusicPolling());
     }
+    if (previousTab === 'vllm' && tabId !== 'vllm') {
+        import('./vllm.js').then(v => v.stopVLLMPolling());
+    }
 
     // Update tab buttons
     document.querySelectorAll('.tab').forEach(t => {
@@ -60,6 +63,10 @@ export function switchTab(tabId) {
 
     if (tabId === 'music') {
         import('./music.js').then(m => m.initMusic());
+    }
+
+    if (tabId === 'vllm') {
+        import('./vllm.js').then(v => v.initVLLM());
     }
 
     previousTab = tabId;

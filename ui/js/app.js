@@ -64,6 +64,9 @@ import { initTTS, refreshTTSStatus, startTTSPolling, stopTTSPolling, switchTTSSu
 // Music
 import { initMusic, refreshMusicStatus, startMusicPolling, stopMusicPolling, switchMusicSubtab, musicFullInstall, downloadMusicModule, bootstrapMusicModule, startMusicServer, stopMusicServer, updateMusicModule, refreshModelsSubtab, installMusicModel, uninstallMusicModel, spawnMusicWorker, killMusicWorker, onMusicModelSelect, onMusicPresetSelect, generateMusic, refreshMusicLibrary, filterMusicLibrary, deleteMusicLibraryItem } from './music.js';
 
+// vLLM
+import { initVLLM, refreshVLLMStatus, startVLLMPolling, stopVLLMPolling, downloadVLLMModule, bootstrapVLLMModule } from './vllm.js';
+
 // GGUF
 import { searchGGUF, handleGGUFSearchKeydown, showGGUFFiles, downloadGGUF, cancelGGUFDownload } from './gguf.js';
 
@@ -491,6 +494,10 @@ Object.assign(window, {
     refreshMusicLibrary,
     filterMusicLibrary,
     deleteMusicLibraryItem,
+
+    // vLLM
+    downloadVLLMModule,
+    bootstrapVLLMModule,
 
     // GGUF
     searchGGUF,

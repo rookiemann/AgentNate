@@ -223,9 +223,21 @@ class VLLMProvider(BaseProvider):
         os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
     def _get_env_python(self) -> str:
-        """Get Python executable from isolated environment."""
+        """Get Python executable from isolated environment.
+
+        Search order:
+        1. modules/vllm/python/python.exe (new downloadable module path)
+        2. <env_path>/Scripts/python.exe or <env_path>/bin/python (settings-configured path)
+        3. System Python (fallback)
+        """
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+        # Check downloadable module path first (modules/vllm/python/python.exe)
+        module_python = os.path.join(base_dir, "modules", "vllm", "python", "python.exe")
+        if os.path.exists(module_python):
+            return module_python
+
+        # Fall back to configured env_path (supports both modules/vllm and legacy envs/vllm)
         if sys.platform == "win32":
             env_python = os.path.join(base_dir, self.env_path, "Scripts", "python.exe")
         else:
@@ -234,7 +246,7 @@ class VLLMProvider(BaseProvider):
         if os.path.exists(env_python):
             return env_python
 
-        logger.warning(f"vLLM env not found at {env_python}, using system Python")
+        logger.warning(f"vLLM env not found at {module_python} or {env_python}, using system Python")
         return sys.executable
 
     def _allocate_port(self) -> int:
