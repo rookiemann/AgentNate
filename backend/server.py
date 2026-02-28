@@ -29,11 +29,12 @@ from orchestrator.orchestrator import ModelOrchestrator
 from backend.n8n_manager import N8nManager, N8nQueueManager, ProcessRegistry, _kill_n8n_port_orphans
 from backend.personas import PersonaManager
 from backend.conversation_store import ConversationStore
-from backend.routes import models, chat, n8n, workflows, tools, system, settings, presets, marketplace, comfyui, media, routing, openai_compat, comfyui_pool as comfyui_pool_routes, tts, music, gguf as gguf_routes, vllm as vllm_routes
+from backend.routes import models, chat, n8n, workflows, tools, system, settings, presets, marketplace, comfyui, media, routing, openai_compat, comfyui_pool as comfyui_pool_routes, tts, music, gguf as gguf_routes, vllm as vllm_routes, llamacpp as llamacpp_routes
 from backend.comfyui_manager import ComfyUIManager
 from backend.tts_manager import TTSManager
 from backend.music_manager import MusicManager
 from backend.vllm_manager import VLLMManager
+from backend.llamacpp_manager import LlamaCppManager
 from backend.gguf_downloader import GGUFDownloader
 from backend.comfyui_pool import ComfyUIPool
 from backend.media_catalog import MediaCatalog
@@ -180,6 +181,10 @@ async def lifespan(app: FastAPI):
     logger.info(f"vLLM module: downloaded={vllm_mgr.is_module_downloaded()}, "
                 f"installed={vllm_mgr.is_installed()}")
 
+    # Initialize llama.cpp manager
+    llamacpp_mgr = LlamaCppManager(base_dir=Path(BASE_DIR))
+    logger.info(f"llama.cpp: installed={llamacpp_mgr.is_installed()}")
+
     # Initialize ComfyUI pool for multi-instance dispatch
     comfyui_pool = ComfyUIPool(comfyui_mgr)
 
@@ -200,6 +205,7 @@ async def lifespan(app: FastAPI):
     app.state.tts_manager = tts_mgr
     app.state.music_manager = music_mgr
     app.state.vllm_manager = vllm_mgr
+    app.state.llamacpp_manager = llamacpp_mgr
     app.state.gguf_downloader = gguf_downloader
     app.state.abort_signals = {}  # Agent abort signal tracking
 
@@ -291,6 +297,7 @@ app.include_router(media.router, prefix="/api/comfyui", tags=["Media"])
 app.include_router(tts.router, prefix="/api/tts", tags=["TTS"])
 app.include_router(music.router, prefix="/api/music", tags=["Music"])
 app.include_router(vllm_routes.router, prefix="/api/vllm", tags=["vLLM"])
+app.include_router(llamacpp_routes.router, prefix="/api/llamacpp", tags=["llama.cpp"])
 app.include_router(gguf_routes.router, prefix="/api/gguf", tags=["GGUF Downloads"])
 app.include_router(routing.router, prefix="/api/routing", tags=["Routing"])
 app.include_router(openai_compat.router, prefix="/v1", tags=["OpenAI Compatible"])

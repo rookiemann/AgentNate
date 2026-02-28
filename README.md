@@ -52,9 +52,9 @@ cd AgentNate
 install.bat
 ```
 
-Or download the ZIP from [Releases](https://github.com/rookiemann/AgentNate/releases), extract anywhere, and double-click `install.bat`.
+Or download the portable archive from [Releases](https://github.com/rookiemann/AgentNate/releases/latest), extract anywhere, and double-click `launcher.bat` — everything is pre-installed.
 
-The installer runs 7 stages automatically:
+The installer runs 6 stages automatically:
 
 | Stage | What It Does | Size |
 |-------|-------------|------|
@@ -64,11 +64,10 @@ The installer runs 7 stages automatically:
 | 4 | Installs Playwright Chromium (browser automation) | ~150 MB |
 | 5 | Downloads Node.js 24.12.0 portable from nodejs.org | ~45 MB |
 | 6 | Installs n8n workflow engine via npm | ~100 MB |
-| 7 | Installs llama-cpp-python CUDA wheel (GPU inference) | ~50 MB |
 
 Every stage is **idempotent** — if interrupted, just run `install.bat` again. It skips already-completed stages.
 
-> **No NVIDIA GPU?** Run `install.bat --no-llama` to skip the CUDA wheel. You can still use LM Studio, Ollama, or OpenRouter as providers.
+> **Local GPU inference?** After install, go to the **llama.cpp** tab in the UI to one-click install the CUDA wheel. You can also use LM Studio, Ollama, vLLM, or OpenRouter as providers.
 
 ### Launch
 
@@ -127,10 +126,11 @@ AgentNate/
 │   ├── js/                  # 18 ES modules
 │   └── styles.css           # All styles
 │
-├── modules/                 # External engines (auto-cloned on first use)
+├── modules/                 # External engines (installable from UI tabs)
 │   ├── comfyui/             # → rookiemann/comfyui-portable-installer
 │   ├── tts/                 # → rookiemann/portable-tts-server
-│   └── music/               # → rookiemann/portable-music-server
+│   ├── music/               # → rookiemann/portable-music-server
+│   └── vllm/                # → rookiemann/vllm-windows-build
 │
 ├── models/                  # Downloaded model files
 │   └── gguf/                # GGUF models (searched + downloaded from HuggingFace)

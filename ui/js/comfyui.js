@@ -50,6 +50,15 @@ export async function refreshComfyUIStatus() {
 
         renderOverview();
         renderInstances();
+
+        // Load external dirs + extra flags once (needed for instance creation form)
+        if (comfyuiState.apiRunning && !comfyuiState._externalDirsLoaded) {
+            comfyuiState._externalDirsLoaded = true;
+            loadExternalDirs().then(() => populateDirDropdown());
+            loadExtraFlags();
+        } else {
+            populateDirDropdown();
+        }
     } catch (e) {
         // Silent fail during polling
     }
@@ -334,20 +343,27 @@ export async function addInstance() {
     const gpu = document.getElementById('comfyui-add-gpu')?.value || '0';
     const port = parseInt(document.getElementById('comfyui-add-port')?.value || '8188');
     const vram = document.getElementById('comfyui-add-vram')?.value || 'normal';
+    const comfyuiDir = document.getElementById('comfyui-add-dir')?.value || '';
 
     const gpuInfo = comfyuiState.gpus.find(g => String(g.index) === String(gpu));
     const gpuLabel = gpuInfo ? `GPU ${gpuInfo.index}: ${gpuInfo.name}` : `GPU ${gpu}`;
+
+    const flagKeys = getSelectedExtraArgs();
+
+    const body = {
+        gpu_device: gpu === 'cpu' ? 'cpu' : gpu,
+        gpu_label: gpu === 'cpu' ? 'CPU' : gpuLabel,
+        port: port,
+        vram_mode: vram,
+    };
+    if (comfyuiDir) body.comfyui_dir = comfyuiDir;
+    if (flagKeys.length > 0) body.extra_flag_keys = flagKeys;
 
     try {
         const resp = await fetch(`${API}/comfyui/instances`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                gpu_device: gpu === 'cpu' ? 'cpu' : gpu,
-                gpu_label: gpu === 'cpu' ? 'CPU' : gpuLabel,
-                port: port,
-                vram_mode: vram,
-            }),
+            body: JSON.stringify(body),
         });
         const data = await resp.json();
 
@@ -622,6 +638,7 @@ export async function addExternalDir() {
             showToast('External directory added', 'success');
             input.value = '';
             await loadExternalDirs();
+            populateDirDropdown();
         }
     } catch (e) {
         showToast('Error: ' + e.message, 'error');
@@ -637,6 +654,7 @@ export async function removeExternalDir(path) {
         });
         showToast('External directory removed', 'success');
         await loadExternalDirs();
+        populateDirDropdown();
     } catch (e) {
         showToast('Error: ' + e.message, 'error');
     }
@@ -648,7 +666,9 @@ async function loadExternalDirs() {
     try {
         const resp = await fetch(`${API}/comfyui/external`);
         const data = await resp.json();
-        comfyuiState.externalDirs = Array.isArray(data) ? data : data.dirs || [];
+        const dirs = Array.isArray(data) ? data : data.saved || data.dirs || [];
+        const builtin = data.builtin_dir || '';
+        comfyuiState.externalDirs = dirs.filter(d => d !== builtin);
         renderExternalDirs();
     } catch (e) {
         console.error('Failed to load external dirs:', e);
@@ -782,6 +802,10 @@ function renderInstances() {
         const gpu = inst.gpu_label || inst.gpu_device || 'Unknown GPU';
         const port = inst.port || '?';
         const vram = inst.vram_mode || 'normal';
+        const effectiveDir = inst.effective_comfyui_dir || '';
+        const dirName = inst.comfyui_dir ? inst.comfyui_dir.split(/[\\/]/).pop() : '';
+        const extraArgs = inst.extra_args || [];
+        const flagsLabel = extraArgs.length > 0 ? extraArgs.join(' ') : '';
 
         return `
             <div class="comfyui-instance-row ${isRunning ? 'running' : 'stopped'}">
@@ -791,6 +815,8 @@ function renderInstances() {
                     <span class="comfyui-instance-detail">${gpu}</span>
                     <span class="comfyui-instance-detail">Port: ${port}</span>
                     <span class="comfyui-instance-detail">VRAM: ${vram}</span>
+                    ${dirName ? `<span class="comfyui-instance-detail" title="${escapeHtml(effectiveDir)}">Dir: ${escapeHtml(dirName)}</span>` : ''}
+                    ${flagsLabel ? `<span class="comfyui-instance-detail comfyui-instance-flags" title="${escapeHtml(flagsLabel)}">Flags: ${extraArgs.length}</span>` : ''}
                     <span class="comfyui-instance-status">${isRunning ? 'Running' : 'Stopped'}</span>
                 </div>
                 <div class="comfyui-instance-actions">
@@ -810,7 +836,12 @@ function renderModels() {
     const container = document.getElementById('comfyui-models-list');
     if (!container) return;
 
-    const models = comfyuiState.models.registry;
+    const installedOnly = document.getElementById('comfyui-model-installed-only')?.checked ?? true;
+    let models = comfyuiState.models.registry;
+
+    if (installedOnly) {
+        models = models.filter(m => m.downloaded || m.installed);
+    }
 
     // Populate category dropdown
     const catSelect = document.getElementById('comfyui-model-category');
@@ -824,7 +855,12 @@ function renderModels() {
     }
 
     if (!models || models.length === 0) {
-        container.innerHTML = '<div class="empty-state">No models found. Start the API server and switch to this tab.</div>';
+        const totalRegistry = comfyuiState.models.registry?.length || 0;
+        if (installedOnly && totalRegistry > 0) {
+            container.innerHTML = '<div class="empty-state">No installed models found. Uncheck <b>Installed only</b> to browse and download models.</div>';
+        } else {
+            container.innerHTML = '<div class="empty-state">No models found. Start the API server and switch to this tab.</div>';
+        }
         return;
     }
 
@@ -909,6 +945,69 @@ function renderExternalDirs() {
             </div>
         `;
     }).join('');
+}
+
+// ======================== Directory Dropdown ========================
+
+function populateDirDropdown() {
+    const dirSelect = document.getElementById('comfyui-add-dir');
+    if (!dirSelect) return;
+
+    // Merge external dirs from state (loaded via loadExternalDirs)
+    const dirs = comfyuiState.externalDirs || [];
+    const currentVal = dirSelect.value;
+
+    // Keep only the default option, rebuild the rest
+    while (dirSelect.options.length > 1) dirSelect.remove(1);
+
+    for (const d of dirs) {
+        const path = typeof d === 'string' ? d : d.path || String(d);
+        const opt = document.createElement('option');
+        opt.value = path;
+        opt.textContent = path.split(/[\\/]/).pop() || path;
+        dirSelect.appendChild(opt);
+    }
+
+    // Restore previous selection if still valid
+    if (currentVal) dirSelect.value = currentVal;
+}
+
+// ======================== Extra Flags ========================
+
+async function loadExtraFlags() {
+    if (!comfyuiState.apiRunning) return;
+
+    try {
+        const resp = await fetch(`${API}/comfyui/instances`);
+        const data = await resp.json();
+        comfyuiState.extraFlags = data.extra_flags || {};
+        renderExtraFlags();
+    } catch (e) {
+        console.error('Failed to load extra flags:', e);
+    }
+}
+
+function renderExtraFlags() {
+    const container = document.getElementById('comfyui-add-flags');
+    if (!container) return;
+
+    const flags = comfyuiState.extraFlags || {};
+    if (Object.keys(flags).length === 0) return;
+
+    container.innerHTML = Object.entries(flags).map(([key, label]) => `
+        <label class="comfyui-flag-checkbox" title="${escapeHtml(key)}">
+            <input type="checkbox" data-flag="${escapeHtml(key)}">
+            <span>${escapeHtml(label)}</span>
+        </label>
+    `).join('');
+}
+
+function getSelectedExtraArgs() {
+    const container = document.getElementById('comfyui-add-flags');
+    if (!container) return [];
+
+    const checked = container.querySelectorAll('input[type="checkbox"]:checked');
+    return Array.from(checked).map(cb => cb.dataset.flag);
 }
 
 // ======================== Helpers ========================

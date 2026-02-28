@@ -2218,6 +2218,36 @@ body {
     padding: 5px 8px;
 }
 
+.comfyui-flags-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 4px 0;
+}
+
+.comfyui-flag-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.comfyui-flag-checkbox input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.comfyui-flag-checkbox:hover {
+    color: var(--text-primary);
+}
+
+.comfyui-instance-flags {
+    color: var(--accent);
+}
+
 .comfyui-instance-row {
     display: flex;
     align-items: center;

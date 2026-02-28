@@ -64,6 +64,9 @@ import { initTTS, refreshTTSStatus, startTTSPolling, stopTTSPolling, switchTTSSu
 // Music
 import { initMusic, refreshMusicStatus, startMusicPolling, stopMusicPolling, switchMusicSubtab, musicFullInstall, downloadMusicModule, bootstrapMusicModule, startMusicServer, stopMusicServer, updateMusicModule, refreshModelsSubtab, installMusicModel, uninstallMusicModel, spawnMusicWorker, killMusicWorker, onMusicModelSelect, onMusicPresetSelect, generateMusic, refreshMusicLibrary, filterMusicLibrary, deleteMusicLibraryItem } from './music.js';
 
+// llama.cpp
+import { initLlamaCpp, refreshLlamaCppStatus, startLlamaCppPolling, stopLlamaCppPolling, installLlamaCpp } from './llamacpp.js';
+
 // vLLM
 import { initVLLM, refreshVLLMStatus, startVLLMPolling, stopVLLMPolling, downloadVLLMModule, bootstrapVLLMModule } from './vllm.js';
 
@@ -494,6 +497,9 @@ Object.assign(window, {
     refreshMusicLibrary,
     filterMusicLibrary,
     deleteMusicLibraryItem,
+
+    // llama.cpp
+    installLlamaCpp,
 
     // vLLM
     downloadVLLMModule,

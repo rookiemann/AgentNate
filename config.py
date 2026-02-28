@@ -1,8 +1,8 @@
 # config.py
 import os
 
-# Directory where you keep your .gguf models
-MODELS_DIRECTORY = r"E:\LL STUDIO"
+# Directory where you keep your .gguf models (set in Settings tab)
+MODELS_DIRECTORY = ""
 
 # Default inference settings — expanded with more useful parameters
 DEFAULT_N_CTX = 4096

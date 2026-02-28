@@ -69,9 +69,6 @@ echo    --browser     Open in default browser (default)
 echo    --server      API server only (no UI auto-open)
 echo    --desktop     Desktop window (PyWebView)
 echo.
-echo  Install options (passed to install.bat if needed):
-echo    --no-llama    Skip llama-cpp-python CUDA wheel install
-echo.
 echo  Other:
 echo    --help, -h    Show this help
 echo.

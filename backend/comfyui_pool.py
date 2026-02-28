@@ -36,6 +36,7 @@ class InstanceMetrics:
     vram_total_mb: int
     vram_mode: str
     status: str                                # running / stopped / error
+    comfyui_dir: Optional[str] = None          # per-instance ComfyUI directory
     loaded_checkpoint: Optional[str] = None    # detected from /history
     queue_depth: int = 0                       # queue_running + queue_pending
     busy: bool = False                         # queue_running > 0
@@ -222,6 +223,7 @@ class ComfyUIPool:
                         vram_total_mb=gpu_vram.get(gpu_device, 0),
                         vram_mode=inst.get("vram_mode", "normal"),
                         status=status,
+                        comfyui_dir=inst.get("comfyui_dir") or inst.get("effective_comfyui_dir"),
                     )
                     self._instances[iid] = metrics
                 else:

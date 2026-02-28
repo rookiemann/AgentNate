@@ -102,8 +102,7 @@ The installer handles everything in 7 stages:
 
 **Usage:**
 ```bash
-install.bat              # Full install (all 7 stages)
-install.bat --no-llama   # Skip CUDA llama-cpp-python (stages 1-6 only)
+install.bat              # Full install (all 6 stages)
 ```
 
 **Idempotent stages** — Each stage checks for marker files before running. Re-running `install.bat` skips already-completed stages. To force a stage to re-run, delete the corresponding marker:
@@ -116,7 +115,8 @@ install.bat --no-llama   # Skip CUDA llama-cpp-python (stages 1-6 only)
 | `python\.playwright-installed` | Stage 4 (Playwright) |
 | `node\node.exe` | Stage 5 (Node.js) |
 | `node_modules\n8n\bin\n8n` | Stage 6 (n8n) |
-| `python\.llama-cuda-installed` | Stage 7 (llama-cpp CUDA) |
+
+> **Note:** llama-cpp-python (CUDA wheel) is installed separately via the **llama.cpp** tab in the UI. The marker file `python\.llama-cuda-installed` tracks its installation status.
 
 ### Launcher (`launcher.bat`)
 
@@ -127,7 +127,6 @@ launcher.bat              # Auto-install + start (browser mode, default)
 launcher.bat --server     # API server only (no browser auto-open)
 launcher.bat --browser    # Start and open in default browser
 launcher.bat --desktop    # Start in PyWebView desktop window
-launcher.bat --no-llama   # Pass to install.bat if install is needed
 ```
 
 ### Updater (`update.bat`)
@@ -181,7 +180,7 @@ E:\AgentNate\
     .playwright-browsers\  # Chromium (portable, not in AppData)
     .packages-installed #   Stage 3 marker
     .playwright-installed  # Stage 4 marker
-    .llama-cuda-installed  # Stage 7 marker
+    .llama-cuda-installed  # llama.cpp install marker (via UI)
   node\                 # Embedded Node.js 24.12.0 (created by installer)
     node.exe            #   Node.js runtime
     npm.cmd             #   npm package manager

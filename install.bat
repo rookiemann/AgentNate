@@ -19,16 +19,7 @@ set "NODE_VERSION=24.12.0"
 set "NODE_URL=https://nodejs.org/dist/v24.12.0/node-v24.12.0-win-x64.zip"
 set "NODE_EXTRACT_DIR=node-v24.12.0-win-x64"
 set "GETPIP_URL=https://bootstrap.pypa.io/get-pip.py"
-set "LLAMA_WHEEL=https://github.com/rookiemann/llama-cpp-python-py314-cuda131-wheel/releases/download/v0.3.16-cuda13.1-py3.14/llama_cpp_python-0.3.16-cp314-cp314-win_amd64.whl"
-
-REM Parse flags
-set "SKIP_LLAMA=0"
-for %%a in (%*) do (
-    if /i "%%a"=="--no-llama" set "SKIP_LLAMA=1"
-)
-
-set "STAGES_TOTAL=7"
-if "%SKIP_LLAMA%"=="1" set "STAGES_TOTAL=6"
+set "STAGES_TOTAL=6"
 
 echo  Components to install:
 echo    - Python %PYTHON_VERSION% (embedded distribution)
@@ -37,7 +28,6 @@ echo    - Python packages (requirements.txt)
 echo    - Playwright Chromium (browser automation)
 echo    - Node.js %NODE_VERSION% (portable binary)
 echo    - n8n (workflow engine)
-if "%SKIP_LLAMA%"=="0" echo    - llama-cpp-python CUDA wheel (GPU acceleration)
 echo.
 
 REM ============================================================
@@ -132,7 +122,7 @@ if exist "%~dp0python\.packages-installed" (
 )
 echo          Installing packages (this may take several minutes)...
 REM Filter out llama-cpp-python — no pre-built wheel for Python 3.14 on PyPI.
-REM It is installed separately from a pre-built CUDA wheel in stage 7.
+REM It can be installed separately via the UI (llama.cpp tab).
 type "%~dp0requirements.txt" | findstr /V /I "llama-cpp-python" > "%~dp0python\_req_filtered.txt"
 "%~dp0python\python.exe" -m pip install -r "%~dp0python\_req_filtered.txt" --no-warn-script-location
 if !ERRORLEVEL! NEQ 0 (
@@ -215,7 +205,7 @@ REM ============================================================
 echo [6/%STAGES_TOTAL%] n8n workflow engine...
 if exist "%~dp0node_modules\n8n\bin\n8n" (
     echo          SKIP - already installed
-    goto :stage7
+    goto :done
 )
 echo          Installing via npm (this may take several minutes)...
 set "PATH=%~dp0node;%PATH%"
@@ -228,27 +218,6 @@ if not exist "%~dp0node_modules\n8n\bin\n8n" (
     echo          FAILED: n8n not found after npm install
     exit /b 1
 )
-echo          OK
-
-:stage7
-REM ============================================================
-REM  STAGE 7: llama-cpp-python CUDA wheel (pre-built for Py3.14)
-REM ============================================================
-if "%SKIP_LLAMA%"=="1" goto :done
-echo [7/%STAGES_TOTAL%] llama-cpp-python CUDA wheel...
-if exist "%~dp0python\.llama-cuda-installed" (
-    echo          SKIP - already installed ^(delete python\.llama-cuda-installed to force^)
-    goto :done
-)
-echo          Installing pre-built CUDA wheel from GitHub...
-"%~dp0python\python.exe" -m pip install "%LLAMA_WHEEL%" --no-deps --no-warn-script-location
-if !ERRORLEVEL! NEQ 0 (
-    echo          WARNING: llama-cpp-python wheel install failed ^(non-critical^)
-    echo          Local LLM inference via llama.cpp won't be available.
-    echo          You can retry: python\python.exe -m pip install "%LLAMA_WHEEL%"
-    goto :done
-)
-echo %DATE% %TIME% > "%~dp0python\.llama-cuda-installed"
 echo          OK
 
 :done

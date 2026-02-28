@@ -20,6 +20,9 @@ export function switchTab(tabId) {
     if (previousTab === 'music' && tabId !== 'music') {
         import('./music.js').then(m => m.stopMusicPolling());
     }
+    if (previousTab === 'llamacpp' && tabId !== 'llamacpp') {
+        import('./llamacpp.js').then(lc => lc.stopLlamaCppPolling());
+    }
     if (previousTab === 'vllm' && tabId !== 'vllm') {
         import('./vllm.js').then(v => v.stopVLLMPolling());
     }
@@ -63,6 +66,10 @@ export function switchTab(tabId) {
 
     if (tabId === 'music') {
         import('./music.js').then(m => m.initMusic());
+    }
+
+    if (tabId === 'llamacpp') {
+        import('./llamacpp.js').then(lc => lc.initLlamaCpp());
     }
 
     if (tabId === 'vllm') {
