@@ -246,8 +246,8 @@ class VLLMProvider(BaseProvider):
         if os.path.exists(env_python):
             return env_python
 
-        logger.warning(f"vLLM env not found at {module_python} or {env_python}, using system Python")
-        return sys.executable
+        logger.warning(f"vLLM env not found at {module_python} or {env_python}")
+        return module_python  # Return expected path so health_check reports env_missing
 
     def _allocate_port(self) -> int:
         port = self._next_port

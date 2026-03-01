@@ -1,18 +1,18 @@
 /**
  * vLLM Module UI
  *
- * Handles the vLLM tab: status display, download from GitHub releases,
- * and bootstrap (install.bat). No server management — that stays in
- * the vLLM provider (loaded via Chat sidebar).
+ * Handles the vLLM tab: status display and single-step install
+ * (download + bootstrap) with real-time progress. No server management —
+ * that stays in the vLLM provider (loaded via Chat sidebar).
  */
 
 import { API } from './state.js';
 import { log, apiFetch } from './utils.js';
 
-// Local state (simple module — no need for global state)
+// Local state
 let vllmInitialized = false;
 let vllmPollingInterval = null;
-let downloadPollingInterval = null;
+let installPollingInterval = null;
 
 // ======================== Init & Polling ========================
 
@@ -36,18 +36,18 @@ export function stopVLLMPolling() {
         clearInterval(vllmPollingInterval);
         vllmPollingInterval = null;
     }
-    stopDownloadPolling();
+    stopInstallPolling();
 }
 
-function startDownloadPolling() {
-    stopDownloadPolling();
-    downloadPollingInterval = setInterval(pollDownloadProgress, 1000);
+function startInstallPolling() {
+    stopInstallPolling();
+    installPollingInterval = setInterval(pollInstallProgress, 1000);
 }
 
-function stopDownloadPolling() {
-    if (downloadPollingInterval) {
-        clearInterval(downloadPollingInterval);
-        downloadPollingInterval = null;
+function stopInstallPolling() {
+    if (installPollingInterval) {
+        clearInterval(installPollingInterval);
+        installPollingInterval = null;
     }
 }
 
@@ -64,20 +64,12 @@ export async function refreshVLLMStatus() {
 }
 
 function renderStatus(data) {
-    const { module_downloaded, installed, status } = data;
+    const { installed, status } = data;
 
-    // Module status card
-    const dlEl = document.getElementById('vllm-status-downloaded');
-    if (dlEl) {
-        dlEl.textContent = module_downloaded ? 'Downloaded' : 'Not Downloaded';
-        dlEl.closest('.tts-status-card')?.classList.toggle('ok', module_downloaded);
-        dlEl.closest('.tts-status-card')?.classList.toggle('off', !module_downloaded);
-    }
-
-    // Installed status card
+    // Status card
     const instEl = document.getElementById('vllm-status-installed');
     if (instEl) {
-        if (status === 'bootstrapping') {
+        if (status === 'installing') {
             instEl.textContent = 'Installing...';
             instEl.closest('.tts-status-card')?.classList.remove('ok', 'off');
         } else {
@@ -87,33 +79,18 @@ function renderStatus(data) {
         }
     }
 
-    // Download button state
-    const dlBtn = document.getElementById('vllm-download-btn');
-    if (dlBtn) {
-        if (module_downloaded) {
-            dlBtn.textContent = 'Downloaded';
-            dlBtn.disabled = true;
-        } else if (status === 'downloading') {
-            dlBtn.textContent = 'Downloading...';
-            dlBtn.disabled = true;
-        } else {
-            dlBtn.textContent = 'Download Module';
-            dlBtn.disabled = false;
-        }
-    }
-
-    // Bootstrap button state
-    const bsBtn = document.getElementById('vllm-bootstrap-btn');
-    if (bsBtn) {
+    // Install button state
+    const btn = document.getElementById('vllm-install-btn');
+    if (btn) {
         if (installed) {
-            bsBtn.textContent = 'Installed';
-            bsBtn.disabled = true;
-        } else if (status === 'bootstrapping') {
-            bsBtn.textContent = 'Installing...';
-            bsBtn.disabled = true;
+            btn.textContent = 'Installed';
+            btn.disabled = true;
+        } else if (status === 'installing') {
+            btn.textContent = 'Installing...';
+            btn.disabled = true;
         } else {
-            bsBtn.textContent = 'Install';
-            bsBtn.disabled = !module_downloaded;
+            btn.textContent = 'Install vLLM';
+            btn.disabled = false;
         }
     }
 
@@ -124,104 +101,96 @@ function renderStatus(data) {
     }
 }
 
-// ======================== Download ========================
+// ======================== Install ========================
 
-export async function downloadVLLMModule() {
-    const btn = document.getElementById('vllm-download-btn');
-    if (btn) {
-        btn.textContent = 'Downloading...';
-        btn.disabled = true;
-    }
-
-    // Show progress bar
-    const progressWrap = document.getElementById('vllm-download-progress');
-    if (progressWrap) progressWrap.classList.remove('hidden');
-
-    log('Downloading vLLM module from GitHub...', 'info');
-
-    // Start polling download progress
-    startDownloadPolling();
-
-    try {
-        const resp = await apiFetch(`${API}/vllm/module/download`, { method: 'POST' });
-        const data = await resp.json();
-
-        stopDownloadPolling();
-
-        if (data.success) {
-            log('vLLM module downloaded successfully', 'success');
-            // Update progress to 100%
-            const fill = document.getElementById('vllm-progress-fill');
-            const text = document.getElementById('vllm-progress-text');
-            if (fill) fill.style.width = '100%';
-            if (text) text.textContent = 'Extraction complete';
-        } else {
-            log('vLLM download failed: ' + (data.error || 'Unknown error'), 'error');
-        }
-    } catch (e) {
-        stopDownloadPolling();
-        log('vLLM download error: ' + e.message, 'error');
-    }
-
-    await refreshVLLMStatus();
-}
-
-async function pollDownloadProgress() {
-    try {
-        const resp = await apiFetch(`${API}/vllm/module/download-progress`);
-        const data = await resp.json();
-
-        const fill = document.getElementById('vllm-progress-fill');
-        const text = document.getElementById('vllm-progress-text');
-
-        if (data.phase === 'downloading' && data.total_bytes > 0) {
-            const pct = Math.round((data.downloaded_bytes / data.total_bytes) * 100);
-            const downloadedMB = (data.downloaded_bytes / 1024 / 1024).toFixed(1);
-            const totalMB = (data.total_bytes / 1024 / 1024).toFixed(1);
-            if (fill) fill.style.width = pct + '%';
-            if (text) text.textContent = `Downloading: ${downloadedMB} / ${totalMB} MB (${pct}%)`;
-        } else if (data.phase === 'extracting') {
-            if (fill) fill.style.width = '95%';
-            if (text) text.textContent = 'Extracting...';
-        } else if (data.phase === 'fetching_release') {
-            if (fill) fill.style.width = '2%';
-            if (text) text.textContent = 'Fetching release info...';
-        } else if (data.phase === 'error') {
-            if (text) text.textContent = 'Error: ' + data.error;
-            stopDownloadPolling();
-        } else if (data.phase === 'done') {
-            if (fill) fill.style.width = '100%';
-            if (text) text.textContent = 'Done';
-            stopDownloadPolling();
-        }
-    } catch (e) {
-        // Ignore polling errors
-    }
-}
-
-// ======================== Bootstrap ========================
-
-export async function bootstrapVLLMModule() {
-    const btn = document.getElementById('vllm-bootstrap-btn');
+export async function installVLLMModule() {
+    const btn = document.getElementById('vllm-install-btn');
     if (btn) {
         btn.textContent = 'Installing...';
         btn.disabled = true;
     }
 
-    log('Installing vLLM (Python 3.10 + PyTorch + vLLM wheel)... This may take several minutes.', 'info');
+    // Show progress bar
+    const progressWrap = document.getElementById('vllm-install-progress');
+    if (progressWrap) progressWrap.classList.remove('hidden');
+
+    log('Installing vLLM (download + Python 3.10 + PyTorch + vLLM wheel)... This may take 10-20 minutes.', 'info');
+
+    // Start polling install progress
+    startInstallPolling();
 
     try {
-        const resp = await apiFetch(`${API}/vllm/module/bootstrap`, { method: 'POST' });
+        const resp = await apiFetch(`${API}/vllm/install`, { method: 'POST' });
         const data = await resp.json();
 
-        if (data.success) {
+        if (!data.success) {
+            log('vLLM install failed to start: ' + (data.error || 'Unknown error'), 'error');
+            stopInstallPolling();
+            await refreshVLLMStatus();
+        }
+        // Otherwise polling handles the rest — progress updates come via pollInstallProgress
+    } catch (e) {
+        stopInstallPolling();
+        log('vLLM install error: ' + e.message, 'error');
+        await refreshVLLMStatus();
+    }
+}
+
+async function pollInstallProgress() {
+    try {
+        const resp = await apiFetch(`${API}/vllm/install-progress`);
+        const data = await resp.json();
+
+        const fill = document.getElementById('vllm-progress-fill');
+        const text = document.getElementById('vllm-progress-text');
+
+        if (data.phase === 'fetching_release') {
+            if (fill) fill.style.width = '2%';
+            if (text) text.textContent = 'Checking latest release...';
+        } else if (data.phase === 'downloading') {
+            if (data.total_bytes > 0) {
+                const pct = Math.round((data.downloaded_bytes / data.total_bytes) * 100);
+                const downloadedMB = (data.downloaded_bytes / 1024 / 1024).toFixed(1);
+                const totalMB = (data.total_bytes / 1024 / 1024).toFixed(1);
+                // Download is roughly 0-30% of total progress
+                const barPct = Math.round(pct * 0.3);
+                if (fill) fill.style.width = barPct + '%';
+                if (text) text.textContent = `Downloading: ${downloadedMB} / ${totalMB} MB (${pct}%)`;
+            } else {
+                if (fill) fill.style.width = '5%';
+                if (text) text.textContent = 'Downloading...';
+            }
+        } else if (data.phase === 'extracting') {
+            if (fill) fill.style.width = '32%';
+            if (text) text.textContent = 'Extracting files...';
+        } else if (data.phase === 'installing_python') {
+            if (fill) fill.style.width = '38%';
+            if (text) text.textContent = data.detail || 'Installing Python 3.10...';
+        } else if (data.phase === 'installing_pytorch') {
+            if (fill) fill.style.width = '50%';
+            if (text) text.textContent = 'Installing PyTorch (~2.5 GB)... this takes several minutes';
+        } else if (data.phase === 'installing_vllm') {
+            if (fill) fill.style.width = '80%';
+            if (text) text.textContent = 'Installing vLLM wheel...';
+        } else if (data.phase === 'installing_deps') {
+            if (fill) fill.style.width = '90%';
+            if (text) text.textContent = 'Installing additional dependencies...';
+        } else if (data.phase === 'verifying') {
+            if (fill) fill.style.width = '92%';
+            if (text) text.textContent = 'Verifying installation...';
+        } else if (data.phase === 'done') {
+            if (fill) fill.style.width = '100%';
+            if (text) text.textContent = 'Installation complete!';
+            stopInstallPolling();
             log('vLLM installed successfully!', 'success');
-        } else {
-            log('vLLM install failed: ' + (data.error || 'Unknown error'), 'error');
+            await refreshVLLMStatus();
+        } else if (data.phase === 'error') {
+            if (text) text.textContent = 'Error: ' + data.error;
+            stopInstallPolling();
+            log('vLLM install failed: ' + data.error, 'error');
+            await refreshVLLMStatus();
         }
     } catch (e) {
-        log('vLLM install error: ' + e.message, 'error');
+        // Ignore polling errors
     }
-
-    await refreshVLLMStatus();
 }

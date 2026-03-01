@@ -68,7 +68,7 @@ import { initMusic, refreshMusicStatus, startMusicPolling, stopMusicPolling, swi
 import { initLlamaCpp, refreshLlamaCppStatus, startLlamaCppPolling, stopLlamaCppPolling, installLlamaCpp } from './llamacpp.js';
 
 // vLLM
-import { initVLLM, refreshVLLMStatus, startVLLMPolling, stopVLLMPolling, downloadVLLMModule, bootstrapVLLMModule } from './vllm.js';
+import { initVLLM, refreshVLLMStatus, startVLLMPolling, stopVLLMPolling, installVLLMModule } from './vllm.js';
 
 // GGUF
 import { searchGGUF, handleGGUFSearchKeydown, showGGUFFiles, downloadGGUF, cancelGGUFDownload } from './gguf.js';
@@ -502,8 +502,7 @@ Object.assign(window, {
     installLlamaCpp,
 
     // vLLM
-    downloadVLLMModule,
-    bootstrapVLLMModule,
+    installVLLMModule,
 
     // GGUF
     searchGGUF,

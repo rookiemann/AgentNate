@@ -1194,8 +1194,7 @@
                         <div id="vllm-overview">
                             <!-- Status Grid -->
                             <div class="tts-status-grid">
-                                <div class="tts-status-card"><div class="tts-status-label">MODULE</div><div id="vllm-status-downloaded" class="tts-status-value">Checking...</div></div>
-                                <div class="tts-status-card"><div class="tts-status-label">INSTALLED</div><div id="vllm-status-installed" class="tts-status-value">Checking...</div></div>
+                                <div class="tts-status-card"><div class="tts-status-label">STATUS</div><div id="vllm-status-installed" class="tts-status-value">Checking...</div></div>
                             </div>
 
                             <!-- Info Box -->
@@ -1219,19 +1218,14 @@
                                 <div class="tts-install-steps">
                                     <div class="tts-install-step">
                                         <span class="tts-step-num">1</span>
-                                        <span class="tts-step-label">Download pre-built release from GitHub (~371 MB)</span>
-                                        <button id="vllm-download-btn" class="btn-accent btn-small" onclick="downloadVLLMModule()">Download Module</button>
+                                        <span class="tts-step-label">Download and install vLLM (~371 MB download + ~2.5 GB PyTorch)</span>
+                                        <button id="vllm-install-btn" class="btn-accent btn-small" onclick="installVLLMModule()">Install vLLM</button>
                                     </div>
-                                    <div id="vllm-download-progress" class="hidden" style="margin: 8px 0 8px 32px;">
+                                    <div id="vllm-install-progress" class="hidden" style="margin: 8px 0 8px 32px;">
                                         <div class="tts-progress-bar">
                                             <div id="vllm-progress-fill" class="tts-progress-fill" style="width: 0%"></div>
                                         </div>
-                                        <div id="vllm-progress-text" class="tts-progress-text" style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">0%</div>
-                                    </div>
-                                    <div class="tts-install-step">
-                                        <span class="tts-step-num">2</span>
-                                        <span class="tts-step-label">Install Python 3.10, PyTorch, and vLLM</span>
-                                        <button id="vllm-bootstrap-btn" class="btn-accent btn-small" onclick="bootstrapVLLMModule()" disabled>Install</button>
+                                        <div id="vllm-progress-text" class="tts-progress-text" style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Preparing...</div>
                                     </div>
                                 </div>
                             </div>
@@ -1240,8 +1234,7 @@
                             <div class="tts-section" id="vllm-usage-section" style="display: none;">
                                 <h3>Usage</h3>
                                 <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
-                                    vLLM is ready. Go to <strong>Settings &rarr; Providers &rarr; vLLM</strong> to enable it, configure your models directory, and load HuggingFace models.
-                                    Models are managed through the Chat sidebar — load a model with the vLLM provider selected.
+                                    vLLM is installed. Configure your models directory in <strong>Settings &rarr; Providers &rarr; vLLM</strong>, then load models through the Chat sidebar with the vLLM provider selected.
                                 </p>
                             </div>
                         </div>

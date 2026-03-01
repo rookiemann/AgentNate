@@ -2,9 +2,8 @@
 vLLM Module Manager
 
 Manages the portable vLLM installation lifecycle:
-- Download pre-built release from GitHub (rookiemann/vllm-windows-build)
-- Bootstrap (run install.bat which downloads Python 3.10, PyTorch, installs vllm wheel)
-- Track download progress for UI progress bar
+- Single-step install: download release → extract → bootstrap (Python 3.10 + PyTorch + vLLM)
+- Real-time progress tracking across all phases
 - Report module status
 
 Does NOT manage vLLM server processes — that stays in providers/vllm_provider.py.
@@ -68,18 +67,15 @@ class VLLMManager:
         self.modules_dir = modules_dir
         self.module_dir = modules_dir / "vllm"
 
-        # Download progress tracking
-        self._download_progress: Dict[str, Any] = {
+        # Unified install progress tracking
+        self._progress: Dict[str, Any] = {
             "active": False,
+            "phase": "",
             "downloaded_bytes": 0,
             "total_bytes": 0,
-            "filename": "",
-            "phase": "",  # "downloading", "extracting", "done", "error"
+            "detail": "",
             "error": "",
         }
-
-        # Bootstrap state
-        self._bootstrapping = False
 
         # Truncate the debug log on init
         try:
@@ -110,50 +106,90 @@ class VLLMManager:
 
     def get_status(self) -> Dict[str, Any]:
         """Get current module status."""
-        downloaded = self.is_module_downloaded()
         installed = self.is_installed()
 
-        if self._bootstrapping:
-            status = "bootstrapping"
+        if self._progress["active"]:
+            status = "installing"
         elif installed:
             status = "installed"
-        elif downloaded:
-            status = "downloaded"
-        elif self._download_progress["active"]:
-            status = "downloading"
         else:
-            status = "not_downloaded"
+            status = "not_installed"
 
         return {
             "status": status,
-            "module_downloaded": downloaded,
             "installed": installed,
-            "bootstrapping": self._bootstrapping,
             "module_dir": str(self.module_dir),
         }
 
-    def get_download_progress(self) -> Dict[str, Any]:
-        """Get current download progress."""
-        return dict(self._download_progress)
+    def get_install_progress(self) -> Dict[str, Any]:
+        """Get current install progress."""
+        return dict(self._progress)
 
-    # ======================== Module Lifecycle ========================
+    # ======================== Unified Install ========================
 
-    async def download_module(self) -> Dict[str, Any]:
-        """Download the latest vLLM release from GitHub and extract to modules/vllm/."""
-        if self.is_module_downloaded():
-            _log("Module already downloaded, skipping")
-            return {"success": True, "message": "Module already downloaded"}
+    async def install(self) -> Dict[str, Any]:
+        """Single-step install: download → extract → bootstrap → missing deps."""
+        if self.is_installed():
+            _log("Already installed, skipping")
+            return {"success": True, "message": "Already installed"}
 
-        self.modules_dir.mkdir(parents=True, exist_ok=True)
+        if self._progress["active"]:
+            return {"success": False, "error": "Installation already in progress"}
 
-        self._download_progress = {
+        self._progress = {
             "active": True,
+            "phase": "fetching_release",
             "downloaded_bytes": 0,
             "total_bytes": 0,
-            "filename": "",
-            "phase": "fetching_release",
+            "detail": "Checking latest release...",
             "error": "",
         }
+
+        try:
+            # Phase 1-3: Download and extract (skip if already downloaded)
+            if not self.is_module_downloaded():
+                result = await self._download_module()
+                if not result["success"]:
+                    return result
+            else:
+                _log("Module already downloaded, skipping to bootstrap")
+
+            # Phase 4-7: Bootstrap (install Python, PyTorch, vLLM)
+            if not self.is_installed():
+                result = await self._bootstrap()
+                if not result["success"]:
+                    return result
+
+            # Done
+            self._progress["phase"] = "done"
+            self._progress["detail"] = "Installation complete!"
+            self._progress["active"] = False
+            _log("vLLM installation completed successfully")
+            return {"success": True, "message": "vLLM installed successfully"}
+
+        except asyncio.CancelledError:
+            self._progress["phase"] = "error"
+            self._progress["error"] = "Installation cancelled"
+            self._progress["detail"] = "Installation cancelled"
+            self._progress["active"] = False
+            raise
+        except Exception as e:
+            error = f"{type(e).__name__}: {e}"
+            _log(f"Install exception: {error}", "error")
+            self._progress["phase"] = "error"
+            self._progress["error"] = error
+            self._progress["detail"] = f"Error: {error}"
+            self._progress["active"] = False
+            return {"success": False, "error": error}
+
+    # ======================== Internal: Download ========================
+
+    async def _download_module(self) -> Dict[str, Any]:
+        """Download the latest vLLM release from GitHub and extract to modules/vllm/."""
+        self.modules_dir.mkdir(parents=True, exist_ok=True)
+
+        self._progress["phase"] = "fetching_release"
+        self._progress["detail"] = "Checking latest release..."
 
         try:
             # Step 1: Get latest release info from GitHub API
@@ -163,9 +199,10 @@ class VLLMManager:
                 if resp.status_code != 200:
                     error = f"GitHub API returned {resp.status_code}: {resp.text[:200]}"
                     _log(error, "error")
-                    self._download_progress["phase"] = "error"
-                    self._download_progress["error"] = error
-                    self._download_progress["active"] = False
+                    self._progress["phase"] = "error"
+                    self._progress["error"] = error
+                    self._progress["detail"] = f"Error: {error}"
+                    self._progress["active"] = False
                     return {"success": False, "error": error}
 
                 release = resp.json()
@@ -180,9 +217,10 @@ class VLLMManager:
             if not zip_asset:
                 error = "No .zip asset found in latest release"
                 _log(error, "error")
-                self._download_progress["phase"] = "error"
-                self._download_progress["error"] = error
-                self._download_progress["active"] = False
+                self._progress["phase"] = "error"
+                self._progress["error"] = error
+                self._progress["detail"] = f"Error: {error}"
+                self._progress["active"] = False
                 return {"success": False, "error": error}
 
             download_url = zip_asset["browser_download_url"]
@@ -191,11 +229,11 @@ class VLLMManager:
 
             _log(f"Downloading {filename} ({total_bytes / 1024 / 1024:.1f} MB) from {download_url}")
 
-            self._download_progress.update({
+            self._progress.update({
                 "phase": "downloading",
-                "filename": filename,
                 "total_bytes": total_bytes,
                 "downloaded_bytes": 0,
+                "detail": "Starting download...",
             })
 
             # Step 2: Download the zip file with progress tracking
@@ -205,23 +243,24 @@ class VLLMManager:
                     if response.status_code != 200:
                         error = f"Download failed with status {response.status_code}"
                         _log(error, "error")
-                        self._download_progress["phase"] = "error"
-                        self._download_progress["error"] = error
-                        self._download_progress["active"] = False
+                        self._progress["phase"] = "error"
+                        self._progress["error"] = error
+                        self._progress["detail"] = f"Error: {error}"
+                        self._progress["active"] = False
                         return {"success": False, "error": error}
 
                     with open(zip_path, "wb") as f:
                         async for chunk in response.aiter_bytes(chunk_size=65536):
                             f.write(chunk)
-                            self._download_progress["downloaded_bytes"] += len(chunk)
+                            self._progress["downloaded_bytes"] += len(chunk)
 
-            _log(f"Download complete: {zip_path} ({self._download_progress['downloaded_bytes']} bytes)")
+            _log(f"Download complete: {zip_path} ({self._progress['downloaded_bytes']} bytes)")
 
             # Step 3: Extract the zip file
-            self._download_progress["phase"] = "extracting"
+            self._progress["phase"] = "extracting"
+            self._progress["detail"] = "Extracting files..."
             _log(f"Extracting {filename} to {self.module_dir}")
 
-            # Run extraction in a thread to avoid blocking the event loop
             await asyncio.to_thread(self._extract_zip, zip_path, self.module_dir)
 
             # Clean up the zip file
@@ -231,30 +270,25 @@ class VLLMManager:
             except Exception as e:
                 _log(f"Failed to clean up zip: {e}", "warning")
 
-            self._download_progress["phase"] = "done"
-            self._download_progress["active"] = False
-
             if self.is_module_downloaded():
                 _log("vLLM module downloaded and extracted successfully")
                 return {"success": True, "message": "Module downloaded successfully"}
             else:
                 error = "Extraction completed but install.bat not found — zip may have unexpected structure"
                 _log(error, "error")
-                self._download_progress["phase"] = "error"
-                self._download_progress["error"] = error
+                self._progress["phase"] = "error"
+                self._progress["error"] = error
+                self._progress["detail"] = f"Error: {error}"
+                self._progress["active"] = False
                 return {"success": False, "error": error}
 
-        except asyncio.CancelledError:
-            self._download_progress["phase"] = "error"
-            self._download_progress["error"] = "Download cancelled"
-            self._download_progress["active"] = False
-            raise
         except Exception as e:
             error = f"{type(e).__name__}: {e}"
             _log(f"Download exception: {error}", "error")
-            self._download_progress["phase"] = "error"
-            self._download_progress["error"] = error
-            self._download_progress["active"] = False
+            self._progress["phase"] = "error"
+            self._progress["error"] = error
+            self._progress["detail"] = f"Error: {error}"
+            self._progress["active"] = False
             return {"success": False, "error": error}
 
     def _extract_zip(self, zip_path: Path, target_dir: Path):
@@ -292,25 +326,26 @@ class VLLMManager:
                 zf.extractall(target_dir)
                 _log(f"Extracted {len(zf.namelist())} entries to {target_dir}")
 
-    async def bootstrap(self) -> Dict[str, Any]:
+    # ======================== Internal: Bootstrap ========================
+
+    async def _bootstrap(self) -> Dict[str, Any]:
         """
         Run install.bat to install Python 3.10, PyTorch, and vLLM wheel.
-        Creates a headless version that skips any interactive prompts.
+        Parses stdout for [N/5] phase markers to update progress.
         """
-        if not self.is_module_downloaded():
-            return {"success": False, "error": "Module not downloaded. Download it first."}
-
-        if self.is_installed():
-            _log("Already installed, skipping bootstrap")
-            return {"success": True, "message": "Already installed"}
-
         install_bat = self.module_dir / "install.bat"
         if not install_bat.is_file():
+            error = "install.bat not found in module directory"
             _log(f"install.bat not found at {install_bat}", "error")
-            return {"success": False, "error": "install.bat not found in module directory"}
+            self._progress["phase"] = "error"
+            self._progress["error"] = error
+            self._progress["detail"] = f"Error: {error}"
+            self._progress["active"] = False
+            return {"success": False, "error": error}
 
         _log("Running vLLM bootstrap (headless)...")
-        self._bootstrapping = True
+        self._progress["phase"] = "installing_python"
+        self._progress["detail"] = "Installing Python 3.10..."
 
         # Create a modified script that removes pause commands
         bootstrap_script = self.module_dir / "_bootstrap_headless.bat"
@@ -328,9 +363,13 @@ class VLLMManager:
                 f.write(content)
             _log(f"Created bootstrap script: {bootstrap_script} ({len(content)} chars)")
         except Exception as e:
-            self._bootstrapping = False
-            _log(f"Failed to create bootstrap script: {e}", "error")
-            return {"success": False, "error": f"Failed to create bootstrap script: {e}"}
+            error = f"Failed to create bootstrap script: {e}"
+            _log(error, "error")
+            self._progress["phase"] = "error"
+            self._progress["error"] = error
+            self._progress["detail"] = f"Error: {error}"
+            self._progress["active"] = False
+            return {"success": False, "error": error}
 
         try:
             _log(f"Executing: cmd /c {bootstrap_script}")
@@ -343,20 +382,30 @@ class VLLMManager:
                 creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0,
             )
 
-            async def _read_stream(stream, label):
+            async def _read_stdout(stream):
                 while True:
                     line = await stream.readline()
                     if not line:
                         break
                     text = line.decode("utf-8", errors="replace").rstrip()
                     if text:
-                        _log_to_file(f"[BOOTSTRAP {label}] {text}")
+                        _log_to_file(f"[BOOTSTRAP OUT] {text}")
+                        self._parse_bootstrap_phase(text)
+
+            async def _read_stderr(stream):
+                while True:
+                    line = await stream.readline()
+                    if not line:
+                        break
+                    text = line.decode("utf-8", errors="replace").rstrip()
+                    if text:
+                        _log_to_file(f"[BOOTSTRAP ERR] {text}")
 
             try:
                 await asyncio.wait_for(
                     asyncio.gather(
-                        _read_stream(process.stdout, "OUT"),
-                        _read_stream(process.stderr, "ERR"),
+                        _read_stdout(process.stdout),
+                        _read_stderr(process.stderr),
                         process.wait(),
                     ),
                     timeout=1800,  # 30 minutes — vLLM + PyTorch downloads are large
@@ -371,7 +420,10 @@ class VLLMManager:
                     bootstrap_script.unlink(missing_ok=True)
                 except Exception:
                     pass
-                self._bootstrapping = False
+                self._progress["phase"] = "error"
+                self._progress["error"] = "Bootstrap timed out after 30 minutes"
+                self._progress["detail"] = "Error: timed out after 30 minutes"
+                self._progress["active"] = False
                 return {"success": False, "error": "Bootstrap timed out after 30 minutes"}
 
             # Clean up temp script
@@ -381,21 +433,32 @@ class VLLMManager:
                 pass
 
             _log(f"Bootstrap process exited with code {process.returncode}")
-            self._bootstrapping = False
 
             if process.returncode == 0 or self.is_installed():
                 _log("Bootstrap completed successfully")
+                # Install missing deps
+                self._progress["phase"] = "installing_deps"
+                self._progress["detail"] = "Installing additional dependencies..."
+                await self._install_missing_deps()
                 return {"success": True, "message": "Bootstrap completed — vLLM is installed"}
             else:
+                error = f"Bootstrap exited with code {process.returncode}. Check vllm-debug.log for details."
                 _log(f"Bootstrap failed (rc={process.returncode})", "error")
-                return {"success": False, "error": f"Bootstrap exited with code {process.returncode}. Check vllm-debug.log for details."}
+                self._progress["phase"] = "error"
+                self._progress["error"] = error
+                self._progress["detail"] = f"Error: {error}"
+                self._progress["active"] = False
+                return {"success": False, "error": error}
 
         except asyncio.TimeoutError:
             try:
                 bootstrap_script.unlink(missing_ok=True)
             except Exception:
                 pass
-            self._bootstrapping = False
+            self._progress["phase"] = "error"
+            self._progress["error"] = "Bootstrap timed out after 30 minutes"
+            self._progress["detail"] = "Error: timed out after 30 minutes"
+            self._progress["active"] = False
             return {"success": False, "error": "Bootstrap timed out after 30 minutes"}
         except Exception as e:
             _log(f"Bootstrap exception: {type(e).__name__}: {e}", "error")
@@ -403,5 +466,70 @@ class VLLMManager:
                 bootstrap_script.unlink(missing_ok=True)
             except Exception:
                 pass
-            self._bootstrapping = False
-            return {"success": False, "error": str(e)}
+            error = str(e)
+            self._progress["phase"] = "error"
+            self._progress["error"] = error
+            self._progress["detail"] = f"Error: {error}"
+            self._progress["active"] = False
+            return {"success": False, "error": error}
+
+    def _parse_bootstrap_phase(self, line: str):
+        """Parse install.bat stdout for [N/5] stage markers to update progress phase."""
+        if "[1/5]" in line:
+            self._progress["phase"] = "installing_python"
+            self._progress["detail"] = "Installing Python 3.10..."
+        elif "[2/5]" in line:
+            self._progress["phase"] = "installing_python"
+            self._progress["detail"] = "Setting up pip..."
+        elif "[3/5]" in line:
+            self._progress["phase"] = "installing_pytorch"
+            self._progress["detail"] = "Installing PyTorch (~2.5 GB)... this takes several minutes"
+        elif "[4/5]" in line:
+            self._progress["phase"] = "installing_vllm"
+            self._progress["detail"] = "Installing vLLM wheel..."
+        elif "[5/5]" in line:
+            self._progress["phase"] = "verifying"
+            self._progress["detail"] = "Verifying installation..."
+        elif "[DONE]" in line:
+            self._progress["detail"] = "Bootstrap complete, finishing up..."
+
+    async def _install_missing_deps(self):
+        """Install dependencies missing from the vLLM wheel metadata.
+
+        The upstream vllm-windows-build wheel doesn't declare these in its
+        Requires-Dist, so pip install doesn't pull them in automatically.
+        """
+        python_exe = str(self.module_dir / "python" / "python.exe")
+        if not os.path.exists(python_exe):
+            _log("Cannot install missing deps — python.exe not found", "warning")
+            return
+
+        missing_deps = ["cbor2", "openai-harmony", "llguidance", "xgrammar"]
+        _log(f"Installing missing vLLM deps: {', '.join(missing_deps)}")
+
+        try:
+            process = await asyncio.create_subprocess_exec(
+                python_exe, "-m", "pip", "install",
+                *missing_deps,
+                "--no-warn-script-location",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0,
+            )
+
+            stdout, stderr = await asyncio.wait_for(
+                process.communicate(), timeout=300
+            )
+
+            if process.returncode == 0:
+                _log("Missing deps installed successfully")
+            else:
+                out = stdout.decode("utf-8", errors="replace")
+                err = stderr.decode("utf-8", errors="replace")
+                _log(f"Missing deps install failed (rc={process.returncode}): {err[:500]}", "warning")
+                _log_to_file(f"[DEPS STDOUT] {out}")
+                _log_to_file(f"[DEPS STDERR] {err}")
+        except asyncio.TimeoutError:
+            _log("Missing deps install timed out after 5 minutes", "warning")
+        except Exception as e:
+            _log(f"Missing deps install error: {e}", "warning")
