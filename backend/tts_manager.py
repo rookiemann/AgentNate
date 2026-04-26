@@ -24,7 +24,7 @@ import httpx
 
 logger = logging.getLogger("TTSManager")
 
-REPO_URL = "https://github.com/rookiemann/portable-tts-server"
+REPO_URL = "https://github.com/aivrar/portable-tts-server"
 DEFAULT_API_PORT = 8100
 API_STARTUP_TIMEOUT = 120  # TTS models can be slow to load
 PROXY_TIMEOUT = 30

@@ -23,7 +23,7 @@ import httpx
 
 logger = logging.getLogger("MusicManager")
 
-REPO_URL = "https://github.com/rookiemann/portable-music-server"
+REPO_URL = "https://github.com/aivrar/portable-music-server"
 DEFAULT_API_PORT = 9150
 API_STARTUP_TIMEOUT = 120
 PROXY_TIMEOUT = 30

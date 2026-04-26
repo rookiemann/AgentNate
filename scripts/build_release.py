@@ -220,7 +220,7 @@ AgentNate is a **local-first AI orchestration platform** — LLMs, workflow auto
 
 ### Option A: Automatic (Recommended)
 ```
-git clone https://github.com/rookiemann/AgentNate.git
+git clone https://github.com/aivrar/AgentNate.git
 cd AgentNate
 install.bat
 launcher.bat
@@ -245,7 +245,7 @@ If `install.bat` has trouble downloading or building dependencies, download the 
 - ~2 GB disk space for source + pre-built environments
 
 ## Documentation
-- [User Manual (Wiki)](https://github.com/rookiemann/AgentNate/wiki)
+- [User Manual (Wiki)](https://github.com/aivrar/AgentNate/wiki)
 - [PDF Manual](manual/AgentNate-Manual.pdf) (included in source)
 """
 

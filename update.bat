@@ -99,7 +99,7 @@ REM ============================================================
 if "%UPDATE_CUDA%"=="1" (
     echo  [CUDA] Reinstalling llama-cpp-python GPU wheel...
     "%~dp0python\python.exe" -m pip uninstall llama-cpp-python -y >nul 2>&1
-    "%~dp0python\python.exe" -m pip install "https://github.com/rookiemann/llama-cpp-python-py314-cuda131-wheel/releases/download/v0.3.16-cuda13.1-py3.14/llama_cpp_python-0.3.16-cp314-cp314-win_amd64.whl" --force-reinstall --no-deps --no-warn-script-location
+    "%~dp0python\python.exe" -m pip install "https://github.com/aivrar/llama-cpp-python-py314-cuda131-wheel/releases/download/v0.3.16-cuda13.1-py3.14/llama_cpp_python-0.3.16-cp314-cp314-win_amd64.whl" --force-reinstall --no-deps --no-warn-script-location
     if !ERRORLEVEL! NEQ 0 (
         echo         FAILED
         exit /b 1

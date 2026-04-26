@@ -22,7 +22,7 @@ import httpx
 logger = logging.getLogger("LlamaCppManager")
 
 WHEEL_URL = (
-    "https://github.com/rookiemann/llama-cpp-python-py314-cuda131-wheel"
+    "https://github.com/aivrar/llama-cpp-python-py314-cuda131-wheel"
     "/releases/download/v0.3.16-cuda13.1-py3.14"
     "/llama_cpp_python-0.3.16-cp314-cp314-win_amd64.whl"
 )

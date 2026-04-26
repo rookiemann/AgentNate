@@ -210,7 +210,7 @@ def build_wiki():
     home_lines = [
         "# AgentNate User Manual",
         "",
-        "**Version 2.0** | **GitHub**: [github.com/rookiemann/AgentNate](https://github.com/rookiemann/AgentNate)",
+        "**Version 2.0** | **GitHub**: [github.com/aivrar/AgentNate](https://github.com/aivrar/AgentNate)",
         "",
         "---",
         "",
@@ -299,7 +299,7 @@ def build_wiki():
     # Build _Footer.md
     footer = (
         "*AgentNate v2.0 — Local AI Orchestration Platform* | "
-        "[GitHub](https://github.com/rookiemann/AgentNate)\n"
+        "[GitHub](https://github.com/aivrar/AgentNate)\n"
     )
     footer_path = WIKI_DIR / "_Footer.md"
     footer_path.write_text(footer, encoding="utf-8")

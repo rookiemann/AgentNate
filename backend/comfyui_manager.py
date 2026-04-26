@@ -24,7 +24,7 @@ import httpx
 
 logger = logging.getLogger("ComfyUIManager")
 
-REPO_URL = "https://github.com/rookiemann/comfyui-portable-installer"
+REPO_URL = "https://github.com/aivrar/comfyui-portable-installer"
 DEFAULT_API_PORT = 5000
 API_STARTUP_TIMEOUT = 60
 PROXY_TIMEOUT = 30

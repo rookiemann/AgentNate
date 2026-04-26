@@ -23,7 +23,7 @@ import httpx
 
 logger = logging.getLogger("VLLMManager")
 
-GITHUB_REPO = "rookiemann/vllm-windows-build"
+GITHUB_REPO = "aivrar/vllm-windows-build"
 GITHUB_API_URL = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
 
 # Debug log file for vLLM manager output

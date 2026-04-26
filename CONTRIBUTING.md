@@ -51,7 +51,7 @@ The codebase uses:
 
 ## Reporting Issues
 
-Use the [issue templates](https://github.com/rookiemann/AgentNate/issues/new/choose) for bug reports and feature requests. For questions and discussion, use [Discussions](https://github.com/rookiemann/AgentNate/discussions).
+Use the [issue templates](https://github.com/aivrar/AgentNate/issues/new/choose) for bug reports and feature requests. For questions and discussion, use [Discussions](https://github.com/aivrar/AgentNate/discussions).
 
 ## License
 

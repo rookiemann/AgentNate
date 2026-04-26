@@ -1,12 +1,12 @@
 # AgentNate
 
-![License: MIT](https://img.shields.io/github/license/rookiemann/AgentNate)
+![License: MIT](https://img.shields.io/github/license/aivrar/AgentNate)
 ![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue)
 ![Python: 3.14](https://img.shields.io/badge/Python-3.14-green)
 ![Node.js: 24](https://img.shields.io/badge/Node.js-24-brightgreen)
-![Stars](https://img.shields.io/github/stars/rookiemann/AgentNate)
-![Issues](https://img.shields.io/github/issues/rookiemann/AgentNate)
-![Last Commit](https://img.shields.io/github/last-commit/rookiemann/AgentNate)
+![Stars](https://img.shields.io/github/stars/aivrar/AgentNate)
+![Issues](https://img.shields.io/github/issues/aivrar/AgentNate)
+![Last Commit](https://img.shields.io/github/last-commit/aivrar/AgentNate)
 
 **Your entire AI stack in one portable folder. No install. No Docker. No admin rights. Just double-click and go.**
 
@@ -47,12 +47,12 @@ That's it. No Python, no Node.js, no Git, no Docker, no Visual Studio, no CUDA t
 ### Install
 
 ```
-git clone https://github.com/rookiemann/AgentNate.git
+git clone https://github.com/aivrar/AgentNate.git
 cd AgentNate
 install.bat
 ```
 
-Or download the portable archive from [Releases](https://github.com/rookiemann/AgentNate/releases/latest), extract anywhere, and double-click `launcher.bat` — everything is pre-installed.
+Or download the portable archive from [Releases](https://github.com/aivrar/AgentNate/releases/latest), extract anywhere, and double-click `launcher.bat` — everything is pre-installed.
 
 The installer runs 6 stages automatically:
 
@@ -127,10 +127,10 @@ AgentNate/
 │   └── styles.css           # All styles
 │
 ├── modules/                 # External engines (installable from UI tabs)
-│   ├── comfyui/             # → rookiemann/comfyui-portable-installer
-│   ├── tts/                 # → rookiemann/portable-tts-server
-│   ├── music/               # → rookiemann/portable-music-server
-│   └── vllm/                # → rookiemann/vllm-windows-build
+│   ├── comfyui/             # → aivrar/comfyui-portable-installer
+│   ├── tts/                 # → aivrar/portable-tts-server
+│   ├── music/               # → aivrar/portable-music-server
+│   └── vllm/                # → aivrar/vllm-windows-build
 │
 ├── models/                  # Downloaded model files
 │   └── gguf/                # GGUF models (searched + downloaded from HuggingFace)
@@ -253,10 +253,10 @@ AgentNate supports loading models from multiple providers simultaneously. Mix lo
 
 ## Documentation
 
-- **[User Manual (Wiki)](https://github.com/rookiemann/AgentNate/wiki)** -- Full documentation with 89 screenshots covering every feature
+- **[User Manual (Wiki)](https://github.com/aivrar/AgentNate/wiki)** -- Full documentation with 89 screenshots covering every feature
 - **[PDF Manual](manual/AgentNate-Manual.pdf)** -- 140+ page printable manual (included in repo)
 - **[API Docs](http://localhost:8000/docs)** -- Interactive Swagger UI (available when server is running)
-- **[OpenAI-Compatible API](https://github.com/rookiemann/AgentNate/wiki/22-API-and-Developer-Reference)** -- Drop-in replacement for OpenAI SDK clients
+- **[OpenAI-Compatible API](https://github.com/aivrar/AgentNate/wiki/22-API-and-Developer-Reference)** -- Drop-in replacement for OpenAI SDK clients
 
 ---
 
@@ -270,7 +270,7 @@ AgentNate achieves true portability by bundling self-contained runtimes that nev
 | **Node.js 24.12.0** | Pre-built binary extracted to `node/` | No system Node, no nvm, no global installs |
 | **n8n** | Installed via npm into local `node_modules/` | Workflow engine stays in the folder |
 | **Playwright** | Chromium installed to `python/.playwright-browsers/` | Browser automation without system Chrome |
-| **llama-cpp-python** | Pre-built CUDA wheel from [custom build](https://github.com/rookiemann/llama-cpp-python-py314-cuda131-wheel) | GPU inference without building from source |
+| **llama-cpp-python** | Pre-built CUDA wheel from [custom build](https://github.com/aivrar/llama-cpp-python-py314-cuda131-wheel) | GPU inference without building from source |
 | **ComfyUI** | Managed in `modules/comfyui/` with portable Git | Full creative pipeline, isolated |
 | **TTS / Music** | Managed in `modules/tts/` and `modules/music/` | Audio engines with their own Python environments |
 
@@ -284,9 +284,9 @@ AgentNate's creative and audio capabilities are powered by three companion proje
 
 | Module | Repository | What It Provides | Installed To |
 |--------|-----------|-----------------|-------------|
-| **ComfyUI** | [comfyui-portable-installer](https://github.com/rookiemann/comfyui-portable-installer) | Multi-GPU ComfyUI with 101 pre-built models, custom nodes, multi-instance management | `modules/comfyui/` |
-| **TTS** | [portable-tts-server](https://github.com/rookiemann/portable-tts-server) | XTTS v2, Fish Speech, Kokoro TTS engines with voice cloning and real-time streaming | `modules/tts/` |
-| **Music** | [portable-music-server](https://github.com/rookiemann/portable-music-server) | Stable Audio Open and ACE-Step music generation with CLAP scoring | `modules/music/` |
+| **ComfyUI** | [comfyui-portable-installer](https://github.com/aivrar/comfyui-portable-installer) | Multi-GPU ComfyUI with 101 pre-built models, custom nodes, multi-instance management | `modules/comfyui/` |
+| **TTS** | [portable-tts-server](https://github.com/aivrar/portable-tts-server) | XTTS v2, Fish Speech, Kokoro TTS engines with voice cloning and real-time streaming | `modules/tts/` |
+| **Music** | [portable-music-server](https://github.com/aivrar/portable-music-server) | Stable Audio Open and ACE-Step music generation with CLAP scoring | `modules/music/` |
 
 Each module is fully self-contained with its own portable Python environment, dependencies, and models. They run as separate processes managed by AgentNate's backend — start, stop, health check, and proxy are all handled automatically.
 
@@ -300,14 +300,14 @@ AgentNate builds on and integrates these projects by the same author:
 
 | Project | Description |
 |---------|-------------|
-| [auto-portable-python-deployer](https://github.com/rookiemann/auto-portable-python-deployer) | The tool that generates portable Python deployment packages (used to bootstrap AgentNate) |
-| [comfyui-portable-installer](https://github.com/rookiemann/comfyui-portable-installer) | One-click portable ComfyUI with multi-GPU, 101 models, custom nodes |
-| [LocalSoundsAPI](https://github.com/rookiemann/LocalSoundsAPI) | Portable all-in-one audio studio (TTS, music, transcription, video production) |
-| [portable-tts-server](https://github.com/rookiemann/portable-tts-server) | Standalone portable TTS server (XTTS, Fish Speech, Kokoro) |
-| [portable-music-server](https://github.com/rookiemann/portable-music-server) | Standalone portable music generation server (Stable Audio, ACE-Step) |
-| [llama-cpp-python-py314-cuda131-wheel](https://github.com/rookiemann/llama-cpp-python-py314-cuda131-wheel) | Pre-built CUDA wheel for llama-cpp-python on Python 3.14 |
-| [n8n-python-portable](https://github.com/rookiemann/n8n-python-portable) | Portable n8n with embedded Python runtime |
-| [vllm-windows-build](https://github.com/rookiemann/vllm-windows-build) | vLLM compiled for Windows with CUDA support |
+| [auto-portable-python-deployer](https://github.com/aivrar/auto-portable-python-deployer) | The tool that generates portable Python deployment packages (used to bootstrap AgentNate) |
+| [comfyui-portable-installer](https://github.com/aivrar/comfyui-portable-installer) | One-click portable ComfyUI with multi-GPU, 101 models, custom nodes |
+| [LocalSoundsAPI](https://github.com/aivrar/LocalSoundsAPI) | Portable all-in-one audio studio (TTS, music, transcription, video production) |
+| [portable-tts-server](https://github.com/aivrar/portable-tts-server) | Standalone portable TTS server (XTTS, Fish Speech, Kokoro) |
+| [portable-music-server](https://github.com/aivrar/portable-music-server) | Standalone portable music generation server (Stable Audio, ACE-Step) |
+| [llama-cpp-python-py314-cuda131-wheel](https://github.com/aivrar/llama-cpp-python-py314-cuda131-wheel) | Pre-built CUDA wheel for llama-cpp-python on Python 3.14 |
+| [n8n-python-portable](https://github.com/aivrar/n8n-python-portable) | Portable n8n with embedded Python runtime |
+| [vllm-windows-build](https://github.com/aivrar/vllm-windows-build) | vLLM compiled for Windows with CUDA support |
 
 ---
 
@@ -352,9 +352,9 @@ AgentNate is built on the shoulders of incredible open-source projects:
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-- **Bug reports**: [Open an issue](https://github.com/rookiemann/AgentNate/issues/new?template=bug_report.yml)
-- **Feature requests**: [Open an issue](https://github.com/rookiemann/AgentNate/issues/new?template=feature_request.yml)
-- **Questions & ideas**: [Start a discussion](https://github.com/rookiemann/AgentNate/discussions)
+- **Bug reports**: [Open an issue](https://github.com/aivrar/AgentNate/issues/new?template=bug_report.yml)
+- **Feature requests**: [Open an issue](https://github.com/aivrar/AgentNate/issues/new?template=feature_request.yml)
+- **Questions & ideas**: [Start a discussion](https://github.com/aivrar/AgentNate/discussions)
 
 This is an actively developed project. New features ship regularly and feedback directly shapes the roadmap.
 
